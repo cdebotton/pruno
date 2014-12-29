@@ -2,6 +2,9 @@
 Mix up gulp tasks like prison hooch. Pruno is a package that lifts heavily (takes most of the code) from Laravel Elixer.
 Some slight tweaks were made to allow for it to run tasks that build more complex front-end applications.
 
+## Installation
+Simply run `npm install -D pruno gulp` in your terminal.
+
 ## Sample Gulpfile
 ```js
 'use strict';
