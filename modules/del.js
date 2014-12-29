@@ -1,6 +1,7 @@
 'use strict';
 
 var pruno = require('..');
+var del = require('del');
 
 pruno.extend('del', function(src) {
   var config = pruno.config;
