@@ -47,3 +47,20 @@ pruno(function(runner) {
 6. imagemin
 7. livereload
 8. koa
+
+### Writing custom modules
+Writing custom modules is easy, just follow the boilerplate:
+```js
+var pruno = require('pruno');
+var config = pruno.config;
+var gulp = config.gulp;
+
+pruno.extend('mytask', function(src, output, params) {
+    gulp.task('mytask', function() {
+      // Do some stuff
+    });
+
+    config.registerWatcher('mytask', './path/to/files/**/*.ext');
+    return config.queueTask('mytask');
+});
+```
