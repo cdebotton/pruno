@@ -18,8 +18,11 @@ var gulp = config.gulp;
 var PLUGIN_NAME = 'browserify';
 var SEARCH = path.join(config.srcDir, '**/*.js');
 
-pruno.extend(PLUGIN_NAME, function(src, output, params) {
-  src = src || 'index.js';
+pruno.extend(PLUGIN_NAME, function(params) {
+  params || (params = {});
+
+  var src = params.src || 'index.js';
+  var output = params.output || 'bundle.js';
 
   var onError = function(e) {
     new Notification().error(e, 'Browserify Compilation Failed!');
@@ -31,10 +34,10 @@ pruno.extend(PLUGIN_NAME, function(src, output, params) {
 
     return bundler.bundle()
       .on('error', onError)
-      .pipe(source('bundle.js'))
+      .pipe(source(output))
       .pipe(buffer())
       .pipe(plugins.if(config.production, plugins.uglify()))
-      .pipe(plugins.if(!config.production, plugins.sourcemaps.init()))
+      .pipe(plugins.if(!config.production, plugins.sourcemaps.init({loadMaps: true})))
       .pipe(plugins.if(!config.production, plugins.sourcemaps.write()))
       .pipe(plugins.if(config.production, plugins.rename({suffix: '.min'})))
       .pipe(gulp.dest(config.output))
@@ -42,7 +45,9 @@ pruno.extend(PLUGIN_NAME, function(src, output, params) {
   }
 
   function transform(bundler) {
-    bundler.transform(to5Runtime);
+    if (params.runtime) {
+      bundler.transform(to5Runtime);
+    }
     bundler.transform(envify({NODE_ENV: 'development'}));
     bundler.transform(to5ify);
 

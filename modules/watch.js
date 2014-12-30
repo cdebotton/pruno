@@ -16,8 +16,12 @@ gulp.task('watch', function() {
   srcPaths = config.watchers.default;
 
   tasksToRun = _.intersection(config.tasks, _.keys(srcPaths))
-    .concat(['watch-assets', 'browserify:watch'])
+    .concat(['watch-assets'])
     .concat(filelessModules);
+
+  if (config.tasks.indexOf('browserify') > -1) {
+    tasksToRun = tasksToRun.concat(['browserify:watch']);
+  }
 
   inSequence.apply(this, tasksToRun);
 });

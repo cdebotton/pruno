@@ -9,6 +9,8 @@ pruno(function(runner) {
   runner.assets(['!/assets/images/**/*', '/assets/**/*']);
   runner.koa('api/index.js')
   runner.stylus('index.styl');
-  runner.browserify();
+  runner.browserify({
+    runtime: true
+  });
   runner.livereload(['./public/**/*']);
 });
