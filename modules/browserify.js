@@ -1,5 +1,6 @@
 'use strict';
 
+var assign = require('object-assign');
 var path = require('path');
 var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
@@ -18,11 +19,29 @@ var gulp = config.gulp;
 var PLUGIN_NAME = 'browserify';
 var SEARCH = path.join(config.srcDir, '**/*.js');
 
+var defaults = {
+  'entry': './app/index.js',
+  'dist': './public/bundle.js',
+  'uglify': false,
+  'source-maps': true,
+  'es6': false,
+  'runtime': false
+};
+
 pruno.extend(PLUGIN_NAME, function(params) {
   params || (params = {});
 
-  var src = params.src || 'index.js';
-  var output = params.output || 'bundle.js';
+  var options = assign({}, defaults, params);
+  var bundlePattern = /^(.+\/)((.+)\.js)$/
+  console.log(options.dist);
+  try {
+    var match = options.dist.match(bundlePattern);
+    var dist = match[1];
+    var fileName = match[2];
+  }
+  catch (err) {
+    throw new Error('No target bundle file.');
+  }
 
   var onError = function(e) {
     new Notification().error(e, 'Browserify Compilation Failed!');
@@ -34,22 +53,25 @@ pruno.extend(PLUGIN_NAME, function(params) {
 
     return bundler.bundle()
       .on('error', onError)
-      .pipe(source(output))
+      .pipe(source(fileName))
       .pipe(buffer())
-      .pipe(plugins.if(config.production, plugins.uglify()))
-      .pipe(plugins.if(!config.production, plugins.sourcemaps.init({loadMaps: true})))
-      .pipe(plugins.if(!config.production, plugins.sourcemaps.write()))
-      .pipe(plugins.if(config.production, plugins.rename({suffix: '.min'})))
-      .pipe(gulp.dest(config.output))
+      .pipe(plugins.if(options.uglify, plugins.uglify()))
+      .pipe(plugins.if(options['source-maps'], plugins.sourcemaps.init({loadMaps: true})))
+      .pipe(plugins.if(options['source-maps'], plugins.sourcemaps.write()))
+      .pipe(gulp.dest(dist))
       .pipe(new Notification().message('Browserify completed successfull!'));
   }
 
   function transform(bundler) {
-    if (params.runtime) {
+    if (options.runtime) {
       bundler.transform(to5Runtime);
     }
+
     bundler.transform(envify({NODE_ENV: 'development'}));
-    bundler.transform(to5ify);
+
+    if (options.es6 || options.harmony || options.react) {
+      bundler.transform(to5ify);
+    }
 
     return bundler;
   }
@@ -59,7 +81,7 @@ pruno.extend(PLUGIN_NAME, function(params) {
     watchify.args.fullPaths = false;
 
     var bundler = browserify(
-      './' + path.join(config.srcDir, src),
+      options.entry,
       watchify.args
     );
     bundler = transform(bundler);
@@ -73,7 +95,7 @@ pruno.extend(PLUGIN_NAME, function(params) {
     watchify.args.debug = true;
 
     var bundler = watchify(browserify(
-      './' + path.join(config.srcDir, src),
+      options.entry,
       watchify.args
     ));
     bundler = transform(bundler);

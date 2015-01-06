@@ -2,19 +2,36 @@
 
 var assign = require('object-assign');
 var util = require('gulp-util');
-var nib = require('nib');
-var jeet = require('jeet');
-var rupture = require('rupture');
 var pruno = require('..');
 var config = pruno.config;
 var compile = require('./helpers/compileCSS');
 
-pruno.extend('stylus', function(src, output, params) {
-  var options = assign({
-    use: [nib(), jeet(), rupture()]
-  }, params);
+var defaults = {
+  'entry': './app/stylus/index.styl',
+  'dist': './public/stylesheets/app.css',
+  'search': './app/**/*.styl',
+  'minify': false,
+  'source-maps':true,
+  'font-awesome': false,
+  'normalize': false,
+  'use': ['nib', 'jeet', 'rupture']
+};
 
-  if (! config.production) {
+pruno.extend('stylus', function(params) {
+  var options = assign({}, defaults, params);
+
+  if (options.use) {
+    options.use = options.use.map(function(module) {
+      try {
+        return require(module)();
+      }
+      catch (err) {
+        console.log('Module `%s` not found.', module);
+      }
+    });
+  }
+
+  if (options['source-maps']) {
     options = assign(options, {
       sourcemap: {
         inline: true,
@@ -26,11 +43,6 @@ pruno.extend('stylus', function(src, output, params) {
   return compile({
     compiler: 'Stylus',
     pluginName: 'stylus',
-    pluginOptions: options,
-    src: src,
-    output: output,
-    search: '**/*.styl',
-    normalize: true,
-    fontAwesome: true
+    pluginOptions: options
   });
 });
