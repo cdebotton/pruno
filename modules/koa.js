@@ -1,11 +1,18 @@
 'use strict';
 
+var assign = require('object-assign');
 var Notification = require('./helpers/notification');
 var pruno = require('..');
 var config = pruno.config;
 var gulp = config.gulp;
 
-pruno.extend('koa', function(src, options) {
+var defaults = {
+  env: 'development',
+  server: './server.js'
+};
+
+pruno.extend('koa', function(params) {
+  var options = assign({}, defaults, params);
   var koaServer = require('./helpers/koa-server');
   var env = config.production ? 'production' : 'development';
 
@@ -14,8 +21,8 @@ pruno.extend('koa', function(src, options) {
       .pipe(new Notification().message('Server Started'));
 
     koaServer.run({
-      file: src,
-      env: env
+      file: options.server,
+      env: options.env
     });
   });
 

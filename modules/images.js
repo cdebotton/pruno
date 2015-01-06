@@ -1,25 +1,41 @@
 'use strict';
 
+var assign = require('object-assign');
 var pruno = require('..');
 var Notification = require('./helpers/notification');
 
-pruno.extend('images', function(src, dest) {
+var defaults = {
+  src: './app/assets/img/**/*',
+  dist: './public/img/',
+  use: ['imagemin-pngcrush']
+};
+
+pruno.extend('images', function(params) {
+  var options = assign({}, defaults, params);
   var imagemin = require('gulp-imagemin');
-  var pngcrush = require('imagemin-pngcrush');
   var config = pruno.config;
   var gulp = config.gulp;
 
+  options.use = options.use.map(function(moduleName) {
+    try {
+      return require(moduleName)();
+    }
+    catch (err) {
+      console.log('Module `%s` does not exist', moduleName);
+    }
+  });
+
   gulp.task('images', function() {
-    gulp.src(config.srcDir + src)
+    gulp.src(options.src)
       .pipe(imagemin({
         progressive: true,
         svgoPlugins: [{removeViewbox: false}],
-        use: [pngcrush()]
+        use: options.use || []
       }))
-      .pipe(gulp.dest(config.output + dest))
+      .pipe(gulp.dest(options.dist))
       .pipe(new Notification().message('Images Optimized'));
   });
 
-  config.registerWatcher('images', config.srcDir + src);
+  config.registerWatcher('images', options.src);
   config.queueTask('images');
 });
