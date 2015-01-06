@@ -1,22 +1,26 @@
 'use strict';
 
 var pruno = require('..');
+var assign = require('object-assign');
 
-pruno.extend('assets', function(src) {
+var defaults = {
+  sources: [
+    '!./app/assets/images/**/*',
+    './app/assets/**/*'
+  ],
+  dist: './public/'
+};
+
+pruno.extend('assets', function(params) {
   var config = pruno.config;
   var gulp = config.gulp;
+  var options = assign({}, defaults, params);
 
   gulp.task('assets', function() {
-    var sources = src.map(function(entry) {
-      return entry.replace(/^(\!?)(.+)$/, function(str, p1, p2) {
-        return p1 + config.srcDir + p2;
-      });
-    });
-
-    return gulp.src(sources)
-      .pipe(gulp.dest(config.output));
+    return gulp.src(options.sources)
+      .pipe(gulp.dest(options.dist));
   });
 
-  config.registerWatcher('assets', src);
+  config.registerWatcher('assets', options.sources);
   config.queueTask('assets');
 });

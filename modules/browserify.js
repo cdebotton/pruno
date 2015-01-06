@@ -33,7 +33,7 @@ pruno.extend(PLUGIN_NAME, function(params) {
 
   var options = assign({}, defaults, params);
   var bundlePattern = /^(.+\/)((.+)\.js)$/
-  console.log(options.dist);
+
   try {
     var match = options.dist.match(bundlePattern);
     var dist = match[1];
