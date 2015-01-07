@@ -1,11 +1,19 @@
 # pruno
-Mix up gulp tasks like prison hooch. Pruno is a package that lifts heavily (takes most of the code) from Laravel Elixer.
-Some slight tweaks were made to allow for it to run tasks that build more complex front-end applications.
+A gulp task manager with cascading configuration. Pruno was inspired by Laravel Elixer and adds several features like a simplified task syntax and cascading configuration.
 
 ## Installation
 Simply run `npm install -D pruno gulp` in your terminal.
 
-## Sample Gulpfile
+## Use
+
+### Supported commands
+With pruno, you can run `gulp`, `gulp watch`, `gulp --production` or
+`NODE_ENV={yourEnv} gulp (watch?)`. Gulp will run using the configuration
+that matches your environment.
+
+### Simple Configuration
+Using pruno is as simple as telling it which tasks to run. It assumes a set of
+default configuration options to let you get started quickly.
 ```js
 'use strict';
 
@@ -17,27 +25,91 @@ Simply run `npm install -D pruno gulp` in your terminal.
 var gulp = require('gulp');
 var pruno = require('pruno').use(gulp);
 
-pruno(function(runner) {
-  // Publish npm files.
-  runner.publish('./node_modules/font-awesome/fonts/*', '/fonts/');
+pruno(function(mix) {
+  mix
+    .assets()
+    .publish()
+    .stylus()
+    .browserify()
+    .koa()
+    .livereload();
+});
+```
 
-  // Copy and optimize image assets.
-  runner.images('/assets/images/**/*', 'images');
+### Yaml Configuration
 
-  // Move other assets
-  runner.assets(['!/assets/images/**/*', '/assets/**/*']);
+If you want to change the global defaults used by Pruno, you can point
+it to a directory that holds the environment-based yaml configuration.
+Pruno leverages [yaml-env-config](https://www.npmjs.com/package/yaml-env-config),
+so any configuration must be stored in a pruno.yaml file.
 
-  // Spin up the specified koa server.
-  runner.koa('api/index.js')
+```yaml
+# config/pruno.yaml
 
-  // Compile stylus files.
-  runner.stylus('index.styl');
+browserify:
+  es6: true
+  runtime: true
+  entry: ./src/javascripts/entry.js
+  dist: ./dist/application.js
+stylus:
+  entry: ./src/styles/index.styl
+  dist: ./dist/app.css
+  normalize: true
+  font-awesome: true
+```
 
-  // Run browserify.
-  runner.browserify();
+```yaml
+# config/production/pruno.yaml
 
-  // Use livereload to refresh koa server when files change.
-  runner.livereload(['./public/**/*']);
+browserify:
+  uglify: true
+  source-maps: false
+  dist: ./dist/application.min.js
+stylus:
+  source-maps: false
+  minify: true
+  dist: ./dist/app.min.css
+```
+
+To use these commands, in our pruno run block, we would start the calls off
+with the following:
+
+```js
+pruno(function(mix) {
+    mix.configure('./config')
+      .assets()
+      // ...
+});
+```
+
+By running any of the `gulp` commands, gulp will compile your code based on
+the parameters set in those config files.
+
+### Inline Configuration
+Lastly you can use inline configuration in your  Gulpfile to override your
+env-configuration as well as the Pruno defaults. In our Gulpfile, let's do this:
+
+```js
+var gulp = require('gulp');
+var pruno = require('pruno').use(gulp);
+
+pruno(function(mix) {
+  mix.configure('./config')
+  .stylus({
+    entry: './app/styles/client.styl',
+    dist: './public/stylesheets/client.css'
+  })
+  .stylus({
+    entry: './app/styles/admin.styl',
+    dist: './pubic/stylesheets/admin.css'
+  })
+  .browserify()
+  .publish({
+    sources: [
+      './node_modules/font-awesome/fonts/**/*'
+    ],
+    dist: './public/fonts/'
+  });
 });
 ```
 
