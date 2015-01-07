@@ -12,6 +12,12 @@ var defaults = {
 };
 
 pruno.extend('koa', function(params) {
+  params || (params = {});
+
+  if (config.defaultOptions.koa) {
+    params = assign({}, config.defaultOptions.koa, params);
+  }
+
   var options = assign({}, defaults, params);
   var koaServer = require('./helpers/koa-server');
   var env = config.production ? 'production' : 'development';
