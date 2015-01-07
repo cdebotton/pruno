@@ -13,6 +13,12 @@ pruno.extend('publish', function(params) {
   var config = pruno.config;
   var gulp = config.gulp;
 
+  params || (params = {});
+
+  if (config.defaultOptions.publish) {
+    params = assign({}. config.defaultOptions.publish, params);
+  }
+
   var options = assign({}, defaultParams, params);
 
   if (! (options.src && options.dist)) {
