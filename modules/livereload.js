@@ -6,7 +6,11 @@ var pruno = require('..');
 var config = pruno.config;
 var gulp = config.gulp;
 
-pruno.extend('livereload', function(watchers) {
+var defaultWatchers = ['./public/**/*', './api/**/*'];
+
+pruno.extend('livereload', function(params) {
+  var watchers = params || defaultWatchers;
+
   gulp.task('livereload', function() {
     gulp.src('.', {read: false})
       .pipe(new Notification().message('Server Reload Started'));
