@@ -18,6 +18,13 @@ var defaults = {
 };
 
 pruno.extend('stylus', function(params) {
+  if (config.defaultOptions.stylus) {
+    params = assign(
+      config.defaultOptions.stylus,
+      params
+    );
+  }
+
   var options = assign({}, defaults, params);
 
   if (options.use) {

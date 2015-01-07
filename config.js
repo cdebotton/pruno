@@ -10,6 +10,7 @@ var config = {
     tasks: [],
     watchers: { default: {} },
     duplicate: [],
+    defaultOptions: {},
     concatenate: { css: [], js: [] }
 };
 
@@ -30,13 +31,8 @@ config.queueTask = function(task) {
     return this;
 };
 
-config.setDefaultsFrom = function(file) {
-    var defaults;
-
-    if (fs.existsSync(file)) {
-        defaults = JSON.parse(fs.readFileSync(file, 'utf8'));
-        Object.assign(this, defaults);
-    }
+config.setDefaults = function(defaults) {
+    Object.assign(this.defaultOptions, defaults);
 };
 
 module.exports = config;

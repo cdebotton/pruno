@@ -5,6 +5,9 @@ var callsite = require('callsite');
 
 var Pruno = function(callback) {
   var stack = callsite();
+  process.env.NODE_ENV = Pruno.config.production ?
+    'production' :
+    process.env.NODE_ENV || 'development';
   Pruno.config.rootDir = path.dirname(stack[1].getFileName());
 
   if ('undefined' === typeof Pruno.config.gulp) {
@@ -16,7 +19,6 @@ var Pruno = function(callback) {
 };
 
 Pruno.config = require('./config');
-// Pruno.config.setDefaultsFrom('pruno.json');
 
 Pruno.callbacks = {};
 
@@ -28,7 +30,6 @@ Pruno.use = function(gulp) {
 Pruno.extend = function(name, callback) {
   Pruno.callbacks[name] = function (params) {
     callback(params);
-
     return this;
   };
 };

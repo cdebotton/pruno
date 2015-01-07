@@ -14,6 +14,11 @@ var defaults = {
 pruno.extend('assets', function(params) {
   var config = pruno.config;
   var gulp = config.gulp;
+
+  defaults = config.defaultOptions.assets ?
+    config.defaultOptions.assets :
+    defaults;
+
   var options = assign({}, defaults, params);
 
   gulp.task('assets', function() {
