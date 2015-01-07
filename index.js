@@ -12,11 +12,13 @@ var Pruno = function(callback) {
   }
 
   require('require-dir')('./modules');
-  callback(Pruno.config);
+  callback(Pruno.callbacks);
 };
 
 Pruno.config = require('./config');
-Pruno.config.setDefaultsFrom('pruno.json');
+// Pruno.config.setDefaultsFrom('pruno.json');
+
+Pruno.callbacks = {};
 
 Pruno.use = function(gulp) {
   Pruno.config.gulp = gulp;
@@ -24,7 +26,11 @@ Pruno.use = function(gulp) {
 };
 
 Pruno.extend = function(name, callback) {
-  Pruno.config[name] = callback;
+  Pruno.callbacks[name] = function (params) {
+    callback(params);
+
+    return this;
+  };
 };
 
 module.exports = Pruno;
