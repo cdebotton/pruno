@@ -139,3 +139,54 @@ pruno.extend('mytask', function(src, output, params) {
     return config.queueTask('mytask');
 });
 ```
+
+### Default configuration
+#### Development Environment
+
+```yaml
+assets:
+  sources:
+    - '!./app/assets/images/**/*',
+    - './app/assets/**/*'
+  dist: ./public/
+
+browserify:
+  entry: ./app/index.js
+  dist: ./public/bundle.js
+  uglify: false
+  source-maps: true
+  es6: false
+  runtime: false
+
+del:
+  - ./public/
+
+images:
+  src: ./app/assets/img/**/*
+  dist: ./public/img/
+  use:
+   - 'imagemin-pngcrush'
+
+koa:
+  env: development
+  server: ./server.js
+
+publish:
+  src: null
+  dist: null
+
+stylus:
+  entry: ./app/stylus/index.styl
+  dist: ./public/stylesheets/app.css
+  search: ./app/**/*.styl
+  minify: false
+  source-maps:true
+  font-awesome: false
+  normalize: false
+  use:
+    - nib
+    - jeet
+    - rupture
+```
+
+#### Production Environment
