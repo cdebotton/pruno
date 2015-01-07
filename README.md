@@ -165,7 +165,7 @@ images:
   src: ./app/assets/img/**/*
   dist: ./public/img/
   use:
-   - imagemin-pngcrush
+    - imagemin-pngcrush
 
 koa:
   env: development
