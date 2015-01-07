@@ -31,6 +31,10 @@ var defaults = {
 pruno.extend(PLUGIN_NAME, function(params) {
   params || (params = {});
 
+  if (config.defaultOptions.browserify) {
+    params = assign({}, config.defaultOptions.browserify, params);
+  }
+
   var options = assign({}, defaults, config.defaultOptions, params);
   var bundlePattern = /^(.+\/)((.+)\.js)$/
 
