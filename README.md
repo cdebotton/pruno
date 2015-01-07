@@ -147,7 +147,7 @@ pruno.extend('mytask', function(src, output, params) {
 assets:
   sources:
     - '!./app/assets/images/**/*',
-    - './app/assets/**/*'
+    - ./app/assets/**/*
   dist: ./public/
 
 browserify:
@@ -165,7 +165,7 @@ images:
   src: ./app/assets/img/**/*
   dist: ./public/img/
   use:
-   - 'imagemin-pngcrush'
+   - imagemin-pngcrush
 
 koa:
   env: development
