@@ -2,13 +2,14 @@
 
 var pruno = require('..');
 var assign = require('object-assign');
+var assignVars = require('./helpers/assignVars');
 
 var defaults = {
   sources: [
-    '!./app/assets/images/**/*',
-    './app/assets/**/*'
+    '!::src/assets/images/**/*',
+    '::src/assets/**/*'
   ],
-  dist: './public/'
+  dist: '::output/'
 };
 
 pruno.extend('assets', function(params) {
@@ -20,6 +21,8 @@ pruno.extend('assets', function(params) {
   }
 
   var options = assign({}, defaults, params);
+
+  options = assignVars(options);
 
   gulp.task('assets', function() {
     return gulp.src(options.sources)

@@ -3,6 +3,7 @@
 var assign = require('object-assign');
 var pruno = require('..');
 var Notification = require('./helpers/notification');
+var assignVars = require('./helpers/assignVars');
 
 var defaultParams = {
   src: null,
@@ -20,6 +21,7 @@ pruno.extend('publish', function(params) {
   }
 
   var options = assign({}, defaultParams, params);
+  options = assignVars(options);
 
   if (! (options.src && options.dist)) {
     throw new Error(

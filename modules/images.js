@@ -3,10 +3,11 @@
 var assign = require('object-assign');
 var pruno = require('..');
 var Notification = require('./helpers/notification');
+var assignVars = require('./helpers/assignVars');
 
 var defaults = {
-  src: './app/assets/img/**/*',
-  dist: './public/img/',
+  src: '::src/assets/img/**/*',
+  dist: '::output/img/',
   use: ['imagemin-pngcrush']
 };
 
@@ -21,6 +22,7 @@ pruno.extend('images', function(params) {
   }
 
   var options = assign({}, defaults, params);
+  options = assignVars(options);
   var imagemin = require('gulp-imagemin');
 
   options.use = options.use.map(function(moduleName) {

@@ -2,6 +2,7 @@
 
 var assign = require('object-assign');
 var Notification = require('./helpers/notification');
+var assignVars = require('./helpers/assignVars');
 var pruno = require('..');
 var config = pruno.config;
 var gulp = config.gulp;
@@ -19,6 +20,7 @@ pruno.extend('koa', function(params) {
   }
 
   var options = assign({}, defaults, params);
+  options = assignVars(options);
   var koaServer = require('./helpers/koa-server');
   var env = config.production ? 'production' : 'development';
 

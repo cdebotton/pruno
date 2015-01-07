@@ -2,8 +2,9 @@
 
 var pruno = require('..');
 var del = require('del');
+var assignVars = require('./helpers/assignVars').mapArray;
 
-var defaults = ['./public/'];
+var defaults = ['::output'];
 
 pruno.extend('del', function(params) {
   var config = pruno.config;
@@ -13,6 +14,7 @@ pruno.extend('del', function(params) {
     .reduce(function(memo, opts) {
       return opts || (Array.isArray(memo) ? memo : [memo]);
     }, null);
+  options = assignVars(options);
 
   var toRemove = Array.isArray(params) ?
     params : defaults;

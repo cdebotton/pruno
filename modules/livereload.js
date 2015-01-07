@@ -6,7 +6,7 @@ var pruno = require('..');
 var config = pruno.config;
 var gulp = config.gulp;
 
-var defaultWatchers = ['./public/**/*', './api/**/*'];
+var defaultWatchers = ['::output/**/*', './api/**/*'];
 
 pruno.extend('livereload', function(params) {
   var watchers = params || defaultWatchers;

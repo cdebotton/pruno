@@ -12,16 +12,16 @@ var to5Runtime = require('./helpers/addTo5Runtime');
 var plugins = require('gulp-load-plugins')();
 var Notification = require('./helpers/notification');
 var koaServer = require('./helpers/koa-server');
+var assignVars = require('./helpers/assignVars');
 var pruno = require('..');
 var config = pruno.config;
 var gulp = config.gulp;
 
 var PLUGIN_NAME = 'browserify';
-var SEARCH = path.join(config.srcDir, '**/*.js');
 
 var defaults = {
-  'entry': './app/index.js',
-  'dist': './public/bundle.js',
+  'entry': '::src/index.js',
+  'dist': '::output/bundle.js',
   'uglify': false,
   'source-maps': true,
   'es6': false,
@@ -35,7 +35,9 @@ pruno.extend(PLUGIN_NAME, function(params) {
     params = assign({}, config.defaultOptions.browserify, params);
   }
 
-  var options = assign({}, defaults, config.defaultOptions, params);
+  var options = assign({}, defaults, config.defaultOptions.browserify, params);
+  options = assignVars(options);
+  console.log(options.dist);
   var bundlePattern = /^(.+\/)((.+)\.js)$/
 
   try {

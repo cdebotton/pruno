@@ -5,11 +5,12 @@ var util = require('gulp-util');
 var pruno = require('..');
 var config = pruno.config;
 var compile = require('./helpers/compileCSS');
+var assignVars = require('./helpers/assignVars');
 
 var defaults = {
-  'entry': './app/stylus/index.styl',
-  'dist': './public/stylesheets/app.css',
-  'search': './app/**/*.styl',
+  'entry': '::src/stylus/index.styl',
+  'dist': '::output/stylesheets/app.css',
+  'search': '::src/**/*.styl',
   'minify': false,
   'source-maps':true,
   'font-awesome': false,
@@ -26,6 +27,7 @@ pruno.extend('stylus', function(params) {
   }
 
   var options = assign({}, defaults, params);
+  options = assignVars(options);
 
   if (options.use) {
     options.use = options.use.map(function(module) {

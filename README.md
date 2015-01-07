@@ -189,4 +189,23 @@ stylus:
     - rupture
 ```
 
-#### Production Environment
+#### Config variables
+Pruno supports configuration variable using the '::var' syntax. To declare
+a variable, it must be declared in yaml at the top level of the pruno
+configuration object.
+
+By default, two global config vars are set. `src: ./app` and `output: ./public`.
+
+To use a variable, simply reference its variable name with a preceding '::'.
+For example:
+
+```yaml
+# config/pruno
+
+src: ./src
+output: ./dist
+
+stylus:
+  entry: ::src/stylesheets/index.styl
+  dist: ::output/scripts/bundle.js
+```

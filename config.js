@@ -3,14 +3,13 @@ var fs = require('fs');
 
 var config = {
     production: !! util.env.production,
-    srcDir: 'app',
-    assetDir: 'assets/',
-    cssOutput: 'stylesheets',
-    output: './public/',
     tasks: [],
     watchers: { default: {} },
     duplicate: [],
-    defaultOptions: {},
+    defaultOptions: {
+        src: './app',
+        output: './public'
+    },
     concatenate: { css: [], js: [] }
 };
 
