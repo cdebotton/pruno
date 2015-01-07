@@ -11,6 +11,9 @@ var defaults = {
 };
 
 pruno.extend('images', function(params) {
+  var config = pruno.config;
+  var gulp = config.gulp;
+
   params || (params = {});
 
   if (config.defaultOptions.images) {
@@ -19,8 +22,6 @@ pruno.extend('images', function(params) {
 
   var options = assign({}, defaults, params);
   var imagemin = require('gulp-imagemin');
-  var config = pruno.config;
-  var gulp = config.gulp;
 
   options.use = options.use.map(function(moduleName) {
     try {
