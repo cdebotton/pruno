@@ -1,6 +1,6 @@
 {
   "name": "pruno",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Mix up gulp tasks like prison hooch.",
   "main": "index.js",
   "scripts": {
