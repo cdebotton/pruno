@@ -55,7 +55,7 @@ JS.prototype.enqueue = function (gulp) {
   return bundle(gulp, bundler, params);
 };
 
-JS.prototype.watch = function (gulp) {
+JS.prototype.generateWatcher = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
   return function () {
     var args = assign({}, watchify.args);
@@ -63,11 +63,10 @@ JS.prototype.watch = function (gulp) {
     args.fullPaths = true;
     args.debug = true;
 
-    var bundler = browserify(params.entry, args);
+    var bundler = watchify(browserify(params.entry, args));
+    bundler.on("update", bundle.bind(bundle, gulp, bundler, params));
 
-    bundler.on("update", bundle.bind(bundle, bundler));
-
-    return bundle(bundler);
+    return bundle(gulp, bundler, params);
   };
 };
 

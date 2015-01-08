@@ -1,16 +1,24 @@
 'use strict';
 
-var gulp = require('gulp');
-var pruno = require('pruno').use(gulp);
+var pruno = require('pruno')
+  .use(require('gulp'));
 
-pruno(function(runner) {
-  runner.publish('./node_modules/font-awesome/fonts/*', '/fonts/');
-  runner.images('/assets/images/**/*', 'images');
-  runner.assets(['!/assets/images/**/*', '/assets/**/*']);
-  runner.koa('api/index.js')
-  runner.stylus('index.styl');
-  runner.browserify({
-    runtime: true
-  });
-  runner.livereload(['./public/**/*']);
+pruno(function(mix) {
+  mix
+    .configure('./config')
+    .del(['::output'])
+    .js({
+      es6: true,
+      runtime: true
+    })
+    .stylus('client', {
+      entry: '::src/stylus/index.styl',
+      dist: '::dist/public/styles/client.css'
+    })
+    .stylus('admin', {
+      entry: '::src/stylus/admin.styl',
+      dist: '::dist/public/styles/admin.css'
+    })
+    .koa()
+    .livereload();
 });

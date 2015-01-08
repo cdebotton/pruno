@@ -40,18 +40,17 @@ class JS {
     return bundle(gulp, bundler, params);
   }
 
-  watch(gulp, params = {}) {
+  generateWatcher(gulp, params = {}) {
     return () => {
       var args = assign({}, watchify.args);
       args.entry = true;
       args.fullPaths = true;
       args.debug = true;
 
-      var bundler = browserify(params.entry, args);
+      var bundler = watchify(browserify(params.entry, args));
+      bundler.on('update', bundle.bind(bundle, gulp, bundler, params));
 
-      bundler.on('update', bundle.bind(bundle, bundler));
-
-      return bundle(bundler);
+      return bundle(gulp, bundler, params);
     }
   }
 };

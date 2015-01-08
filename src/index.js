@@ -4,6 +4,7 @@ import runSequence from 'run-sequence';
 import callsite from 'callsite';
 import util from 'gulp-util';
 import requireDir from 'require-dir';
+import compileParams from './utils/compileParams';
 
 var tasks = {};
 var queue = {};
@@ -38,10 +39,12 @@ export default class Pruno {
       }
 
       var watchName = `${taskName}:watch`;
-      if (typeof task.watch === 'function' && watchers.indexOf(watchName) === -1) {
-        gulp.task(watchName, () => {
-
-        });
+      var watcher = task.generateWatcher ? task.generateWatcher(gulp, task.params) : false;
+      if (watchers.indexOf(watchName) === -1) {
+        watchers.push(watchName);
+        if (typeof watcher === 'function') {
+          gulp.task(watchName, watcher);
+        }
       }
     });
 
@@ -58,6 +61,10 @@ export default class Pruno {
 
       runSequence(defaults);
     });
+
+    if (watchers.length > 0) {
+      gulp.task('watch', watchers);
+    }
   }
 
   static use(gulp) {
@@ -79,7 +86,7 @@ export default class Pruno {
       }
 
       var defaults = task.getDefaults();
-      var params = compileParams(taskName, defaults, params);
+      var params = compileParams(taskName, defaults, params, settings);
 
       instance = new task(params);
 
@@ -91,35 +98,3 @@ export default class Pruno {
     }
   }
 }
-
-var compileParams = (taskName, defaults, opts) => {
-  var paramsList  = [{}, defaults];
-  var [taskName, methodName] = taskName.split(':');
-
-  var taskSettings = settings[taskName];
-  if (taskSettings) {
-    paramsList.push(taskSettings);
-
-    var methodSettings = taskSettings[methodName];
-    if (methodSettings) {
-      paramsList.push(methodSettings);
-      delete taskSettings[methodName];
-    }
-  }
-  opts || (opts = {});
-  paramsList.push(opts);
-
-  var vars = assign({}, settings.vars);
-  var params = assign.apply(null, paramsList);
-
-  return Object.keys(params).reduce((obj, param) => {
-    var val = params[param];
-    if (typeof val === 'string') {
-      obj[param] = val.replace(/(\:\:([A-z0-9\s_-]+))/g, (str, p1, p2) => {
-        return vars[p2] || '';
-      });
-    }
-
-    return obj;
-  }, params);
-};
