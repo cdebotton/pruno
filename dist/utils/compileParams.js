@@ -23,8 +23,10 @@ var _interopRequire = function (obj) {
 module.exports = compileParams;
 var assign = _interopRequire(require("object-assign"));
 
-function compileParams(taskName, defaults, opts, settings) {
-  var paramsList = [{}, defaults];
+var getType = _interopRequire(require("./getType"));
+
+function compileParams(taskName, defaults, baseSettings, params, settings) {
+  var paramsList = [{}, defaults, baseSettings];
   var _taskName$split = taskName.split(":");
 
   var _taskName$split2 = _slicedToArray(_taskName$split, 2);
@@ -33,28 +35,55 @@ function compileParams(taskName, defaults, opts, settings) {
   var methodName = _taskName$split2[1];
 
 
-  var taskSettings = settings[taskName];
-  if (taskSettings) {
-    paramsList.push(taskSettings);
-
-    var methodSettings = taskSettings[methodName];
-    if (methodSettings) {
-      paramsList.push(methodSettings);
-      delete taskSettings[methodName];
-    }
+  var methodSettings = baseSettings[methodName];
+  if (methodSettings) {
+    paramsList.push(methodSettings);
+    delete taskSettings[methodName];
   }
-  opts || (opts = {});
-  paramsList.push(opts);
+
+  paramsList.push(params);
 
   var vars = assign({}, settings.vars);
   var params = assign.apply(null, paramsList);
 
-  return Object.keys(params).reduce(function (obj, param) {
-    var val = params[param];
-    if (typeof val === "string") {
-      obj[param] = val.replace(/(\:\:([A-z0-9\s_-]+))/g, function (str, p1, p2) {
-        return vars[p2] || "";
-      });
+  return Object.keys(params).reduce(function compile() {
+    var args = [];
+
+    for (var _key = 0; _key < arguments.length; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    var _args = _slicedToArray(args, 4);
+
+    var obj = _args[0];
+    var param = _args[1];
+    var key = _args[2];
+    var arr = _args[3];
+    var val = obj[param];
+    var type = getType(val);
+
+    switch (type) {
+      case "string":
+        obj[param] = val.replace(/(\:\:([A-z0-9\s_-]+))/g, function (str, p1, p2) {
+          return vars[p2] || "";
+        });
+        break;
+      case "array":
+        obj[param] = val.reduce(function () {
+          var arrArgs = [];
+
+          for (var _key2 = 0; _key2 < arguments.length; _key2++) {
+            arrArgs[_key2] = arguments[_key2];
+          }
+
+          var _arrArgs = _slicedToArray(arrArgs, 3);
+
+          var arr = _arrArgs[0];
+          var p = _arrArgs[1];
+          var i = _arrArgs[2];
+          return compile(arr, i);
+        }, obj[param]);
+        break;
     }
 
     return obj;

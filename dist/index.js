@@ -75,7 +75,8 @@ Pruno.use = function (gulp) {
 };
 
 Pruno.extend = function (task) {
-  var displayName = (task.displayName || task.name).toLowerCase();
+  var displayName = (task.displayName || task.name).toLowerCase().replace(/Task$/i, "");
+
   var taskName, instance;
 
   tasks[displayName] = function () {
@@ -90,12 +91,14 @@ Pruno.extend = function (task) {
 
     var defaults = typeof task.getDefaults === "function" ? task.getDefaults() : {};
 
-    var params = compileParams(taskName, defaults, params, settings);
-    params.taskName = taskName;
+    var baseSettings = settings[displayName] || {};
 
-    instance = new task(params);
+    var opts = compileParams(taskName, defaults, baseSettings, params, settings);
+    opts.taskName = taskName;
+
+    instance = new task(opts);
     if (instance.enqueue) {
-      queue[taskName] = { instance: instance, params: params };
+      queue[taskName] = { instance: instance, opts: opts };
     }
 
     return tasks;

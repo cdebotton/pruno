@@ -13,7 +13,7 @@ import koaServer from '../utils/koaServer';
 
 const plugins = loadPlugins();
 
-class JS {
+class JSTask {
   static getDefaults() {
     return {
       'entry': '::src/index.js',
@@ -103,4 +103,4 @@ function transform(bundler, params) {
   return bundler;
 }
 
-export default pruno.extend(JS);
+export default pruno.extend(JSTask);

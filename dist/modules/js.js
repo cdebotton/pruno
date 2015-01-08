@@ -30,11 +30,11 @@ var koaServer = _interopRequire(require("../utils/koaServer"));
 
 var plugins = loadPlugins();
 
-var JS = function JS(params) {
+var JSTask = function JSTask(params) {
   this.params = params;
 };
 
-JS.getDefaults = function () {
+JSTask.getDefaults = function () {
   return {
     entry: "::src/index.js",
     dist: "::dist/bundle.js",
@@ -45,7 +45,7 @@ JS.getDefaults = function () {
   };
 };
 
-JS.prototype.enqueue = function (gulp) {
+JSTask.prototype.enqueue = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
   var args = assign({}, watchify.args);
   args.entry = true;
@@ -56,7 +56,7 @@ JS.prototype.enqueue = function (gulp) {
   return bundle(gulp, bundler, params);
 };
 
-JS.prototype.generateWatcher = function (gulp) {
+JSTask.prototype.generateWatcher = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
   return function () {
     var args = assign({}, watchify.args);
@@ -103,4 +103,4 @@ function transform(bundler, params) {
   return bundler;
 }
 
-module.exports = pruno.extend(JS);
+module.exports = pruno.extend(JSTask);
