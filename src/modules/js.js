@@ -6,10 +6,10 @@ import browserify from 'browserify';
 import watchify from 'watchify';
 import envify from 'envify/custom';
 import to6ify from '6to5ify';
-import to5Runtime from './helpers/addTo5Runtime';
 import loadPlugins from 'gulp-load-plugins';
+import to5Runtime from '../utils/addTo5Runtime';
 import Notification from '../utils/notification';
-// import koaServer from './helpers/koa-server';
+import koaServer from '../utils/koaServer';
 
 
 const plugins = loadPlugins();
@@ -35,7 +35,7 @@ class JS {
     args.entry = true;
     args.fullPaths = false;
 
-    var bundler = browserify(params.entry, args);
+    var bundler = transform(browserify(params.entry, args), params);
 
     return bundle(gulp, bundler, params);
   }
@@ -47,7 +47,7 @@ class JS {
       args.fullPaths = true;
       args.debug = true;
 
-      var bundler = watchify(browserify(params.entry, args));
+      var bundler = transform(watchify(browserify(params.entry, args)), params);
       bundler.on('update', bundle.bind(bundle, gulp, bundler, params));
 
       return bundle(gulp, bundler, params);
@@ -89,5 +89,19 @@ var bundle = (gulp, bundler, params = {}) => {
     .pipe(gulp.dest(dist))
     .pipe(new Notification().message(`Task \`${params.taskName}\` completed!`));
 };
+
+function transform(bundler, params) {
+  if (params.runtime) {
+    bundler.transform(to5Runtime);
+  }
+
+  bundler.transform(envify({NODE_ENV: 'development'}));
+
+  if (params.es6 || params.harmony || params.react) {
+    bundler.transform(to6ify);
+  }
+
+  return bundler;
+}
 
 export default pruno.extend(JS);

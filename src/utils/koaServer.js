@@ -6,7 +6,7 @@ import child_process from 'child_process';
 import merge from 'deepmerge';
 import tinyLr from 'tiny-lr';
 
-const lr = tinyLr();
+var lr = tinyLr();
 
 export default (function() {
     var service = null,

@@ -21,13 +21,15 @@ var envify = _interopRequire(require("envify/custom"));
 
 var to6ify = _interopRequire(require("6to5ify"));
 
-var to5Runtime = _interopRequire(require("./helpers/addTo5Runtime"));
-
 var loadPlugins = _interopRequire(require("gulp-load-plugins"));
+
+var to5Runtime = _interopRequire(require("../utils/addTo5Runtime"));
 
 var Notification = _interopRequire(require("../utils/notification"));
 
-// import koaServer from './helpers/koa-server';
+var koaServer = _interopRequire(require("../utils/koaServer"));
+
+
 
 
 var plugins = loadPlugins();
@@ -53,7 +55,7 @@ JS.prototype.enqueue = function (gulp) {
   args.entry = true;
   args.fullPaths = false;
 
-  var bundler = browserify(params.entry, args);
+  var bundler = transform(browserify(params.entry, args), params);
 
   return bundle(gulp, bundler, params);
 };
@@ -66,7 +68,7 @@ JS.prototype.generateWatcher = function (gulp) {
     args.fullPaths = true;
     args.debug = true;
 
-    var bundler = watchify(browserify(params.entry, args));
+    var bundler = transform(watchify(browserify(params.entry, args)), params);
     bundler.on("update", bundle.bind(bundle, gulp, bundler, params));
 
     return bundle(gulp, bundler, params);
@@ -90,5 +92,19 @@ var bundle = function (gulp, bundler) {
 
   return bundler.bundle().on("error", onError).pipe(source(fileName)).pipe(buffer()).pipe(plugins["if"](params.uglify, plugins.uglify())).pipe(plugins["if"](params["source-maps"], plugins.sourcemaps.init({ loadMaps: true }))).pipe(plugins["if"](params["source-maps"], plugins.sourcemaps.write())).pipe(gulp.dest(dist)).pipe(new Notification().message("Task `" + params.taskName + "` completed!"));
 };
+
+function transform(bundler, params) {
+  if (params.runtime) {
+    bundler.transform(to5Runtime);
+  }
+
+  bundler.transform(envify({ NODE_ENV: "development" }));
+
+  if (params.es6 || params.harmony || params.react) {
+    bundler.transform(to6ify);
+  }
+
+  return bundler;
+}
 
 module.exports = pruno.extend(JS);
