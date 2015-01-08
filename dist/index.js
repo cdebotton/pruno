@@ -24,21 +24,17 @@ var path = _interopRequire(require("path"));
 
 var assign = _interopRequire(require("object-assign"));
 
+var runSequence = _interopRequire(require("run-sequence"));
+
 var callsite = _interopRequire(require("callsite"));
+
+var util = _interopRequire(require("gulp-util"));
 
 var requireDir = _interopRequire(require("require-dir"));
 
-var Config = _interopRequire(require("./config"));
-
 var tasks = {};
 var queue = {};
-var watchers = {};
-var settings = {
-  vars: {
-    src: "./src",
-    dist: "./dist"
-  }
-};
+var settings = { vars: { src: "./src", dist: "./dist" } };
 
 var Pruno = function Pruno(cb) {
   var gulp = Pruno.gulp;
@@ -53,15 +49,30 @@ var Pruno = function Pruno(cb) {
 
   cb(tasks);
 
+  var defaults = [];
+  var watchers = [];
+
   Object.keys(queue).forEach(function (taskName) {
     var task = queue[taskName].instance;
 
-    if (task.enqueue) {
+    if (typeof task.enqueue === "function" && defaults.indexOf(taskName) === -1) {
       gulp.task(taskName, task.enqueue.bind(null, gulp, task.params));
+      defaults.push(taskName);
+    }
+
+    var watchName = "" + taskName + ":watch";
+    if (typeof task.watch === "function" && watchers.indexOf(watchName) === -1) {
+      gulp.task(watchName, function () {});
     }
   });
 
-  gulp.task("default", Object.keys(queue));
+  runSequence = runSequence.use(gulp);
+
+  gulp.task("default", function () {
+    util.log("Starting '" + util.colors.cyan("~PRUNO~") + "'... (" + util.colors.green(defaults.join(", ")) + ")");
+
+    runSequence(defaults);
+  });
 };
 
 Pruno.use = function (gulp) {
@@ -70,7 +81,6 @@ Pruno.use = function (gulp) {
 };
 
 Pruno.extend = function (task) {
-  var _this = this;
   var displayName = (task.displayName || task.name).toLowerCase();
   var taskName, instance;
 
@@ -81,22 +91,19 @@ Pruno.extend = function (task) {
       params = displayName;
       taskName = displayName;
     } else {
-      taskName = "" + displayName + ":" + name;
+      taskName = "" + displayName + "-" + name;
     }
 
     var defaults = task.getDefaults();
     var params = compileParams(taskName, defaults, params);
+
     instance = new task(params);
 
     if (instance.enqueue) {
       queue[taskName] = { instance: instance, params: params };
     }
 
-    if (instance.watch) {
-      watchers[taskName] = { instance: instance, params: params };
-    }
-
-    return _this;
+    return tasks;
   };
 };
 
@@ -123,6 +130,8 @@ var compileParams = function (taskName, defaults, opts) {
       delete taskSettings[methodName];
     }
   }
+  opts || (opts = {});
+  paramsList.push(opts);
 
   var vars = assign({}, settings.vars);
   var params = assign.apply(null, paramsList);

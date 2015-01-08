@@ -1,18 +1,13 @@
 import path from 'path';
 import assign from 'object-assign';
+import runSequence from 'run-sequence';
 import callsite from 'callsite';
+import util from 'gulp-util';
 import requireDir from 'require-dir';
-import Config from './config';
 
 var tasks = {};
 var queue = {};
-var watchers = {};
-var settings = {
-  vars: {
-    src: './src',
-    dist: './dist'
-  }
-};
+var settings = {vars: {src: './src', dist: './dist'}};
 
 export default class Pruno {
   constructor(cb) {
@@ -31,15 +26,38 @@ export default class Pruno {
 
     cb(tasks);
 
-    Object.keys(queue).forEach(function(taskName) {
+    var defaults = [];
+    var watchers = [];
+
+    Object.keys(queue).forEach((taskName) => {
       var task = queue[taskName].instance;
 
-      if (task.enqueue) {
+      if (typeof task.enqueue === 'function' && defaults.indexOf(taskName) === -1) {
         gulp.task(taskName, task.enqueue.bind(null, gulp, task.params));
+        defaults.push(taskName);
+      }
+
+      var watchName = `${taskName}:watch`;
+      if (typeof task.watch === 'function' && watchers.indexOf(watchName) === -1) {
+        gulp.task(watchName, () => {
+
+        });
       }
     });
 
-    gulp.task('default', Object.keys(queue));
+    runSequence = runSequence.use(gulp);
+
+    gulp.task('default', function() {
+      util.log(
+        'Starting \'' +
+        util.colors.cyan('~PRUNO~') +
+        '\'... (' +
+        util.colors.green(defaults.join(', ')) +
+        ')'
+      );
+
+      runSequence(defaults);
+    });
   }
 
   static use(gulp) {
@@ -57,22 +75,19 @@ export default class Pruno {
         taskName = displayName;
       }
       else {
-        taskName = `${displayName}:${name}`;
+        taskName = `${displayName}-${name}`;
       }
 
       var defaults = task.getDefaults();
       var params = compileParams(taskName, defaults, params);
+
       instance = new task(params);
 
       if (instance.enqueue) {
         queue[taskName] = {instance, params};
       }
 
-      if (instance.watch) {
-        watchers[taskName] = {instance, params};
-      }
-
-      return this;
+      return tasks;
     }
   }
 }
@@ -91,6 +106,8 @@ var compileParams = (taskName, defaults, opts) => {
       delete taskSettings[methodName];
     }
   }
+  opts || (opts = {});
+  paramsList.push(opts);
 
   var vars = assign({}, settings.vars);
   var params = assign.apply(null, paramsList);
