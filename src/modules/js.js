@@ -6,9 +6,9 @@ import browserify from 'browserify';
 import watchify from 'watchify';
 import envify from 'envify/custom';
 import to6ify from '6to5ify';
-// import to5Runtime from './helpers/addTo5Runtime';
+import to5Runtime from './helpers/addTo5Runtime';
 import loadPlugins from 'gulp-load-plugins';
-// import Notification from './helpers/Notification';
+import Notification from '../utils/notification';
 // import koaServer from './helpers/koa-server';
 
 
@@ -56,7 +56,8 @@ class JS {
 };
 
 var onError = (e) => {
-  console.error(e);
+  new Notification().error(e, 'Browserify Compilation Failed!');
+  this.emit('end');
 };
 
 var bundle = (gulp, bundler, params = {}) => {
@@ -64,26 +65,29 @@ var bundle = (gulp, bundler, params = {}) => {
   var fileName = path.pop();
   var dist = path.join('/');
 
+  new Notification().message(`Task \`${params.taskName}\` started!`)
+
   return bundler.bundle()
-  .on('error', onError)
-  .pipe(source(fileName))
-  .pipe(buffer())
-  .pipe(
-    plugins.if(
-      params.uglify, plugins.uglify()
+    .on('error', onError)
+    .pipe(source(fileName))
+    .pipe(buffer())
+    .pipe(
+      plugins.if(
+        params.uglify, plugins.uglify()
+      )
     )
-  )
-  .pipe(
-    plugins.if(
-      params['source-maps'], plugins.sourcemaps.init({loadMaps: true})
+    .pipe(
+      plugins.if(
+        params['source-maps'], plugins.sourcemaps.init({loadMaps: true})
+      )
     )
-  )
-  .pipe(
-    plugins.if(
-      params['source-maps'], plugins.sourcemaps.write()
+    .pipe(
+      plugins.if(
+        params['source-maps'], plugins.sourcemaps.write()
+      )
     )
-  )
-  .pipe(gulp.dest(dist))
+    .pipe(gulp.dest(dist))
+    .pipe(new Notification().message(`Task \`${params.taskName}\` completed!`));
 };
 
 export default pruno.extend(JS);

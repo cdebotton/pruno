@@ -90,6 +90,7 @@ Pruno.extend = function (task) {
 
     var defaults = task.getDefaults();
     var params = compileParams(taskName, defaults, params, settings);
+    params.taskName = taskName;
 
     instance = new task(params);
 

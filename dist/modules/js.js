@@ -1,5 +1,6 @@
 "use strict";
 
+var _this = this;
 var _interopRequire = function (obj) {
   return obj && (obj["default"] || obj);
 };
@@ -20,10 +21,12 @@ var envify = _interopRequire(require("envify/custom"));
 
 var to6ify = _interopRequire(require("6to5ify"));
 
-// import to5Runtime from './helpers/addTo5Runtime';
+var to5Runtime = _interopRequire(require("./helpers/addTo5Runtime"));
+
 var loadPlugins = _interopRequire(require("gulp-load-plugins"));
 
-// import Notification from './helpers/Notification';
+var Notification = _interopRequire(require("../utils/notification"));
+
 // import koaServer from './helpers/koa-server';
 
 
@@ -73,7 +76,8 @@ JS.prototype.generateWatcher = function (gulp) {
 ;
 
 var onError = function (e) {
-  console.error(e);
+  new Notification().error(e, "Browserify Compilation Failed!");
+  _this.emit("end");
 };
 
 var bundle = function (gulp, bundler) {
@@ -82,7 +86,9 @@ var bundle = function (gulp, bundler) {
   var fileName = path.pop();
   var dist = path.join("/");
 
-  return bundler.bundle().on("error", onError).pipe(source(fileName)).pipe(buffer()).pipe(plugins["if"](params.uglify, plugins.uglify())).pipe(plugins["if"](params["source-maps"], plugins.sourcemaps.init({ loadMaps: true }))).pipe(plugins["if"](params["source-maps"], plugins.sourcemaps.write())).pipe(gulp.dest(dist));
+  new Notification().message("Task `" + params.taskName + "` started!");
+
+  return bundler.bundle().on("error", onError).pipe(source(fileName)).pipe(buffer()).pipe(plugins["if"](params.uglify, plugins.uglify())).pipe(plugins["if"](params["source-maps"], plugins.sourcemaps.init({ loadMaps: true }))).pipe(plugins["if"](params["source-maps"], plugins.sourcemaps.write())).pipe(gulp.dest(dist)).pipe(new Notification().message("Task `" + params.taskName + "` completed!"));
 };
 
 module.exports = pruno.extend(JS);
