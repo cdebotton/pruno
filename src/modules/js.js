@@ -11,7 +11,6 @@ import to5Runtime from '../utils/addTo5Runtime';
 import Notification from '../utils/notification';
 import koaServer from '../utils/koaServer';
 
-
 const plugins = loadPlugins();
 
 class JS {
@@ -55,7 +54,7 @@ class JS {
   }
 };
 
-var onError = (e) => {
+var onError = function(e) {
   new Notification().error(e, 'Browserify Compilation Failed!');
   this.emit('end');
 };

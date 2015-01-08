@@ -1,6 +1,5 @@
 "use strict";
 
-var _this = this;
 var _interopRequire = function (obj) {
   return obj && (obj["default"] || obj);
 };
@@ -28,9 +27,6 @@ var to5Runtime = _interopRequire(require("../utils/addTo5Runtime"));
 var Notification = _interopRequire(require("../utils/notification"));
 
 var koaServer = _interopRequire(require("../utils/koaServer"));
-
-
-
 
 var plugins = loadPlugins();
 
@@ -79,7 +75,7 @@ JS.prototype.generateWatcher = function (gulp) {
 
 var onError = function (e) {
   new Notification().error(e, "Browserify Compilation Failed!");
-  _this.emit("end");
+  this.emit("end");
 };
 
 var bundle = function (gulp, bundler) {

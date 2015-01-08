@@ -6,8 +6,6 @@ var _interopRequire = function (obj) {
 
 var path = _interopRequire(require("path"));
 
-var assign = _interopRequire(require("object-assign"));
-
 var runSequence = _interopRequire(require("run-sequence"));
 
 var callsite = _interopRequire(require("callsite"));
@@ -17,6 +15,8 @@ var util = _interopRequire(require("gulp-util"));
 var requireDir = _interopRequire(require("require-dir"));
 
 var compileParams = _interopRequire(require("./utils/compileParams"));
+
+var merge = _interopRequire(require("deepmerge"));
 
 var tasks = {};
 var queue = {};
@@ -82,24 +82,28 @@ Pruno.extend = function (task) {
     var name = arguments[0] === undefined ? null : arguments[0];
     var params = arguments[1] === undefined ? {} : arguments[1];
     if (typeof name === "object") {
-      params = displayName;
+      params = name;
       taskName = displayName;
     } else {
       taskName = "" + displayName + "-" + name;
     }
 
-    var defaults = task.getDefaults();
+    var defaults = typeof task.getDefaults === "function" ? task.getDefaults() : {};
+
     var params = compileParams(taskName, defaults, params, settings);
     params.taskName = taskName;
 
     instance = new task(params);
-
     if (instance.enqueue) {
       queue[taskName] = { instance: instance, params: params };
     }
 
     return tasks;
   };
+};
+
+Pruno.setDefaults = function (opts) {
+  settings = merge(settings, opts);
 };
 
 module.exports = Pruno;

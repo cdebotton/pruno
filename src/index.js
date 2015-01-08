@@ -1,10 +1,10 @@
 import path from 'path';
-import assign from 'object-assign';
 import runSequence from 'run-sequence';
 import callsite from 'callsite';
 import util from 'gulp-util';
 import requireDir from 'require-dir';
 import compileParams from './utils/compileParams';
+import merge from 'deepmerge';
 
 var tasks = {};
 var queue = {};
@@ -78,24 +78,29 @@ export default class Pruno {
 
     tasks[displayName] = (name = null, params = {}) => {
       if (typeof name === 'object') {
-        params = displayName;
+        params = name;
         taskName = displayName;
       }
       else {
         taskName = `${displayName}-${name}`;
       }
 
-      var defaults = task.getDefaults();
+      var defaults = typeof task.getDefaults === 'function' ?
+        task.getDefaults() : {};
+
       var params = compileParams(taskName, defaults, params, settings);
       params.taskName = taskName;
 
       instance = new task(params);
-
       if (instance.enqueue) {
         queue[taskName] = {instance, params};
       }
 
       return tasks;
     }
+  }
+
+  static setDefaults(opts) {
+    settings = merge(settings, opts);
   }
 }
