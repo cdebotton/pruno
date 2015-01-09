@@ -47,9 +47,10 @@ JSTask.getDefaults = function () {
 
 JSTask.prototype.enqueue = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
-  var args = assign({}, watchify.args);
-  args.entry = true;
-  args.fullPaths = false;
+  var args = assign({}, watchify.args, {
+    entry: true,
+    fullPaths: false
+  });
 
   var bundler = transform(browserify(params.entry, args), params);
 
@@ -59,10 +60,11 @@ JSTask.prototype.enqueue = function (gulp) {
 JSTask.prototype.generateWatcher = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
   return function () {
-    var args = assign({}, watchify.args);
-    args.entry = true;
-    args.fullPaths = true;
-    args.debug = true;
+    var args = assign({}, watchify.args, {
+      entry: true,
+      fullPaths: true,
+      debug: true
+    });
 
     var bundler = transform(watchify(browserify(params.entry, args)), params);
     bundler.on("update", bundle.bind(bundle, gulp, bundler, params));
