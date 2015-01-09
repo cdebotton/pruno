@@ -84,6 +84,22 @@ function compileParams(taskName, defaults, baseSettings, params, settings) {
           return compile(arr, i);
         }, obj[param]);
         break;
+      case "object":
+        obj[param] = Object.keys(val).reduce(function () {
+          var objArgs = [];
+
+          for (var _key3 = 0; _key3 < arguments.length; _key3++) {
+            objArgs[_key3] = arguments[_key3];
+          }
+
+          var _ObjArgs = _slicedToArray(ObjArgs, 3);
+
+          var memo = _ObjArgs[0];
+          var p = _ObjArgs[1];
+          var i = _ObjArgs[2];
+          return compile(memo, i);
+        }, {});
+        break;
     }
 
     return obj;

@@ -97,7 +97,7 @@ StylusTask.prototype.enqueue = function (gulp) {
 };
 
 StylusTask.prototype.generateWatcher = function (gulp, params) {
-  return Array.isArray(params.search) ? params.search : [params.search];
+  return true;
 };
 
 module.exports = pruno.extend(StylusTask);

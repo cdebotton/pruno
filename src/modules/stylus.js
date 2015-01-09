@@ -82,7 +82,7 @@ class StylusTask {
   }
 
   generateWatcher(gulp, params) {
-    return Array.isArray(params.search) ? params.search : [params.search];
+    return true;
   }
 }
 

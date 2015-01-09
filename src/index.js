@@ -28,11 +28,11 @@ export default class Pruno {
     cb(tasks);
 
     var defaults = [];
+    var gulpWatchers = [];
     var watchers = [];
 
     Object.keys(queue).forEach((taskName) => {
       var task = queue[taskName].instance;
-
       if (typeof task.enqueue === 'function' && defaults.indexOf(taskName) === -1) {
         gulp.task(taskName, task.enqueue.bind(null, gulp, task.params));
         defaults.push(taskName);
@@ -41,9 +41,14 @@ export default class Pruno {
       var watchName = `${taskName}:watch`;
       var watcher = task.generateWatcher ? task.generateWatcher(gulp, task.params) : false;
       if (watchers.indexOf(watchName) === -1) {
-        watchers.push(watchName);
         if (typeof watcher === 'function') {
           gulp.task(watchName, watcher);
+          watchers.push(watchName);
+        }
+        else if (watcher === true) {
+          var {search} = task.params;
+          gulp.task(watchName, task.enqueue.bind(null, gulp, task.params));
+          gulpWatchers.push({search, watchName});
         }
       }
     });
@@ -63,7 +68,13 @@ export default class Pruno {
     });
 
     if (watchers.length > 0) {
-      gulp.task('watch', watchers);
+      gulp.task('watch', function() {
+        runSequence(watchers);
+        gulpWatchers.forEach(watcher => {
+          runSequence(watcher.watchName);
+          gulp.watch(watcher.search, [watcher.watchName]);
+        });
+      });
     }
   }
 
@@ -104,7 +115,7 @@ export default class Pruno {
     }
   }
 
-  static setDefaults(opts) {
+  static setDefaults(opts = {}) {
     settings = merge(settings, opts);
   }
 }

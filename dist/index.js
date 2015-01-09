@@ -36,11 +36,11 @@ var Pruno = function Pruno(cb) {
   cb(tasks);
 
   var defaults = [];
+  var gulpWatchers = [];
   var watchers = [];
 
   Object.keys(queue).forEach(function (taskName) {
     var task = queue[taskName].instance;
-
     if (typeof task.enqueue === "function" && defaults.indexOf(taskName) === -1) {
       gulp.task(taskName, task.enqueue.bind(null, gulp, task.params));
       defaults.push(taskName);
@@ -49,9 +49,13 @@ var Pruno = function Pruno(cb) {
     var watchName = "" + taskName + ":watch";
     var watcher = task.generateWatcher ? task.generateWatcher(gulp, task.params) : false;
     if (watchers.indexOf(watchName) === -1) {
-      watchers.push(watchName);
       if (typeof watcher === "function") {
         gulp.task(watchName, watcher);
+        watchers.push(watchName);
+      } else if (watcher === true) {
+        var search = task.params.search;
+        gulp.task(watchName, task.enqueue.bind(null, gulp, task.params));
+        gulpWatchers.push({ search: search, watchName: watchName });
       }
     }
   });
@@ -65,7 +69,13 @@ var Pruno = function Pruno(cb) {
   });
 
   if (watchers.length > 0) {
-    gulp.task("watch", watchers);
+    gulp.task("watch", function () {
+      runSequence(watchers);
+      gulpWatchers.forEach(function (watcher) {
+        runSequence(watcher.watchName);
+        gulp.watch(watcher.search, [watcher.watchName]);
+      });
+    });
   }
 };
 
@@ -105,7 +115,8 @@ Pruno.extend = function (task) {
   };
 };
 
-Pruno.setDefaults = function (opts) {
+Pruno.setDefaults = function () {
+  var opts = arguments[0] === undefined ? {} : arguments[0];
   settings = merge(settings, opts);
 };
 

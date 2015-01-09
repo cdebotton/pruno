@@ -13,7 +13,6 @@ class DelTask {
   enqueue(gulp, params) {
     del(params.dirs);
   }
-
 }
 
 export default pruno.extend(DelTask);
