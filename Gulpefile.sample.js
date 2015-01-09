@@ -6,11 +6,8 @@ var pruno = require('pruno')
 pruno(function(mix) {
   mix
     .configure('./config')
-    .del(['::output'])
-    .js({
-      es6: true,
-      runtime: true
-    })
+    .del({ dirs: ['::output'] })
+    .js({ es6: true, runtime: true })
     .stylus('client', {
       entry: '::src/stylus/index.styl',
       dist: '::dist/public/styles/client.css'
