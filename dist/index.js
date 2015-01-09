@@ -107,9 +107,7 @@ Pruno.extend = function (task) {
     opts.taskName = taskName;
 
     instance = new task(opts);
-    if (instance.enqueue) {
-      queue[taskName] = { instance: instance, opts: opts };
-    }
+    queue[taskName] = { instance: instance, opts: opts };
 
     return tasks;
   };

@@ -107,9 +107,7 @@ export default class Pruno {
       opts.taskName = taskName;
 
       instance = new task(opts);
-      if (instance.enqueue) {
-        queue[taskName] = {instance, opts};
-      }
+      queue[taskName] = {instance, opts};
 
       return tasks;
     }
