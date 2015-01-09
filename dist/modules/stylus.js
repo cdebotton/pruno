@@ -26,11 +26,15 @@ var path = _interopRequire(require("path"));
 
 var Notification = _interopRequire(require("../utils/notification"));
 
-var streamqueue = _interopRequire(require("streamqueue"));
-
 var getType = _interopRequire(require("../utils/getType"));
 
+var pkg = _interopRequire(require("../utils/pkg"));
+
 var loadPlugins = _interopRequire(require("gulp-load-plugins"));
+
+var streamqueue = _interopRequire(require("streamqueue"));
+
+var fs = _interopRequire(require("fs"));
 
 var plugins = loadPlugins();
 
@@ -81,14 +85,11 @@ StylusTask.prototype.enqueue = function (gulp) {
 
   stream.pipe(plugins["if"](params["source-maps"], plugins.sourcemaps.init({ loadMaps: true })));
 
-  var basedir = path.dirname(require.resolve("../../"));
-
   if (params.normalize) {
-    stream.queue(gulp.src(path.join(basedir, "node_modules/normalize.css/normalize.css")));
+    stream.queue(gulp.src(pkg("normalize.css", "normalize.css")));
   }
-
   if (params["font-awesome"]) {
-    stream.queue(gulp.src(path.join(basedir, "node_modules/font-awesome/css/font-awesome.css")));
+    stream.queue(gulp.src(pkg("font-awesome", "css/font-awesome.css")));
   }
 
   stream.queue(gulp.src(params.entry).pipe(plugins.stylus(opts)));

@@ -1,9 +1,11 @@
 import pruno from '..';
 import path from 'path';
 import Notification from '../utils/notification';
-import streamqueue from 'streamqueue';
 import getType from '../utils/getType';
+import pkg from '../utils/pkg';
 import loadPlugins from 'gulp-load-plugins';
+import streamqueue from 'streamqueue';
+import fs from 'fs';
 
 var plugins = loadPlugins();
 
@@ -52,20 +54,15 @@ class StylusTask {
       )
     );
 
-    var basedir = path.dirname(require.resolve('../../'));
-
     if (params.normalize) {
-      stream.queue(gulp.src(path.join(
-        basedir,
-        'node_modules/normalize.css/normalize.css'
-      )));
+      stream.queue(
+        gulp.src(pkg('normalize.css', 'normalize.css'))
+      );
     }
-
     if (params['font-awesome']) {
-      stream.queue(gulp.src(path.join(
-        basedir,
-        'node_modules/font-awesome/css/font-awesome.css'
-      )));
+      stream.queue(
+        gulp.src(pkg('font-awesome', 'css/font-awesome.css'))
+      );
     }
 
     stream.queue(
