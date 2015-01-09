@@ -15,8 +15,8 @@ var PublishTask = function PublishTask(params) {
 PublishTask.getDefaults = function () {
   return {
     pkg: false,
-    src: null,
-    target: null
+    src: ["!::src/assets/images/**/*", "::src/assets/**/*"],
+    dist: "::dist"
   };
 };
 

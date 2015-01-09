@@ -7,8 +7,11 @@ class PublishTask {
   static getDefaults() {
     return {
       pkg: false,
-      src: null,
-      target: null
+      src: [
+        '!::src/assets/images/**/*',
+        '::src/assets/**/*'
+      ],
+      dist: '::dist'
     };
   }
 
