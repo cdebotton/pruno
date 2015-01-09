@@ -4,10 +4,6 @@ var _interopRequire = function (obj) {
   return obj && (obj["default"] || obj);
 };
 
-var child_process = require("child_process"),
-    merge = require("deepmerge"),
-    lr = require("tiny-lr")();
-
 var child_process = _interopRequire(require("child_process"));
 
 var merge = _interopRequire(require("deepmerge"));
