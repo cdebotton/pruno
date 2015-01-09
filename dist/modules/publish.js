@@ -6,7 +6,13 @@ var _interopRequire = function (obj) {
 
 var pruno = _interopRequire(require(".."));
 
+var loadPlugins = _interopRequire(require("gulp-load-plugins"));
+
+var pngcrush = _interopRequire(require("imagemin-pngcrush"));
+
 var pkg = _interopRequire(require("../utils/pkg"));
+
+var plugins = loadPlugins();
 
 var PublishTask = function PublishTask(params) {
   this.params = params;
@@ -15,7 +21,8 @@ var PublishTask = function PublishTask(params) {
 PublishTask.getDefaults = function () {
   return {
     pkg: false,
-    src: ["!::src/assets/images/**/*", "::src/assets/**/*"],
+    "image-min": true,
+    src: ["::src/assets/**/*"],
     dist: "::dist"
   };
 };
@@ -29,7 +36,11 @@ PublishTask.prototype.enqueue = function (gulp) {
     });
   }
 
-  gulp.src(sources).pipe(gulp.dest(params.dist));
+  gulp.src(sources).pipe(plugins["if"](params["image-min"], plugins.imagemin({
+    progressive: true,
+    svgoPlugins: [{ removeViewbox: false }],
+    use: [pngcrush()]
+  }))).pipe(gulp.dest(params.dist));
 };
 
 PublishTask.prototype.generateWatcher = function (gulp) {

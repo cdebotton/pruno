@@ -1,14 +1,18 @@
 'use strict';
 
 import pruno from '..';
+import loadPlugins from 'gulp-load-plugins';
+import pngcrush from 'imagemin-pngcrush';
 import pkg from '../utils/pkg';
+
+var plugins = loadPlugins();
 
 class PublishTask {
   static getDefaults() {
     return {
       pkg: false,
+      'image-min': true,
       src: [
-        '!::src/assets/images/**/*',
         '::src/assets/**/*'
       ],
       dist: '::dist'
@@ -26,6 +30,16 @@ class PublishTask {
     }
 
     gulp.src(sources)
+      .pipe(
+        plugins.if(
+          params['image-min'],
+          plugins.imagemin({
+            progressive: true,
+            svgoPlugins: [{removeViewbox: false}],
+            use: [pngcrush()]
+          })
+        )
+      )
       .pipe(gulp.dest(params.dist));
   }
 
