@@ -1,7 +1,3 @@
-var child_process = require('child_process'),
-    merge = require('deepmerge'),
-    lr = require('tiny-lr')();
-
 import child_process from 'child_process';
 import merge from 'deepmerge';
 import tinyLr from 'tiny-lr';
