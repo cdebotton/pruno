@@ -67,9 +67,12 @@ export default class Pruno {
       runSequence(defaults);
     });
 
-    if (watchers.length > 0) {
+    if (watchers.length + gulpWatchers.length > 0) {
       gulp.task('watch', function() {
-        runSequence(watchers);
+        if (watchers.length > 0) {
+          runSequence(watchers);
+        }
+
         gulpWatchers.forEach(watcher => {
           runSequence(watcher.watchName);
           gulp.watch(watcher.search, [watcher.watchName]);
