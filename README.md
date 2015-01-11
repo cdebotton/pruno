@@ -22,8 +22,8 @@ default configuration options to let you get started quickly.
  * will take advantage of the pruno defined tasks.
  */
 
-var gulp = require('gulp');
-var pruno = require('pruno').use(gulp);
+var pruno = require('pruno')
+       .use(require('gulp'));
 
 pruno(function(mix) {
   mix
@@ -90,8 +90,8 @@ Lastly you can use inline configuration in your  Gulpfile to override your
 env-configuration as well as the Pruno defaults. In our Gulpfile, let's do this:
 
 ```js
-var gulp = require('gulp');
-var pruno = require('pruno').use(gulp);
+var pruno = require('pruno')
+       .use(require('gulp'));
 
 pruno(function(mix) {
   mix.configure('./config')
@@ -127,18 +127,76 @@ pruno(function(mix) {
 ### Writing custom modules
 Writing custom modules is easy, just follow the boilerplate:
 ```js
+// ES6
+import pruno from 'puno';
+
+class MyCustomTask {
+  // Declare the default parameters for the module.
+  static getDefaults() {
+    return {moduleA: true, moduleB: false, search: ['./app/**/*.coffee']};
+  }
+
+  // Do initialization in the constructor.
+  constructor(params = {}) {
+    this.params = {};
+  }
+
+  // Action taken when running task a single time.
+  // gulp is the reference to the project's gulp instance,
+  // and params are the compiled cascaded configuration.
+  enqueue(gulp, params = {}) {
+    return gulp.src(params.entry)
+      .pipe(someGulpPlugin())
+      .pipe(gulp.dist(params.dist));
+  }
+
+  generateWatcher(gulp, params) {
+    return () => {
+      // Watch action
+    }
+  }
+}
+```
+
+```js
 var pruno = require('pruno');
-var config = pruno.config;
-var gulp = config.gulp;
 
-pruno.extend('mytask', function(src, output, params) {
-    gulp.task('mytask', function() {
-      // Do some stuff
-    });
+// ES5
+function MyCustomTask(params) {
+  this.params = params;
+}
 
-    config.registerWatcher('mytask', './path/to/files/**/*.ext');
-    return config.queueTask('mytask');
-});
+MyCustomTask.getDefaults = function() {
+  return {moduleA: true, moduleB: false, search: ['./app/**/*.coffee']};
+};
+
+MyCustomTask.prototype.enqueue = function(gulp, params) {
+  return gulp.src(params.entry)
+    .pipe(someGulpPlugin())
+    .pipe(gulp.dist(params.dist));
+};
+
+MyCustomTask.prototype.generateWatcher = function(gulp, params) {
+  return function() {
+    // Do watching action.
+  };
+}
+```
+
+A note on watchers, if you want to simply run a simple gulp.watch on the
+files described in params.search, all you need to do is return true from
+generateWatcher(...).
+
+```js
+class MyTask {
+  // ...
+
+  generateWatcher() {
+    return true;
+  }
+
+  // ...
+}
 ```
 
 ### Default configuration
