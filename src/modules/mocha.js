@@ -41,8 +41,6 @@ class MochaTask {
       }, {});
     }
 
-    console.log(opts.globals);
-
     gulp.src(params.search, {read: false})
       .pipe(plugins.mocha(opts))
       .pipe(new Notification().message('Mocha run!'));
