@@ -18,31 +18,34 @@ export default function compileParams(taskName, defaults, baseSettings, params, 
   var vars = assign({}, settings.vars);
   var params = assign.apply(null, paramsList);
 
-  return Object.keys(params).reduce(function compile(...args) {
-    var [obj, param, key, arr] = args;
-    var val = obj[param];
-    var type = getType(val);
+  return Object.keys(params).reduce(compile.bind(null, vars), params);
+};
 
-    switch (type) {
-      case 'string':
-        obj[param] = val.replace(/(\:\:([A-z0-9\s_-]+))/g, (str, p1, p2) => {
-          return vars[p2] || '';
-        });
-        break;
-      case 'array':
-        obj[param] = val.reduce(function(...arrArgs) {
-          var [arr, p, i] = arrArgs;
-          return compile(arr, i);
-        }, obj[param]);
-        break;
-      case 'object':
-        obj[param] = Object.keys(val).reduce(function(...objArgs) {
-          var [memo, p, i] = objArgs;
-          return compile(memo, i);
-        }, {});
-        break;
-    }
+var compile = (...args) => {
+  var [vars, obj, param] = args;
+  var val = obj[param];
+  var type = getType(val);
 
-    return obj;
-  }, params);
-}
+  switch (type) {
+    case 'string':
+      obj[param] = val.replace(/(\:\:([A-z0-9\s_-]+))/g, (...matches) => {
+        return vars[matches[2]] || '';
+      });
+      break;
+    case 'array':
+      obj[param] = val.reduce(inspectProperty(vars), val);
+      break;
+    case 'object':
+      obj[param] = Object.keys(val).reduce(inspectProperty(vars), val);
+      break;
+  }
+
+  return obj;
+};
+
+var inspectProperty = (vars) => {
+  return (...args) => {
+    var [memo, p, i] = args;
+    return compile(vars, memo, i);
+  }
+};

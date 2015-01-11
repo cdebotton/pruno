@@ -46,62 +46,60 @@ function compileParams(taskName, defaults, baseSettings, params, settings) {
   var vars = assign({}, settings.vars);
   var params = assign.apply(null, paramsList);
 
-  return Object.keys(params).reduce(function compile() {
+  return Object.keys(params).reduce(compile.bind(null, vars), params);
+}
+
+var compile = function () {
+  var args = [];
+
+  for (var _key = 0; _key < arguments.length; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  var _args = _slicedToArray(args, 3);
+
+  var vars = _args[0];
+  var obj = _args[1];
+  var param = _args[2];
+  var val = obj[param];
+  var type = getType(val);
+
+  switch (type) {
+    case "string":
+      obj[param] = val.replace(/(\:\:([A-z0-9\s_-]+))/g, function () {
+        var matches = [];
+
+        for (var _key2 = 0; _key2 < arguments.length; _key2++) {
+          matches[_key2] = arguments[_key2];
+        }
+
+        return vars[matches[2]] || "";
+      });
+      break;
+    case "array":
+      obj[param] = val.reduce(inspectProperty(vars), val);
+      break;
+    case "object":
+      obj[param] = Object.keys(val).reduce(inspectProperty(vars), val);
+      break;
+  }
+
+  return obj;
+};
+
+var inspectProperty = function (vars) {
+  return function () {
     var args = [];
 
-    for (var _key = 0; _key < arguments.length; _key++) {
-      args[_key] = arguments[_key];
+    for (var _key3 = 0; _key3 < arguments.length; _key3++) {
+      args[_key3] = arguments[_key3];
     }
 
-    var _args = _slicedToArray(args, 4);
+    var _args2 = _slicedToArray(args, 3);
 
-    var obj = _args[0];
-    var param = _args[1];
-    var key = _args[2];
-    var arr = _args[3];
-    var val = obj[param];
-    var type = getType(val);
-
-    switch (type) {
-      case "string":
-        obj[param] = val.replace(/(\:\:([A-z0-9\s_-]+))/g, function (str, p1, p2) {
-          return vars[p2] || "";
-        });
-        break;
-      case "array":
-        obj[param] = val.reduce(function () {
-          var arrArgs = [];
-
-          for (var _key2 = 0; _key2 < arguments.length; _key2++) {
-            arrArgs[_key2] = arguments[_key2];
-          }
-
-          var _arrArgs = _slicedToArray(arrArgs, 3);
-
-          var arr = _arrArgs[0];
-          var p = _arrArgs[1];
-          var i = _arrArgs[2];
-          return compile(arr, i);
-        }, obj[param]);
-        break;
-      case "object":
-        obj[param] = Object.keys(val).reduce(function () {
-          var objArgs = [];
-
-          for (var _key3 = 0; _key3 < arguments.length; _key3++) {
-            objArgs[_key3] = arguments[_key3];
-          }
-
-          var _objArgs = _slicedToArray(objArgs, 3);
-
-          var memo = _objArgs[0];
-          var p = _objArgs[1];
-          var i = _objArgs[2];
-          return compile(memo, i);
-        }, {});
-        break;
-    }
-
-    return obj;
-  }, params);
-}
+    var memo = _args2[0];
+    var p = _args2[1];
+    var i = _args2[2];
+    return compile(vars, memo, i);
+  };
+};

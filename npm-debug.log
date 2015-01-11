@@ -1,0 +1,152 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.35
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /Users/cdebotton/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/Users/cdebotton/.npm/pruno/1.6.1/package.tgz', '.' ]
+11 verbose tarball /Users/cdebotton/.npm/pruno/1.6.1/package.tgz
+12 verbose folder .
+13 info prepublish pruno@1.6.1
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /Users/cdebotton/.npm/1f1177db-tar.lock
+16 silly lockFile e56fddd2-tton-npm-pruno-1-6-1-package-tgz tar:///Users/cdebotton/.npm/pruno/1.6.1/package.tgz
+17 verbose lock tar:///Users/cdebotton/.npm/pruno/1.6.1/package.tgz /Users/cdebotton/.npm/e56fddd2-tton-npm-pruno-1-6-1-package-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile e56fddd2-tton-npm-pruno-1-6-1-package-tgz tar:///Users/cdebotton/.npm/pruno/1.6.1/package.tgz
+21 silly lockFile e56fddd2-tton-npm-pruno-1-6-1-package-tgz tar:///Users/cdebotton/.npm/pruno/1.6.1/package.tgz
+22 silly lockFile 72ad340a-debotton-npm-pruno-1-6-1-package /Users/cdebotton/.npm/pruno/1.6.1/package
+23 verbose lock /Users/cdebotton/.npm/pruno/1.6.1/package /Users/cdebotton/.npm/72ad340a-debotton-npm-pruno-1-6-1-package.lock
+24 silly lockFile 72ad340a-debotton-npm-pruno-1-6-1-package /Users/cdebotton/.npm/pruno/1.6.1/package
+25 silly lockFile 72ad340a-debotton-npm-pruno-1-6-1-package /Users/cdebotton/.npm/pruno/1.6.1/package
+26 silly lockFile 3a52ce78- .
+27 silly lockFile 3a52ce78- .
+28 silly publish { name: 'pruno',
+28 silly publish   version: '1.6.1',
+28 silly publish   description: 'A gulp task manager with cascading configuration.',
+28 silly publish   main: 'dist/index.js',
+28 silly publish   scripts: { test: 'jest' },
+28 silly publish   repository: { type: 'git', url: 'git@github.com:cdebotton/pruno.git' },
+28 silly publish   keywords: [ 'gulp', 'tasks' ],
+28 silly publish   author:
+28 silly publish    { name: 'Christian de Botton',
+28 silly publish      email: 'debotton@brooklynunited.com' },
+28 silly publish   license: 'ISC',
+28 silly publish   bugs: { url: 'https://github.com/cdebotton/pruno/issues' },
+28 silly publish   homepage: 'https://github.com/cdebotton/pruno',
+28 silly publish   devDependencies:
+28 silly publish    { gulp: '^3.8.10',
+28 silly publish      'gulp-6to5': '^2.0.0',
+28 silly publish      'gulp-plumber': '^0.6.6',
+28 silly publish      should: '^4.4.4' },
+28 silly publish   dependencies:
+28 silly publish    { '6to5ify': '^3.0.0',
+28 silly publish      browserify: '^8.0.2',
+28 silly publish      callsite: '^1.0.0',
+28 silly publish      'coffee-script': '^1.8.0',
+28 silly publish      deepmerge: '^0.2.7',
+28 silly publish      del: '^1.1.1',
+28 silly publish      envify: '^3.2.0',
+28 silly publish      'font-awesome': '^4.2.0',
+28 silly publish      'gulp-cached': '^1.0.1',
+28 silly publish      'gulp-concat': '^2.4.3',
+28 silly publish      'gulp-debug': '^2.0.0',
+28 silly publish      'gulp-if': '^1.2.5',
+28 silly publish      'gulp-imagemin': '^2.0.0',
+28 silly publish      'gulp-less': '^2.0.1',
+28 silly publish      'gulp-load-plugins': '^0.8.0',
+28 silly publish      'gulp-minify-css': '^0.3.11',
+28 silly publish      'gulp-mocha': '^2.0.0',
+28 silly publish      'gulp-notify': '^2.1.0',
+28 silly publish      'gulp-plumber': '^0.6.6',
+28 silly publish      'gulp-rename': '^1.2.0',
+28 silly publish      'gulp-sass': '^1.2.4',
+28 silly publish      'gulp-sourcemaps': '^1.3.0',
+28 silly publish      'gulp-stylus': '^1.3.4',
+28 silly publish      'gulp-uglify': '^1.0.2',
+28 silly publish      'gulp-util': '^3.0.1',
+28 silly publish      'imagemin-pngcrush': '^4.0.0',
+28 silly publish      jeet: '^6.1.2',
+28 silly publish      lodash: '^2.4.1',
+28 silly publish      nib: '^1.0.4',
+28 silly publish      'normalize.css': '^3.0.2',
+28 silly publish      'object-assign': '^2.0.0',
+28 silly publish      regenerator: '^0.8.2',
+28 silly publish      'require-dir': '^0.1.0',
+28 silly publish      'run-sequence': '^1.0.2',
+28 silly publish      rupture: '^0.6.1',
+28 silly publish      streamqueue: '^0.1.1',
+28 silly publish      through: '^2.3.6',
+28 silly publish      'tiny-lr': '^0.1.4',
+28 silly publish      'vinyl-buffer': '^1.0.0',
+28 silly publish      'vinyl-source-stream': '^1.0.0',
+28 silly publish      watchify: '^2.2.1',
+28 silly publish      'yaml-env-config': '^1.1.0' },
+28 silly publish   readme: '# pruno\nA gulp task manager with cascading configuration. Pruno was inspired by Laravel Elixer and adds several features like a simplified task syntax and cascading configuration.\n\n## Installation\nSimply run `npm install -D pruno gulp` in your terminal.\n\n## Use\n\n### Supported commands\nWith pruno, you can run `gulp`, `gulp watch`, `gulp --production` or\n`NODE_ENV={yourEnv} gulp (watch?)`. Gulp will run using the configuration\nthat matches your environment.\n\n### Simple Configuration\nUsing pruno is as simple as telling it which tasks to run. It assumes a set of\ndefault configuration options to let you get started quickly.\n```js\n\'use strict\';\n\n/**\n * You must pass an instance of the projects local gulp so that the gulp cli\n * will take advantage of the pruno defined tasks.\n */\n\nvar gulp = require(\'gulp\');\nvar pruno = require(\'pruno\').use(gulp);\n\npruno(function(mix) {\n  mix\n    .assets()\n    .publish()\n    .stylus()\n    .browserify()\n    .koa()\n    .livereload();\n});\n```\n\n### Yaml Configuration\n\nIf you want to change the global defaults used by Pruno, you can point\nit to a directory that holds the environment-based yaml configuration.\nPruno leverages [yaml-env-config](https://www.npmjs.com/package/yaml-env-config),\nso any configuration must be stored in a pruno.yaml file.\n\n```yaml\n# config/pruno.yaml\n\nbrowserify:\n  es6: true\n  runtime: true\n  entry: ./src/javascripts/entry.js\n  dist: ./dist/application.js\nstylus:\n  entry: ./src/styles/index.styl\n  dist: ./dist/app.css\n  normalize: true\n  font-awesome: true\n```\n\n```yaml\n# config/production/pruno.yaml\n\nbrowserify:\n  uglify: true\n  source-maps: false\n  dist: ./dist/application.min.js\nstylus:\n  source-maps: false\n  minify: true\n  dist: ./dist/app.min.css\n```\n\nTo use these commands, in our pruno run block, we would start the calls off\nwith the following:\n\n```js\npruno(function(mix) {\n    mix.configure(\'./config\')\n      .assets()\n      // ...\n});\n```\n\nBy running any of the `gulp` commands, gulp will compile your code based on\nthe parameters set in those config files.\n\n### Inline Configuration\nLastly you can use inline configuration in your  Gulpfile to override your\nenv-configuration as well as the Pruno defaults. In our Gulpfile, let\'s do this:\n\n```js\nvar gulp = require(\'gulp\');\nvar pruno = require(\'pruno\').use(gulp);\n\npruno(function(mix) {\n  mix.configure(\'./config\')\n  .stylus({\n    entry: \'./app/styles/client.styl\',\n    dist: \'./public/stylesheets/client.css\'\n  })\n  .stylus({\n    entry: \'./app/styles/admin.styl\',\n    dist: \'./pubic/stylesheets/admin.css\'\n  })\n  .browserify()\n  .publish({\n    sources: [\n      \'./node_modules/font-awesome/fonts/**/*\'\n    ],\n    dist: \'./public/fonts/\'\n  });\n});\n```\n\n## Module support\n1. Stylus\n2. SASS\n3. LESS\n4. React (through browserify)\n5. 6to5 (es6 support through browserify)\n6. imagemin\n7. livereload\n8. koa\n\n### Writing custom modules\nWriting custom modules is easy, just follow the boilerplate:\n```js\nvar pruno = require(\'pruno\');\nvar config = pruno.config;\nvar gulp = config.gulp;\n\npruno.extend(\'mytask\', function(src, output, params) {\n    gulp.task(\'mytask\', function() {\n      // Do some stuff\n    });\n\n    config.registerWatcher(\'mytask\', \'./path/to/files/**/*.ext\');\n    return config.queueTask(\'mytask\');\n});\n```\n\n### Default configuration\n#### Development Environment\n\n```yaml\nassets:\n  sources:\n    - \'!./app/assets/images/**/*\',\n    - ./app/assets/**/*\n  dist: ./public/\n\nbrowserify:\n  entry: ./app/index.js\n  dist: ./public/bundle.js\n  uglify: false\n  source-maps: true\n  es6: false\n  runtime: false\n\ndel:\n  - ./public/\n\nimages:\n  src: ./app/assets/img/**/*\n  dist: ./public/img/\n  use:\n    - imagemin-pngcrush\n\nkoa:\n  env: development\n  server: ./server.js\n\npublish:\n  src: null\n  dist: null\n\nstylus:\n  entry: ./app/stylus/index.styl\n  dist: ./public/stylesheets/app.css\n  search: ./app/**/*.styl\n  minify: false\n  source-maps:true\n  font-awesome: false\n  normalize: false\n  use:\n    - nib\n    - jeet\n    - rupture\n```\n\n#### Config variables\nPruno supports configuration variable using the \'::var\' syntax. To declare\na variable, it must be declared in yaml at the top level of the pruno\nconfiguration object.\n\nBy default, two global config vars are set. `src: ./app` and `output: ./public`.\n\nTo use a variable, simply reference its variable name with a preceding \'::\'.\nFor example:\n\n```yaml\n# config/pruno\n\nsrc: ./src\noutput: ./dist\n\nstylus:\n  entry: ::src/stylesheets/index.styl\n  dist: ::output/scripts/bundle.js\n```\n',
+28 silly publish   readmeFilename: 'README.md',
+28 silly publish   gitHead: '631fa25c3803126be903391a94aa8dcdb02bc423',
+28 silly publish   _id: 'pruno@1.6.1',
+28 silly publish   _shasum: '96c0a1fd3377ae9bcc6facfabd95c2a41e066ad0',
+28 silly publish   _from: '.' }
+29 verbose request where is /pruno
+30 verbose request registry https://registry.npmjs.org/
+31 verbose request id 5785984ac5fa46b4
+32 verbose url raw /pruno
+33 verbose url resolving [ 'https://registry.npmjs.org/', './pruno' ]
+34 verbose url resolved https://registry.npmjs.org/pruno
+35 verbose request where is https://registry.npmjs.org/pruno
+36 info trying registry request attempt 1 at 23:53:07
+37 http PUT https://registry.npmjs.org/pruno
+38 http 403 https://registry.npmjs.org/pruno
+39 verbose headers { date: 'Sun, 11 Jan 2015 04:53:07 GMT',
+39 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+39 verbose headers   'content-type': 'application/json',
+39 verbose headers   'cache-control': 'max-age=60',
+39 verbose headers   'content-length': '10334',
+39 verbose headers   'accept-ranges': 'bytes',
+39 verbose headers   via: '1.1 varnish',
+39 verbose headers   'x-served-by': 'cache-iad2129-IAD',
+39 verbose headers   'x-cache': 'MISS',
+39 verbose headers   'x-cache-hits': '0',
+39 verbose headers   'x-timer': 'S1420951987.352898,VS0,VE396',
+39 verbose headers   'keep-alive': 'timeout=10, max=50',
+39 verbose headers   connection: 'Keep-Alive' }
+40 error publish Failed PUT 403
+41 error Error: forbidden cannot modify pre-existing version: 1.6.1
+41 error old={"name":"pruno","version":"1.6.1","description":"A gulp task manager with cascading configuration.","main":"dist/index.js","scripts":{"test":"jest"},"repository":{"type":"git","url":"git@github.com:cdebotton/pruno.git"},"keywords":["gulp","tasks"],"author":{"name":"Christian de Botton","email":"debotton@brooklynunited.com"},"license":"ISC","bugs":{"url":"https://github.com/cdebotton/pruno/issues"},"homepage":"https://github.com/cdebotton/pruno","devDependencies":{"gulp":"^3.8.10","gulp-6to5":"^2.0.0","gulp-plumber":"^0.6.6","should":"^4.4.4"},"dependencies":{"6to5ify":"^3.0.0","browserify":"^8.0.2","callsite":"^1.0.0","coffee-script":"^1.8.0","deepmerge":"^0.2.7","del":"^1.1.1","envify":"^3.2.0","font-awesome":"^4.2.0","gulp-cached":"^1.0.1","gulp-concat":"^2.4.3","gulp-debug":"^2.0.0","gulp-if":"^1.2.5","gulp-imagemin":"^2.0.0","gulp-less":"^2.0.1","gulp-load-plugins":"^0.8.0","gulp-minify-css":"^0.3.11","gulp-mocha":"^2.0.0","gulp-notify":"^2.1.0","gulp-plumber":"^0.6.6","gulp-rename":"^1.2.0","gulp-sass":"^1.2.4","gulp-sourcemaps":"^1.3.0","gulp-stylus":"^1.3.4","gulp-uglify":"^1.0.2","gulp-util":"^3.0.1","imagemin-pngcrush":"^4.0.0","jeet":"^6.1.2","lodash":"^2.4.1","nib":"^1.0.4","normalize.css":"^3.0.2","object-assign":"^2.0.0","regenerator":"^0.8.2","require-dir":"^0.1.0","run-sequence":"^1.0.2","rupture":"^0.6.1","streamqueue":"^0.1.1","through":"^2.3.6","tiny-lr":"^0.1.4","vinyl-buffer":"^1.0.0","vinyl-source-stream":"^1.0.0","watchify":"^2.2.1","yaml-env-config":"^1.1.0"},"gitHead":"631fa25c3803126be903391a94aa8dcdb02bc423","_id":"pruno@1.6.1","_shasum":"96c0a1fd3377ae9bcc6facfabd95c2a41e066ad0","_from":".","_npmVersion":"1.4.28","_npmUser":{"name":"cdebotton","email":"debotton@brooklynunited.com"},"maintainers":[{"name":"cdebotton","email":"debotton@brooklynunited.com"}],"dist":{"shasum":"96c0a1fd3377ae9bcc6facfabd95c2a41e066ad0","tarball":"http://registry.npmjs.org/pruno/-/pruno-1.6.1.tgz"}}
+41 error new={"name":"pruno","version":"1.6.1","description":"A gulp task manager with cascading configuration.","main":"dist/index.js","scripts":{"test":"jest"},"repository":{"type":"git","url":"git@github.com:cdebotton/pruno.git"},"keywords":["gulp","tasks"],"author":{"name":"Christian de Botton","email":"debotton@brooklynunited.com"},"license":"ISC","bugs":{"url":"https://github.com/cdebotton/pruno/issues"},"homepage":"https://github.com/cdebotton/pruno","devDependencies":{"gulp":"^3.8.10","gulp-6to5":"^2.0.0","gulp-plumber":"^0.6.6","should":"^4.4.4"},"dependencies":{"6to5ify":"^3.0.0","browserify":"^8.0.2","callsite":"^1.0.0","coffee-script":"^1.8.0","deepmerge":"^0.2.7","del":"^1.1.1","envify":"^3.2.0","font-awesome":"^4.2.0","gulp-cached":"^1.0.1","gulp-concat":"^2.4.3","gulp-debug":"^2.0.0","gulp-if":"^1.2.5","gulp-imagemin":"^2.0.0","gulp-less":"^2.0.1","gulp-load-plugins":"^0.8.0","gulp-minify-css":"^0.3.11","gulp-mocha":"^2.0.0","gulp-notify":"^2.1.0","gulp-plumber":"^0.6.6","gulp-rename":"^1.2.0","gulp-sass":"^1.2.4","gulp-sourcemaps":"^1.3.0","gulp-stylus":"^1.3.4","gulp-uglify":"^1.0.2","gulp-util":"^3.0.1","imagemin-pngcrush":"^4.0.0","jeet":"^6.1.2","lodash":"^2.4.1","nib":"^1.0.4","normalize.css":"^3.0.2","object-assign":"^2.0.0","regenerator":"^0.8.2","require-dir":"^0.1.0","run-sequence":"^1.0.2","rupture":"^0.6.1","streamqueue":"^0.1.1","through":"^2.3.6","tiny-lr":"^0.1.4","vinyl-buffer":"^1.0.0","vinyl-source-stream":"^1.0.0","watchify":"^2.2.1","yaml-env-config":"^1.1.0"},"readme":"# pruno\u000aA gulp task manager with cascading configuration. Pruno was inspired by Laravel Elixer and adds several features like a simplified task syntax and cascading configuration.\u000a\u000a## Installation\u000aSimply run `npm install -D pruno gulp` in your terminal.\u000a\u000a## Use\u000a\u000a### Supported commands\u000aWith pruno, you can run `gulp`, `gulp watch`, `gulp --production` or\u000a`NODE_ENV={yourEnv} gulp (watch?)`. Gulp will run using the configuration\u000athat matches your environment.\u000a\u000a### Simple Configuration\u000aUsing pruno is as simple as telling it which tasks to run. It assumes a set of\u000adefault configuration options to let you get started quickly.\u000a```js\u000a'use strict';\u000a\u000a/**\u000a * You must pass an instance of the projects local gulp so that the gulp cli\u000a * will take advantage of the pruno defined tasks.\u000a */\u000a\u000avar gulp = require('gulp');\u000avar pruno = require('pruno').use(gulp);\u000a\u000apruno(function(mix) {\u000a  mix\u000a    .assets()\u000a    .publish()\u000a    .stylus()\u000a    .browserify()\u000a    .koa()\u000a    .livereload();\u000a});\u000a```\u000a\u000a### Yaml Configuration\u000a\u000aIf you want to change the global defaults used by Pruno, you can point\u000ait to a directory that holds the environment-based yaml configuration.\u000aPruno leverages [yaml-env-config](https://www.npmjs.com/package/yaml-env-config),\u000aso any configuration must be stored in a pruno.yaml file.\u000a\u000a```yaml\u000a# config/pruno.yaml\u000a\u000abrowserify:\u000a  es6: true\u000a  runtime: true\u000a  entry: ./src/javascripts/entry.js\u000a  dist: ./dist/application.js\u000astylus:\u000a  entry: ./src/styles/index.styl\u000a  dist: ./dist/app.css\u000a  normalize: true\u000a  font-awesome: true\u000a```\u000a\u000a```yaml\u000a# config/production/pruno.yaml\u000a\u000abrowserify:\u000a  uglify: true\u000a  source-maps: false\u000a  dist: ./dist/application.min.js\u000astylus:\u000a  source-maps: false\u000a  minify: true\u000a  dist: ./dist/app.min.css\u000a```\u000a\u000aTo use these commands, in our pruno run block, we would start the calls off\u000awith the following:\u000a\u000a```js\u000apruno(function(mix) {\u000a    mix.configure('./config')\u000a      .assets()\u000a      // ...\u000a});\u000a```\u000a\u000aBy running any of the `gulp` commands, gulp will compile your code based on\u000athe parameters set in those config files.\u000a\u000a### Inline Configuration\u000aLastly you can use inline configuration in your  Gulpfile to override your\u000aenv-configuration as well as the Pruno defaults. In our Gulpfile, let's do this:\u000a\u000a```js\u000avar gulp = require('gulp');\u000avar pruno = require('pruno').use(gulp);\u000a\u000apruno(function(mix) {\u000a  mix.configure('./config')\u000a  .stylus({\u000a    entry: './app/styles/client.styl',\u000a    dist: './public/stylesheets/client.css'\u000a  })\u000a  .stylus({\u000a    entry: './app/styles/admin.styl',\u000a    dist: './pubic/stylesheets/admin.css'\u000a  })\u000a  .browserify()\u000a  .publish({\u000a    sources: [\u000a      './node_modules/font-awesome/fonts/**/*'\u000a    ],\u000a    dist: './public/fonts/'\u000a  });\u000a});\u000a```\u000a\u000a## Module support\u000a1. Stylus\u000a2. SASS\u000a3. LESS\u000a4. React (through browserify)\u000a5. 6to5 (es6 support through browserify)\u000a6. imagemin\u000a7. livereload\u000a8. koa\u000a\u000a### Writing custom modules\u000aWriting custom modules is easy, just follow the boilerplate:\u000a```js\u000avar pruno = require('pruno');\u000avar config = pruno.config;\u000avar gulp = config.gulp;\u000a\u000apruno.extend('mytask', function(src, output, params) {\u000a    gulp.task('mytask', function() {\u000a      // Do some stuff\u000a    });\u000a\u000a    config.registerWatcher('mytask', './path/to/files/**/*.ext');\u000a    return config.queueTask('mytask');\u000a});\u000a```\u000a\u000a### Default configuration\u000a#### Development Environment\u000a\u000a```yaml\u000aassets:\u000a  sources:\u000a    - '!./app/assets/images/**/*',\u000a    - ./app/assets/**/*\u000a  dist: ./public/\u000a\u000abrowserify:\u000a  entry: ./app/index.js\u000a  dist: ./public/bundle.js\u000a  uglify: false\u000a  source-maps: true\u000a  es6: false\u000a  runtime: false\u000a\u000adel:\u000a  - ./public/\u000a\u000aimages:\u000a  src: ./app/assets/img/**/*\u000a  dist: ./public/img/\u000a  use:\u000a    - imagemin-pngcrush\u000a\u000akoa:\u000a  env: development\u000a  server: ./server.js\u000a\u000apublish:\u000a  src: null\u000a  dist: null\u000a\u000astylus:\u000a  entry: ./app/stylus/index.styl\u000a  dist: ./public/stylesheets/app.css\u000a  search: ./app/**/*.styl\u000a  minify: false\u000a  source-maps:true\u000a  font-awesome: false\u000a  normalize: false\u000a  use:\u000a    - nib\u000a    - jeet\u000a    - rupture\u000a```\u000a\u000a#### Config variables\u000aPruno supports configuration variable using the '::var' syntax. To declare\u000aa variable, it must be declared in yaml at the top level of the pruno\u000aconfiguration object.\u000a\u000aBy default, two global config vars are set. `src: ./app` and `output: ./public`.\u000a\u000aTo use a variable, simply reference its variable name with a preceding '::'.\u000aFor example:\u000a\u000a```yaml\u000a# config/pruno\u000a\u000asrc: ./src\u000aoutput: ./dist\u000a\u000astylus:\u000a  entry: ::src/stylesheets/index.styl\u000a  dist: ::output/scripts/bundle.js\u000a```\u000a","readmeFilename":"README.md","gitHead":"631fa25c3803126be903391a94aa8dcdb02bc423","_id":"pruno@1.6.1","_shasum":"96c0a1fd3377ae9bcc6facfabd95c2a41e066ad0","_from":".","_npmVersion":"1.4.28","_npmUser":{"name":"cdebotton","email":"debotton@brooklynunited.com"},"maintainers":[{"name":"cdebotton","email":"debotton@brooklynunited.com"}],"dist":{"shasum":"96c0a1fd3377ae9bcc6facfabd95c2a41e066ad0","tarball":"http://registry.npmjs.org/pruno/-/pruno-1.6.1.tgz"}}: pruno
+41 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:308:14)
+41 error     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:246:65)
+41 error     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:236:22)
+41 error     at Request.emit (events.js:98:17)
+41 error     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1142:14)
+41 error     at Request.emit (events.js:117:20)
+41 error     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1096:12)
+41 error     at IncomingMessage.emit (events.js:117:20)
+41 error     at _stream_readable.js:944:16
+41 error     at process._tickCallback (node.js:442:13)
+42 error If you need help, you may report this *entire* log,
+42 error including the npm and node versions, at:
+42 error     <http://github.com/npm/npm/issues>
+43 error System Darwin 14.0.0
+44 error command "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+45 error cwd /Users/cdebotton/npm-packages/pruno
+46 error node -v v0.10.35
+47 error npm -v 1.4.28
+48 verbose exit [ 1, true ]
