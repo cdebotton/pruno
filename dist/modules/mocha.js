@@ -10,6 +10,8 @@ var assign = _interopRequire(require("object-assign"));
 
 var loadPlugins = _interopRequire(require("gulp-load-plugins"));
 
+var getType = _interopRequire(require("../utils/getType"));
+
 var Notification = _interopRequire(require("../utils/notification"));
 
 var plugins = loadPlugins();
@@ -24,7 +26,8 @@ var MochaTask = function MochaTask(params) {
 MochaTask.getDefaults = function () {
   return {
     search: ["./src/**/*.js", "./tests/**/*.js", "./tests/**/*.coffee"],
-    coffee: false
+    coffee: false,
+    use: ["should"]
   };
 };
 
@@ -37,6 +40,15 @@ MochaTask.prototype.enqueue = function (gulp, params) {
     memo[param] = params[param];
     return memo;
   }, {});
+
+  if (getType(params.use) === "array") {
+    opts.globals = params.use.reduce(function (memo, plugin) {
+      memo[plugin] = require(plugin);
+      return memo;
+    }, {});
+  }
+
+  console.log(opts.globals);
 
   gulp.src(params.search, { read: false }).pipe(plugins.mocha(opts)).pipe(new Notification().message("Mocha run!"));
 };

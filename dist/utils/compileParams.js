@@ -92,11 +92,11 @@ function compileParams(taskName, defaults, baseSettings, params, settings) {
             objArgs[_key3] = arguments[_key3];
           }
 
-          var _ObjArgs = _slicedToArray(ObjArgs, 3);
+          var _objArgs = _slicedToArray(objArgs, 3);
 
-          var memo = _ObjArgs[0];
-          var p = _ObjArgs[1];
-          var i = _ObjArgs[2];
+          var memo = _objArgs[0];
+          var p = _objArgs[1];
+          var i = _objArgs[2];
           return compile(memo, i);
         }, {});
         break;

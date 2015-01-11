@@ -37,7 +37,7 @@ export default function compileParams(taskName, defaults, baseSettings, params, 
         break;
       case 'object':
         obj[param] = Object.keys(val).reduce(function(...objArgs) {
-          var [memo, p, i] = ObjArgs;
+          var [memo, p, i] = objArgs;
           return compile(memo, i);
         }, {});
         break;

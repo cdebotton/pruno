@@ -1,6 +1,8 @@
 import pruno from '..';
 import assign from 'object-assign';
 import loadPlugins from 'gulp-load-plugins';
+import getType from '../utils/getType'
+
 import Notification from '../utils/notification';
 
 var plugins = loadPlugins();
@@ -9,7 +11,8 @@ class MochaTask {
   static getDefaults() {
     return {
       search: ['./src/**/*.js', './tests/**/*.js', './tests/**/*.coffee'],
-      coffee: false
+      coffee: false,
+      use: ['should']
     };
   }
 
@@ -30,6 +33,15 @@ class MochaTask {
         memo[param] = params[param];
         return memo;
       }, {});
+
+    if (getType(params.use) === 'array') {
+      opts.globals = params.use.reduce((memo, plugin) => {
+        memo[plugin] = require(plugin);
+        return memo;
+      }, {});
+    }
+
+    console.log(opts.globals);
 
     gulp.src(params.search, {read: false})
       .pipe(plugins.mocha(opts))
