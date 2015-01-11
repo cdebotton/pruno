@@ -10,6 +10,8 @@ var assign = _interopRequire(require("object-assign"));
 
 var loadPlugins = _interopRequire(require("gulp-load-plugins"));
 
+var Notification = _interopRequire(require("../utils/notification"));
+
 var plugins = loadPlugins();
 
 var MochaTask = function MochaTask(params) {
@@ -36,7 +38,7 @@ MochaTask.prototype.enqueue = function (gulp, params) {
     return memo;
   }, {});
 
-  gulp.src(params.search, { read: false }).pipe(plugins.mocha(opts));
+  gulp.src(params.search, { read: false }).pipe(plugins.mocha(opts)).pipe(new Notification().message("Mocha run!"));
 };
 
 MochaTask.prototype.generateWatcher = function (gulp, params) {
