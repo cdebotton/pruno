@@ -156,6 +156,8 @@ class MyCustomTask {
     }
   }
 }
+
+export default pruno.extend(MyCustomTask);
 ```
 
 ```js
@@ -181,6 +183,8 @@ MyCustomTask.prototype.generateWatcher = function(gulp, params) {
     // Do watching action.
   };
 }
+
+module.exports = pruno.extend(MyCustomTask);
 ```
 
 A note on watchers, if you want to simply run a simple gulp.watch on the
