@@ -11,7 +11,7 @@ class DelTask {
   }
 
   enqueue(gulp, params) {
-    del(params.dirs);
+    return del(params.dirs);
   }
 }
 

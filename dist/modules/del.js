@@ -18,7 +18,7 @@ DelTask.getDefaults = function () {
 };
 
 DelTask.prototype.enqueue = function (gulp, params) {
-  del(params.dirs);
+  return del(params.dirs);
 };
 
 module.exports = pruno.extend(DelTask);

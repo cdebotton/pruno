@@ -3,26 +3,25 @@ import path from 'path';
 import compileCSS from '../utils/compileCSS';
 import getType from '../utils/getType';
 
-class StylusTask {
+class SassTask {
   constructor(params) {
     this.params = params;
   }
 
   static getDefaults() {
     return {
-      'entry': '::src/stylus/index.styl',
+      'entry': '::src/sass/index.sass',
       'dist': '::dist/stylesheets/app.css',
-      'search': '::src/**/*.styl',
+      'search': ['::src/**/*.sass', '::src/**/*.scss'],
       'minify': false,
       'source-maps':true,
       'font-awesome': false,
-      'normalize': false,
-      'use': ['nib', 'jeet', 'rupture']
+      'normalize': false
     };
   }
 
   enqueue(gulp, params = {}) {
-    const defaults = Object.keys(StylusTask.getDefaults())
+    const defaults = Object.keys(SassTask.getDefaults())
       .concat(['taskName']);
 
     var opts = Object.keys(params)
@@ -33,20 +32,9 @@ class StylusTask {
         return memo;
       }, {});
 
-    if (params['source-maps']) {
-      opts.sourcemap = {
-        inline: true,
-        sourceRoot: '.'
-      }
-    }
-
-    if (params.use && getType(params.use) === 'array') {
-      opts.use = params.use.map(m => require(m)());
-    }
-
     return compileCSS({
       gulp: gulp,
-      compiler: 'stylus',
+      compiler: 'sass',
       opts: opts,
       params: params
     });
@@ -57,4 +45,4 @@ class StylusTask {
   }
 }
 
-export default pruno.extend(StylusTask);
+export default pruno.extend(SassTask);

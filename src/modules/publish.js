@@ -29,7 +29,7 @@ class PublishTask {
       sources = sources.map(src => pkg(params.pkg, src));
     }
 
-    gulp.src(sources)
+    return gulp.src(sources)
       .pipe(
         plugins.if(
           params['image-min'],

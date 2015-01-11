@@ -12,26 +12,25 @@ var compileCSS = _interopRequire(require("../utils/compileCSS"));
 
 var getType = _interopRequire(require("../utils/getType"));
 
-var StylusTask = function StylusTask(params) {
+var LessTask = function LessTask(params) {
   this.params = params;
 };
 
-StylusTask.getDefaults = function () {
+LessTask.getDefaults = function () {
   return {
-    entry: "::src/stylus/index.styl",
+    entry: "::src/less/index.less",
     dist: "::dist/stylesheets/app.css",
-    search: "::src/**/*.styl",
+    search: "::src/**/*.less",
     minify: false,
     "source-maps": true,
     "font-awesome": false,
-    normalize: false,
-    use: ["nib", "jeet", "rupture"]
+    normalize: false
   };
 };
 
-StylusTask.prototype.enqueue = function (gulp) {
+LessTask.prototype.enqueue = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
-  var defaults = Object.keys(StylusTask.getDefaults()).concat(["taskName"]);
+  var defaults = Object.keys(LessTask.getDefaults()).concat(["taskName"]);
 
   var opts = Object.keys(params).filter(function (param) {
     return defaults.indexOf(param) === -1;
@@ -41,29 +40,16 @@ StylusTask.prototype.enqueue = function (gulp) {
     return memo;
   }, {});
 
-  if (params["source-maps"]) {
-    opts.sourcemap = {
-      inline: true,
-      sourceRoot: "."
-    };
-  }
-
-  if (params.use && getType(params.use) === "array") {
-    opts.use = params.use.map(function (m) {
-      return require(m)();
-    });
-  }
-
   return compileCSS({
     gulp: gulp,
-    compiler: "stylus",
+    compiler: "less",
     opts: opts,
     params: params
   });
 };
 
-StylusTask.prototype.generateWatcher = function (gulp, params) {
+LessTask.prototype.generateWatcher = function (gulp, params) {
   return true;
 };
 
-module.exports = pruno.extend(StylusTask);
+module.exports = pruno.extend(LessTask);

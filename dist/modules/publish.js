@@ -36,7 +36,7 @@ PublishTask.prototype.enqueue = function (gulp) {
     });
   }
 
-  gulp.src(sources).pipe(plugins["if"](params["image-min"], plugins.imagemin({
+  return gulp.src(sources).pipe(plugins["if"](params["image-min"], plugins.imagemin({
     progressive: true,
     svgoPlugins: [{ removeViewbox: false }],
     use: [pngcrush()]
