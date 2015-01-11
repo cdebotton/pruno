@@ -12,9 +12,13 @@ var util = _interopRequire(require("gulp-util"));
 
 var requireDir = _interopRequire(require("require-dir"));
 
+var path = _interopRequire(require("path"));
+
 var compileParams = _interopRequire(require("./utils/compileParams"));
 
 var merge = _interopRequire(require("deepmerge"));
+
+var callsite = _interopRequire(require("callsite"));
 
 var tasks = {};
 var queue = {};
@@ -22,7 +26,8 @@ var settings = { vars: { src: "./src", dist: "./dist" } };
 
 var Pruno = function Pruno(cb) {
   var gulp = Pruno.gulp;
-
+  var stack = callsite();
+  settings.topLevel = path.dirname(stack[1].getFileName());
 
   if (!gulp) {
     throw new ReferenceError("Please define the instance of gulp for pruno to use by executing " + "pruno.use(gulp) before executing pruno's constructor");
@@ -116,6 +121,14 @@ Pruno.extend = function (task) {
 Pruno.setDefaults = function () {
   var opts = arguments[0] === undefined ? {} : arguments[0];
   settings = merge(settings, opts);
+};
+
+Pruno.get = function (property) {
+  if (!property) {
+    throw new TypeError("You must define a property go get.");
+  }
+
+  return settings[property];
 };
 
 module.exports = Pruno;

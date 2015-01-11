@@ -1,18 +1,17 @@
 import pruno from '..';
-import compileTemplates from '../utils/compileTemplates';
 import distillOptions from '../utils/distillOptions';
+import compileTemplates from '../utils/compileTemplates';
 
-class JadeTask {
+class SwigTask {
   static getDefaults() {
     return {
       data: '::src/templates/data',
-      entry: '::src/templates/**/*.jade',
+      entry: '::src/templates/**/*.html',
       dist: '::dist',
       search: [
-        '::src/templates/**/*.jade',
-        '::src/templates/data/**/*'
+        '::src/templates/**/*.html'
       ]
-    };
+    }
   }
 
   constructor(params = {}) {
@@ -20,8 +19,8 @@ class JadeTask {
   }
 
   enqueue(gulp, params = {}) {
-    var compiler = 'jade';
-    var opts = distillOptions(JadeTask, params);
+    var compiler = 'swig';
+    var opts = distillOptions(SwigTask, params);
 
     return compileTemplates({gulp, compiler, params, opts});
   }
@@ -31,4 +30,4 @@ class JadeTask {
   }
 }
 
-export default pruno.extend(JadeTask);
+export default pruno.extend(SwigTask);

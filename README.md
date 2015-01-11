@@ -11,6 +11,19 @@ With pruno, you can run `gulp`, `gulp watch`, `gulp --production` or
 `NODE_ENV={yourEnv} gulp (watch?)`. Gulp will run using the configuration
 that matches your environment.
 
+### Module support
+- es6 (as a param in the js module)
+- imagemin
+- jade (with gulp-data support)
+- koa
+- less
+- livereload
+- mocha (with coffee and should support as params)
+- react (as a param in the js module)
+- sass/scss
+- stylus
+- swig (with gulp data support)
+
 ### Simple Configuration
 Using pruno is as simple as telling it which tasks to run. It assumes a set of
 default configuration options to let you get started quickly.
@@ -112,17 +125,6 @@ pruno(function(mix) {
   });
 });
 ```
-
-## Module support
-1. Stylus
-2. SASS
-3. LESS
-4. React (through browserify)
-5. 6to5 (es6 support through browserify)
-6. imagemin
-7. livereload
-8. koa
-9. mocha (with coffee and should support)
 
 ### Writing custom modules
 Writing custom modules is easy, just follow the boilerplate:
@@ -230,6 +232,13 @@ images:
   use:
     - imagemin-pngcrush
 
+swig:
+  data: ::src/templates/data
+  entry: ::src/templates/**/*.jade
+  dist: ::dist
+  search:
+    - ::src/templates/**/*.jade
+
 koa:
   env: development
   server: ./server.js
@@ -280,6 +289,13 @@ stylus:
     - nib
     - jeet
     - rupture
+
+swig:
+  data: ::src/templates/data
+  entry: ::src/templates/**/*.html
+  dist: ::dist
+  search:
+    - ::src/templates/**/*.html
 ```
 
 #### Config variables

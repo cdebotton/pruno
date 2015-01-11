@@ -2,8 +2,10 @@ import path from 'path';
 import runSequence from 'run-sequence';
 import util from 'gulp-util';
 import requireDir from 'require-dir';
+import path from 'path';
 import compileParams from './utils/compileParams';
 import merge from 'deepmerge';
+import callsite from 'callsite';
 
 var tasks = {};
 var queue = {};
@@ -12,6 +14,8 @@ var settings = {vars: {src: './src', dist: './dist'}};
 export default class Pruno {
   constructor(cb) {
     var {gulp} = Pruno;
+    var stack = callsite();
+    settings.topLevel = path.dirname(stack[1].getFileName());
 
     if (! gulp) {
       throw new ReferenceError(
@@ -115,5 +119,13 @@ export default class Pruno {
 
   static setDefaults(opts = {}) {
     settings = merge(settings, opts);
+  }
+
+  static get(property) {
+    if (! property) {
+      throw new TypeError('You must define a property go get.');
+    }
+
+    return settings[property];
   }
 }

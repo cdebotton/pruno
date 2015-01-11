@@ -6,34 +6,34 @@ var _interopRequire = function (obj) {
 
 var pruno = _interopRequire(require(".."));
 
-var compileTemplates = _interopRequire(require("../utils/compileTemplates"));
-
 var distillOptions = _interopRequire(require("../utils/distillOptions"));
 
-var JadeTask = function JadeTask() {
+var compileTemplates = _interopRequire(require("../utils/compileTemplates"));
+
+var SwigTask = function SwigTask() {
   var params = arguments[0] === undefined ? {} : arguments[0];
   this.params = params;
 };
 
-JadeTask.getDefaults = function () {
+SwigTask.getDefaults = function () {
   return {
     data: "::src/templates/data",
-    entry: "::src/templates/**/*.jade",
+    entry: "::src/templates/**/*.html",
     dist: "::dist",
-    search: ["::src/templates/**/*.jade", "::src/templates/data/**/*"]
+    search: ["::src/templates/**/*.html"]
   };
 };
 
-JadeTask.prototype.enqueue = function (gulp) {
+SwigTask.prototype.enqueue = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
-  var compiler = "jade";
-  var opts = distillOptions(JadeTask, params);
+  var compiler = "swig";
+  var opts = distillOptions(SwigTask, params);
 
   return compileTemplates({ gulp: gulp, compiler: compiler, params: params, opts: opts });
 };
 
-JadeTask.prototype.generateWatcher = function () {
+SwigTask.prototype.generateWatcher = function () {
   return true;
 };
 
-module.exports = pruno.extend(JadeTask);
+module.exports = pruno.extend(SwigTask);
