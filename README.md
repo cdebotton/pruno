@@ -172,6 +172,15 @@ koa:
   env: development
   server: ./server.js
 
+less:
+  entry: ./app/less/index.less
+  dist: ./public/stylesheets/app.css
+  search: ./app/**/*.less
+  minify: false
+  source-maps:true
+  font-awesome: false
+  normalize: false
+
 mocha:
   search:
     - ./src/**/*.js
@@ -185,6 +194,17 @@ mocha:
 publish:
   src: null
   dist: null
+
+sass:
+  entry: ./app/sass/index.sass
+  dist: ./public/stylesheets/app.css
+  search:
+    - ./app/**/*.sass
+    - ./app/**/*.scss
+  minify: false
+  source-maps:true
+  font-awesome: false
+  normalize: false
 
 stylus:
   entry: ./app/stylus/index.styl
