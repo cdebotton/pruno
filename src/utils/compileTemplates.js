@@ -35,23 +35,3 @@ export default function(args) {
     .pipe(plugins[compiler](opts))
     .pipe(gulp.dest(params.dist));
 };
-
-var collectData = (dataDir) => {
-  return (file, cb) => {
-    var fileRoot = path.join(dataDir, path.basename(file.path));
-    var json = `${fileRoot}.json`;
-    var js = `${fileRoot}.js`;
-    var file;
-
-    if (fs.existsSync(js)) {
-      file = require(js);
-    }
-    else if (fs.existsSync(json)) {
-      file = require(json);
-    }
-
-    if (file) {
-      cb(file);
-    }
-  };
-};
