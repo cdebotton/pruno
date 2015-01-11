@@ -1,6 +1,6 @@
 {
   "name": "pruno",
-  "version": "1.6.1",
+  "version": "1.6.2-0",
   "description": "A gulp task manager with cascading configuration.",
   "main": "dist/index.js",
   "scripts": {
