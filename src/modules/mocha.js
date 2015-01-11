@@ -1,6 +1,7 @@
 import pruno from '..';
 import assign from 'object-assign';
 import loadPlugins from 'gulp-load-plugins';
+import Notification from '../utils/notification';
 
 var plugins = loadPlugins();
 
@@ -31,7 +32,8 @@ class MochaTask {
       }, {});
 
     gulp.src(params.search, {read: false})
-      .pipe(plugins.mocha(opts));
+      .pipe(plugins.mocha(opts))
+      .pipe(new Notification().message('Mocha run!'));
   }
 
   generateWatcher(gulp, params) {
