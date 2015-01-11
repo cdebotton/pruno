@@ -10,12 +10,6 @@ export default function(args) {
   var topLevel = pruno.get('topLevel');
 
   gulp.src(params.entry)
-    // .pipe(
-    //   plugins.if(
-    //     params.data,
-    //     plugins.data(collectData(params.data))
-    //   )
-    // )
     .pipe(plugins.data((file, cb) => {
       var data;
       var dataFile = path.join(
