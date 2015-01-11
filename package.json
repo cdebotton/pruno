@@ -34,6 +34,7 @@
     "deepmerge": "^0.2.7",
     "del": "^1.1.1",
     "envify": "^3.2.0",
+    "express": "^4.10.7",
     "font-awesome": "^4.2.0",
     "gulp-cached": "^1.0.1",
     "gulp-concat": "^2.4.3",

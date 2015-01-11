@@ -21,14 +21,7 @@ module.exports = function (args) {
   var compiler = args.compiler;
   var topLevel = pruno.get("topLevel");
 
-  gulp.src(params.entry)
-  // .pipe(
-  //   plugins.if(
-  //     params.data,
-  //     plugins.data(collectData(params.data))
-  //   )
-  // )
-  .pipe(plugins.data(function (file, cb) {
+  gulp.src(params.entry).pipe(plugins.data(function (file, cb) {
     var data;
     var dataFile = path.join(topLevel, params.data, path.basename(file.path).replace(/\.html$/, ""));
 
@@ -45,23 +38,4 @@ module.exports = function (args) {
       return cb(data);
     }
   })).pipe(plugins[compiler](opts)).pipe(gulp.dest(params.dist));
-};
-
-var collectData = function (dataDir) {
-  return function (file, cb) {
-    var fileRoot = path.join(dataDir, path.basename(file.path));
-    var json = "" + fileRoot + ".json";
-    var js = "" + fileRoot + ".js";
-    var file;
-
-    if (fs.existsSync(js)) {
-      file = require(js);
-    } else if (fs.existsSync(json)) {
-      file = require(json);
-    }
-
-    if (file) {
-      cb(file);
-    }
-  };
 };

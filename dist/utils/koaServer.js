@@ -40,6 +40,7 @@ module.exports = (function () {
       }
 
       process.env.NODE_ENV = options.env;
+      process.env.STATICS = options.dist;
 
       if (options.args == undefined) {
         service = child_process.spawn("node", ["--harmony", options.file], {
