@@ -122,6 +122,7 @@ pruno(function(mix) {
 6. imagemin
 7. livereload
 8. koa
+9. mocha (with coffee and should support)
 
 ### Writing custom modules
 Writing custom modules is easy, just follow the boilerplate:
@@ -170,6 +171,16 @@ images:
 koa:
   env: development
   server: ./server.js
+
+mocha:
+  search:
+    - ./src/**/*.js
+    - ./tests/**/*.js
+    - ./tests/**/*.coffee
+  coffee: false
+  use:
+    - should
+  runner: spec
 
 publish:
   src: null
