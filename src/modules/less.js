@@ -2,6 +2,7 @@ import pruno from '..';
 import path from 'path';
 import compileCSS from '../utils/compileCSS';
 import getType from '../utils/getType';
+import distillOptions from '../utils/distillOptions';
 
 class LessTask {
   constructor(params) {
@@ -21,16 +22,7 @@ class LessTask {
   }
 
   enqueue(gulp, params = {}) {
-    const defaults = Object.keys(LessTask.getDefaults())
-      .concat(['taskName']);
-
-    var opts = Object.keys(params)
-      .filter(param => defaults.indexOf(param) === -1)
-      .reduce((memo, param) => {
-        memo[param] = params[param];
-        delete params[param];
-        return memo;
-      }, {});
+    var opts = distillOptions(SassTask, params);
 
     return compileCSS({
       gulp: gulp,

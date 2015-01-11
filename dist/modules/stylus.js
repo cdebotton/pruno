@@ -12,6 +12,8 @@ var compileCSS = _interopRequire(require("../utils/compileCSS"));
 
 var getType = _interopRequire(require("../utils/getType"));
 
+var distillOptions = _interopRequire(require("../utils/distillOptions"));
+
 var StylusTask = function StylusTask(params) {
   this.params = params;
 };
@@ -31,15 +33,7 @@ StylusTask.getDefaults = function () {
 
 StylusTask.prototype.enqueue = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
-  var defaults = Object.keys(StylusTask.getDefaults()).concat(["taskName"]);
-
-  var opts = Object.keys(params).filter(function (param) {
-    return defaults.indexOf(param) === -1;
-  }).reduce(function (memo, param) {
-    memo[param] = params[param];
-    delete params[param];
-    return memo;
-  }, {});
+  var opts = distillOptions(StylusTask, params);
 
   if (params["source-maps"]) {
     opts.sourcemap = {

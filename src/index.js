@@ -1,6 +1,5 @@
 import path from 'path';
 import runSequence from 'run-sequence';
-import callsite from 'callsite';
 import util from 'gulp-util';
 import requireDir from 'require-dir';
 import compileParams from './utils/compileParams';
@@ -13,8 +12,6 @@ var settings = {vars: {src: './src', dist: './dist'}};
 export default class Pruno {
   constructor(cb) {
     var {gulp} = Pruno;
-    var stack = callsite();
-    var src = path.dirname(stack[1].getFileName());
 
     if (! gulp) {
       throw new ReferenceError(

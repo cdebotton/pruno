@@ -8,8 +8,6 @@ var path = _interopRequire(require("path"));
 
 var runSequence = _interopRequire(require("run-sequence"));
 
-var callsite = _interopRequire(require("callsite"));
-
 var util = _interopRequire(require("gulp-util"));
 
 var requireDir = _interopRequire(require("require-dir"));
@@ -24,8 +22,7 @@ var settings = { vars: { src: "./src", dist: "./dist" } };
 
 var Pruno = function Pruno(cb) {
   var gulp = Pruno.gulp;
-  var stack = callsite();
-  var src = path.dirname(stack[1].getFileName());
+
 
   if (!gulp) {
     throw new ReferenceError("Please define the instance of gulp for pruno to use by executing " + "pruno.use(gulp) before executing pruno's constructor");
