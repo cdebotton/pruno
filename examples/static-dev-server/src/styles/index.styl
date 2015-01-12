@@ -1,0 +1,22 @@
+@import 'nib'
+@import 'jeet'
+@import 'rupture'
+
+*,
+*::before,
+*::after
+  box-sizing border-box
+
+html
+  font-size 62.5%
+
+.app
+  center(128em)
+  .sidebar
+    col(1/4)
+  .content
+    col(3/4)
+
+  +below(96em)
+    .sidebar, .content
+      stack()
