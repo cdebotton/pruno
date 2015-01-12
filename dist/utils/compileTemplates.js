@@ -27,15 +27,10 @@ module.exports = function (args) {
 
     if (fs.existsSync("" + dataFile + ".js")) {
       data = require("" + dataFile.js);
-      if (typeof data === "function") {
-        data = data(params, opts);
-      }
     } else if (fs.existsSync("" + dataFile + ".json")) {
       data = require("" + dataFile + ".json");
     }
 
-    if (data) {
-      return cb(data);
-    }
+    return typeof data === "function" ? data(cb) : cb(data);
   })).pipe(plugins[compiler](opts)).pipe(gulp.dest(params.dist));
 };
