@@ -13,16 +13,31 @@ that matches your environment.
 
 ### Module support
 - es6 (as a param in the js module)
+  - Compile ES6 to ES5, support for classes, import/export, generators, etc.
+  - Full list of supported features at [6to5.org](https://6to5.org/docs/tour/).
 - imagemin
+  - Compress jpeg, pngs, and svgs.
 - jade (with gulp-data support)
+  - Minimal html templating language.
+  - Data passed in (by default) to `./src/templates/data/{templateName}.(json|js)`.
 - koa
+  - Runs your applications koa server with livereload.
 - less
+  - LESS Style transpiling.
 - livereload
+  - Automatically reloads the page when you edit files.
 - mocha (with coffee and should support as params)
+  - Mocha BDD Test Framework.
 - react (as a param in the js module)
+  - Compiled JSX syntax through 6to5. Currently supports React 0.12.* syntax.
 - sass/scss
+  - SASS/SCSS style transpiling.
 - stylus
+  - Stylus style transpiling.
 - swig (with gulp data support)
+  - Swig HTML templates.
+- dev http server
+  - A simple express serve for serving your dist folder when you are work on static files.
 
 ### Simple Configuration
 Using pruno is as simple as telling it which tasks to run. It assumes a set of
@@ -226,13 +241,18 @@ browserify:
 del:
   - ./public/
 
+http:
+  listen: 3000
+  env: development
+  dist: ::dist
+
 images:
   src: ./app/assets/img/**/*
   dist: ./public/img/
   use:
     - imagemin-pngcrush
 
-swig:
+jade:
   data: ::src/templates/data
   entry: ::src/templates/**/*.jade
   dist: ::dist
