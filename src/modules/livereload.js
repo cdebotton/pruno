@@ -13,16 +13,16 @@ class LiveReloadTask {
     };
   }
 
-  enqueue(gulp, params = {}) {
-    gulp.src(params.search)
-      .pipe(livereload())
-      .pipe(new Notification().message('Server Reload Started'));
-  }
-
   generateWatcher(gulp, params) {
     livereload.listen();
 
-    return true;
+    return () => {
+      gulp.watch(params.search, function() {
+        gulp.src(params.search)
+          .pipe(livereload())
+          .pipe(new Notification().message('Server Reload Started'));
+      });
+    };
   }
 }
 
