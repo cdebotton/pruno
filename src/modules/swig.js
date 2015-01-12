@@ -23,6 +23,14 @@ class SwigTask {
     var compiler = 'swig';
     var opts = distillOptions(SwigTask, params);
 
+    if (params.data) {
+      opts.load_json = true;
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+      opts.defaults = {cache: false};
+    }
+
     return compileTemplates({gulp, compiler, params, opts});
   }
 

@@ -29,7 +29,6 @@ JadeTask.prototype.enqueue = function (gulp) {
   var params = arguments[1] === undefined ? {} : arguments[1];
   var compiler = "jade";
   var opts = distillOptions(JadeTask, params);
-
   return compileTemplates({ gulp: gulp, compiler: compiler, params: params, opts: opts });
 };
 

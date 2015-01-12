@@ -30,6 +30,14 @@ SwigTask.prototype.enqueue = function (gulp) {
   var compiler = "swig";
   var opts = distillOptions(SwigTask, params);
 
+  if (params.data) {
+    opts.load_json = true;
+  }
+
+  if (process.env.NODE_ENV !== "production") {
+    opts.defaults = { cache: false };
+  }
+
   return compileTemplates({ gulp: gulp, compiler: compiler, params: params, opts: opts });
 };
 
