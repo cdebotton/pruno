@@ -24,7 +24,7 @@ KoaTask.getDefaults = function () {
 KoaTask.prototype.generateWatcher = function (gulp, params) {
   return function () {
     koaServer.run(params);
-
+    gulp.watch(params.dist + "/**/*", koaServer.notify);
     return new Notification().message("Koa Server Started!");
   };
 };

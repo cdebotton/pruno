@@ -19,9 +19,9 @@ var HttpTask = function HttpTask() {
 
 HttpTask.getDefaults = function () {
   return {
-    port: 3000,
+    listen: 3000,
     env: "development",
-    dist: "::output",
+    dist: "::dist",
     file: path.join(__dirname, "../utils/simpleHttp.js")
   };
 };
@@ -30,6 +30,7 @@ HttpTask.prototype.generateWatcher = function (gulp, params) {
   return function () {
     koaServer.run(params);
 
+    gulp.watch(params.dist + "/**/*", koaServer.notify);
     return new Notification().message("Koa Server Started!");
   };
 };

@@ -17,7 +17,7 @@ class KoaTask {
   generateWatcher(gulp, params) {
     return () => {
       koaServer.run(params);
-
+      gulp.watch(params.dist + '/**/*', koaServer.notify);
       return new Notification().message('Koa Server Started!');
     }
   }

@@ -6,9 +6,9 @@ import path from 'path';
 class HttpTask {
   static getDefaults() {
     return {
-      port: 3000,
+      listen: 3000,
       env: 'development',
-      dist: '::output',
+      dist: '::dist',
       file: path.join(__dirname, '../utils/simpleHttp.js')
     };
   }
@@ -21,6 +21,7 @@ class HttpTask {
     return () => {
       koaServer.run(params);
 
+      gulp.watch(params.dist + '/**/*', koaServer.notify);
       return new Notification().message('Koa Server Started!');
     }
   }
