@@ -6,7 +6,7 @@ var _interopRequire = function (obj) {
 
 var pruno = _interopRequire(require(".."));
 
-var koaServer = _interopRequire(require("../utils/koaServer"));
+var livereload = _interopRequire(require("gulp-livereload"));
 
 var Notification = _interopRequire(require("../utils/notification"));
 
@@ -21,19 +21,15 @@ LiveReloadTask.getDefaults = function () {
   };
 };
 
+LiveReloadTask.prototype.enqueue = function (gulp) {
+  var params = arguments[1] === undefined ? {} : arguments[1];
+  gulp.src(params.search).pipe(livereload()).pipe(new Notification().message("Server Reload Started"));
+};
+
 LiveReloadTask.prototype.generateWatcher = function (gulp, params) {
-  return function () {
-    gulp.watch(params.search, function () {
-      var args = [];
+  livereload.listen();
 
-      for (var _key = 0; _key < arguments.length; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      koaServer.notify.apply(koaServer, args);
-      new Notification().message("Server Reload Started");
-    });
-  };
+  return true;
 };
 
 module.exports = pruno.extend(LiveReloadTask);

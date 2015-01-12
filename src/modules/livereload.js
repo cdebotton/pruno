@@ -1,5 +1,5 @@
 import pruno from '..';
-import koaServer from '../utils/koaServer';
+import livereload from 'gulp-livereload';
 import Notification from '../utils/notification';
 
 class LiveReloadTask {
@@ -13,13 +13,16 @@ class LiveReloadTask {
     };
   }
 
+  enqueue(gulp, params = {}) {
+    gulp.src(params.search)
+      .pipe(livereload())
+      .pipe(new Notification().message('Server Reload Started'));
+  }
+
   generateWatcher(gulp, params) {
-    return () => {
-      gulp.watch(params.search, function(...args) {
-        koaServer.notify.apply(koaServer, args);
-        new Notification().message('Server Reload Started');
-      });
-    }
+    livereload.listen();
+
+    return true;
   }
 }
 

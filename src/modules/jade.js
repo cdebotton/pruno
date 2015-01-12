@@ -23,6 +23,7 @@ class JadeTask {
   enqueue(gulp, params = {}) {
     var compiler = 'jade';
     var opts = distillOptions(JadeTask, params);
+
     return compileTemplates({gulp, compiler, params, opts});
   }
 
