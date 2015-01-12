@@ -20,7 +20,8 @@ SwigTask.getDefaults = function () {
     data: "::src/templates/data",
     entry: "::src/templates/**/*.html",
     dist: "::dist",
-    search: ["::src/templates/**/*.html"]
+    search: ["::src/templates/**/*.html"],
+    ignorePrefix: "_"
   };
 };
 

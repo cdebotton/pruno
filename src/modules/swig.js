@@ -10,7 +10,8 @@ class SwigTask {
       dist: '::dist',
       search: [
         '::src/templates/**/*.html'
-      ]
+      ],
+      ignorePrefix: '_'
     }
   }
 

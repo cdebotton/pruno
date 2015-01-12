@@ -11,7 +11,8 @@ class JadeTask {
       search: [
         '::src/templates/**/*.jade',
         '::src/templates/data/**/*'
-      ]
+      ],
+      ignorePrefix: '_'
     };
   }
 

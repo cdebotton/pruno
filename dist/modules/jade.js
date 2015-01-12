@@ -20,7 +20,8 @@ JadeTask.getDefaults = function () {
     data: "::src/templates/data",
     entry: "::src/templates/**/*.jade",
     dist: "::dist",
-    search: ["::src/templates/**/*.jade", "::src/templates/data/**/*"]
+    search: ["::src/templates/**/*.jade", "::src/templates/data/**/*"],
+    ignorePrefix: "_"
   };
 };
 
