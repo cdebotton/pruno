@@ -28,13 +28,18 @@ export default function(args) {
       );
 
       if (fs.existsSync(`${dataFile}.js`)) {
-        data = require(`${dataFile.js}`);
+        data = require(`${dataFile}.js`);
       }
       else if (fs.existsSync(`${dataFile}.json`)) {
         data = require(`${dataFile}.json`);
       }
 
-      return typeof data === 'function' ? data(cb) : cb(data);
+      if (typeof data === 'function') {
+        data(cb);
+      }
+      else {
+        cb(null, data);
+      }
     }))
     .pipe(plugins[compiler](opts))
     .pipe(gulp.dest(params.dist));

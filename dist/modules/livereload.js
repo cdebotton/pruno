@@ -21,15 +21,14 @@ LiveReloadTask.getDefaults = function () {
   };
 };
 
-LiveReloadTask.prototype.enqueue = function (gulp) {
-  var params = arguments[1] === undefined ? {} : arguments[1];
-  gulp.src(params.search).pipe(livereload()).pipe(new Notification().message("Server Reload Started"));
-};
-
 LiveReloadTask.prototype.generateWatcher = function (gulp, params) {
   livereload.listen();
 
-  return true;
+  return function () {
+    gulp.watch(params.search, function () {
+      gulp.src(params.search).pipe(livereload()).pipe(new Notification().message("Server Reload Started"));
+    });
+  };
 };
 
 module.exports = pruno.extend(LiveReloadTask);
