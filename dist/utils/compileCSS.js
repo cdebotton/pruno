@@ -61,7 +61,7 @@ function compileCSS(args) {
     stream.queue(gulp.src(pkg("font-awesome", "css/font-awesome.css")));
   }
 
-  stream.queue(gulp.src(params.entry).pipe(plugins[compiler](opts)));
+  stream.pipe(gulp.src(params.entry).pipe(plugins.plumber()).pipe(plugins[compiler](opts)).pipe(plugins.plumber.stop()));
 
   return stream.done().pipe(plugins.concat(fileName)).pipe(plugins["if"](params.minify, plugins.minifyCss())).pipe(plugins["if"](params["source-maps"], plugins.sourcemaps.write())).pipe(gulp.dest(distDir)).pipe(new Notification().message("Task `" + compiler.replace(/^(.)/, function () {
     var parts = [];

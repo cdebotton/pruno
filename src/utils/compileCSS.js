@@ -33,9 +33,11 @@ export default function compileCSS(args) {
     );
   }
 
-  stream.queue(
+  stream.pipe(
     gulp.src(params.entry)
+      .pipe(plugins.plumber())
       .pipe(plugins[compiler](opts))
+      .pipe(plugins.plumber.stop())
   );
 
   return stream.done()
