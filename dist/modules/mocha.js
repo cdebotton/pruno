@@ -48,7 +48,7 @@ MochaTask.prototype.enqueue = function (gulp, params) {
     }, {});
   }
 
-  return gulp.src(params.search, { read: false }).pipe(plugins.mocha(opts)).pipe(new Notification().message("Mocha run!"));
+  return gulp.src(params.search, { read: false }).pipe(plugins.plumber()).pipe(plugins.mocha(opts)).pipe(new Notification().message("Mocha run!"));
 };
 
 MochaTask.prototype.generateWatcher = function (gulp, params) {
