@@ -9,9 +9,7 @@ var plugins = loadPlugins();
 
 export default function compileCSS(args) {
   var {gulp, compiler, opts, params} = args;
-
   var [dist, distDir, fileName] = params.dist.match(/^(.+\/)(.+\.css)$/);
-
   var stream = streamqueue({objectMode: true});
 
   stream.pipe(
@@ -33,11 +31,10 @@ export default function compileCSS(args) {
     );
   }
 
-  stream.pipe(
+  stream.queue(
     gulp.src(params.entry)
       .pipe(plugins.plumber())
       .pipe(plugins[compiler](opts))
-      .pipe(plugins.plumber.stop())
   );
 
   return stream.done()
