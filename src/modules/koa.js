@@ -10,14 +10,15 @@ class KoaTask {
   static getDefaults() {
     return {
       env: 'development',
-      file: './server.js'
+      file: './server.js',
+      search: '::dist/**/*'
     };
   }
 
   generateWatcher(gulp, params) {
     return () => {
       koaServer.run(params);
-      gulp.watch(params.dist + '/**/*', koaServer.notify);
+      gulp.watch(params.search, koaServer.notify);
       return new Notification().message('Koa Server Started!');
     }
   }

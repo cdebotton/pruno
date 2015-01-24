@@ -17,14 +17,15 @@ var KoaTask = function KoaTask(params) {
 KoaTask.getDefaults = function () {
   return {
     env: "development",
-    file: "./server.js"
+    file: "./server.js",
+    search: "::dist/**/*"
   };
 };
 
 KoaTask.prototype.generateWatcher = function (gulp, params) {
   return function () {
     koaServer.run(params);
-    gulp.watch(params.dist + "/**/*", koaServer.notify);
+    gulp.watch(params.search, koaServer.notify);
     return new Notification().message("Koa Server Started!");
   };
 };
