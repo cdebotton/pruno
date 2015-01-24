@@ -25,7 +25,12 @@ var queue = {};
 var settings = { vars: { src: "./src", dist: "./dist" } };
 
 var Pruno = function Pruno(cb) {
-  var gulp = Pruno.gulp;
+  try {
+    var parent = module.parent;
+    var gulp = parent.require("gulp");
+  } catch (err) {
+    throw new Error("Gulp is not currently installed. Please run `npm install -D gulp`.");
+  }
   var stack = callsite();
   settings.topLevel = path.dirname(stack[1].getFileName());
 
@@ -82,11 +87,6 @@ var Pruno = function Pruno(cb) {
       });
     });
   }
-};
-
-Pruno.use = function (gulp) {
-  this.gulp = gulp;
-  return this;
 };
 
 Pruno.extend = function (task) {

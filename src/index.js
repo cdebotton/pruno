@@ -13,7 +13,14 @@ var settings = {vars: {src: './src', dist: './dist'}};
 
 export default class Pruno {
   constructor(cb) {
-    var {gulp} = Pruno;
+    try {
+      let parent = module.parent;
+      var gulp = parent.require('gulp');
+    }
+    catch (err) {
+      throw new Error('Gulp is not currently installed. Please run `npm install -D gulp`.');
+    }
+
     var stack = callsite();
     settings.topLevel = path.dirname(stack[1].getFileName());
 
@@ -82,11 +89,6 @@ export default class Pruno {
     }
   }
 
-  static use(gulp) {
-    this.gulp = gulp;
-    return this;
-  }
-
   static extend(task) {
     var displayName = (task.displayName || task.name).toLowerCase()
       .replace(/Task$/i, '');
@@ -115,6 +117,13 @@ export default class Pruno {
 
       return tasks;
     }
+  }
+
+  static use(gulp) {
+    throw new Error(
+      'pruno.use(...) has been deprecated. The parent modules gulp instance ' +
+      'is now automatically inferred.'
+    );
   }
 
   static setDefaults(opts = {}) {
