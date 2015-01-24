@@ -31,6 +31,7 @@ var Pruno = function Pruno(cb) {
   } catch (err) {
     throw new Error("Gulp is not currently installed. Please run `npm install -D gulp`.");
   }
+
   var stack = callsite();
   settings.topLevel = path.dirname(stack[1].getFileName());
 
@@ -116,6 +117,10 @@ Pruno.extend = function (task) {
 
     return tasks;
   };
+};
+
+Pruno.use = function (gulp) {
+  throw new Error("pruno.use(...) has been deprecated. The parent modules gulp instance " + "is now automatically inferred.");
 };
 
 Pruno.setDefaults = function () {
