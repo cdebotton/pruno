@@ -40,7 +40,7 @@
     "gulp-concat": "^2.4.3",
     "gulp-data": "^1.1.1",
     "gulp-debug": "^2.0.0",
-    "gulp-eslint": "file:../../../../var/folders/ls/c7706qv52gb8b7nfsw0g94f80000gn/T/npm-2408-4d5116f1/1422060641652-0.7805769564583898/b253324004c8f595e630a485b65a1fba70d977f9",
+    "gulp-eslint": "git://github.com/gilbarbara/gulp-eslint.git",
     "gulp-if": "^1.2.5",
     "gulp-imagemin": "^2.0.0",
     "gulp-jade": "^0.10.0",
