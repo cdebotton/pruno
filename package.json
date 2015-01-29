@@ -26,8 +26,11 @@
   "devDependencies": {},
   "dependencies": {
     "6to5": "^3.0.10",
+    "colors": "^1.0.3",
     "commander": "^2.6.0",
     "handlebars": "^2.0.0",
+    "npm": "^2.3.0",
+    "require-dir": "^0.1.0",
     "shelljs": "^0.3.0"
   }
 }
