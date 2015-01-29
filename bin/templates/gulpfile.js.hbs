@@ -2,6 +2,10 @@
 
 var pruno = require('pruno');
 
-pruno(function(mix) {
-  mix.configure({dir: __dirname + '{{config}}'});
+pruno.plugins(function(mix) {
+  mix
+    .configure({dir: __dirname + '{{config}}'})
+    .js()
+    .stylus()
+    .koa();
 });

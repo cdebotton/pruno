@@ -1,11 +1,12 @@
-import path from 'path';
-import runSequence from 'run-sequence';
-import util from 'gulp-util';
-import requireDir from 'require-dir';
-import path from 'path';
-import compileParams from './utils/compileParams';
-import merge from 'deepmerge';
-import callsite from 'callsite';
+import path from "path";
+import runSequence from "run-sequence";
+import util from "gulp-util";
+import requireDir from "require-dir";
+import path from "path";
+import compileParams from "./utils/compileParams";
+import merge from "deepmerge";
+import callsite from "callsite";
+import {exec} from "child_process";
 
 var tasks = {};
 var queue = {};
@@ -87,6 +88,22 @@ export default class Pruno {
         });
       });
     }
+  }
+
+  static plugins(cb) {
+    exec('npm ls --json', (err, stdout, stderr) => {
+      if (err) throw err;
+
+      var modules = JSON.parse(stdout);
+      Object.keys(modules).forEach(mod => {
+        if (mod.test(/^pruno\-(.+)$/i)) {
+          var plugin = require(modules[mod]);
+          Pruno.extend(plugin);
+        }
+      });
+
+      Pruno.call(Pruno, cb);
+    });
   }
 
   static extend(task) {
