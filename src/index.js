@@ -1,12 +1,14 @@
 import path from "path";
 import runSequence from "run-sequence";
-import util from "gulp-util";
-import requireDir from "require-dir";
 import path from "path";
+import fs from "fs";
 import compileParams from "./utils/compileParams";
 import merge from "deepmerge";
 import callsite from "callsite";
-import {exec} from "child_process";
+import colors from 'colors';
+import Notification from './utils/notification';
+import {pwd} from 'shelljs';
+import assign from 'object-assign';
 
 var tasks = {};
 var queue = {};
@@ -15,7 +17,7 @@ var settings = {vars: {src: './src', dist: './dist'}};
 export default class Pruno {
   constructor(cb) {
     try {
-      let parent = module.parent;
+      var parent = module.parent;
       var gulp = parent.require('gulp');
     }
     catch (err) {
@@ -32,13 +34,13 @@ export default class Pruno {
       );
     }
 
-    requireDir('./modules');
-
-    cb(tasks);
+    require('./modules/configure');
 
     var defaults = [];
     var gulpWatchers = [];
     var watchers = [];
+
+    cb(tasks);
 
     Object.keys(queue).forEach((taskName) => {
       var task = queue[taskName].instance;
@@ -48,7 +50,10 @@ export default class Pruno {
       }
 
       var watchName = `${taskName}:watch`;
-      var watcher = task.generateWatcher ? task.generateWatcher(gulp, task.params) : false;
+      var watcher = task.generateWatcher ?
+        task.generateWatcher(gulp, task.params) :
+        false;
+
       if (watchers.indexOf(watchName) === -1) {
         if (typeof watcher === 'function') {
           gulp.task(watchName, watcher);
@@ -60,18 +65,10 @@ export default class Pruno {
           gulpWatchers.push({search, watchName});
         }
       }
-    });
+      runSequence = runSequence.use(gulp);
 
-    runSequence = runSequence.use(gulp);
-
-    gulp.task('default', function() {
-      util.log(
-        'Starting \'' +
-        util.colors.cyan('~PRUNO~') +
-        '\'... (' +
-        util.colors.green(defaults.join(', ')) +
-        ')'
-      );
+      var tasks = defaults.map(task => task.underline.yellow).join(', ');
+      Pruno.notify('Starting', tasks);
 
       runSequence(defaults);
     });
@@ -91,19 +88,19 @@ export default class Pruno {
   }
 
   static plugins(cb) {
-    exec('npm ls --json', (err, stdout, stderr) => {
-      if (err) throw err;
+    var {dependencies, devDependencies} = module.parent.require(
+      path.join(pwd(), 'package.json')
+    );
 
-      var modules = JSON.parse(stdout);
-      Object.keys(modules).forEach(mod => {
-        if (mod.test(/^pruno\-(.+)$/i)) {
-          var plugin = require(modules[mod]);
-          Pruno.extend(plugin);
-        }
-      });
-
-      Pruno.call(Pruno, cb);
+    var modules = Object.keys(assign(
+      {},
+      (dependencies || {}),
+      (devDependencies || {}))
+    ).filter(mod => /^pruno\-(.+)/.exec(mod)).forEach(mod => {
+      var mix = module.parent.require(mod);
     });
+
+    return Pruno;
   }
 
   static extend(task) {
@@ -111,7 +108,6 @@ export default class Pruno {
       .replace(/Task$/i, '');
 
     var taskName, instance;
-
     tasks[displayName] = (name = null, params = {}) => {
       if (typeof name === 'object') {
         params = name;
@@ -145,6 +141,36 @@ export default class Pruno {
 
   static setDefaults(opts = {}) {
     settings = merge(settings, opts);
+  }
+
+  static notify(plugin, ...parts) {
+    var timestamp = new Date();
+    var stamp = `[pruno - ${timestamp}]`;
+    var pluginLabel = `[${plugin}]`;
+
+    parts = Array.isArray(parts) ? parts : [parts];
+
+    console.log.apply(console, [
+      stamp.bold.green,
+      pluginLabel.bold.magenta
+    ].concat(parts));
+
+    new Notification().message(parts.join(' '));
+  }
+
+  static error(plugin, ...parts) {
+    var timestamp = new Date();
+    var stamp = `[pruno - ${timestamp}]`;
+    var pluginLabel = `[${plugin}]`;
+
+    parts = Array.isArray(parts) ? parts : [parts];
+
+    console.error.apply(console, [
+      stamp.bold.red,
+      pluginLabel.bold.magenta
+    ].concat(parts));
+
+    new Notification().error(parts.join(' '));
   }
 
   static get(property) {
