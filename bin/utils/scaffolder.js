@@ -1,4 +1,4 @@
-import {pwd, cp} from "shelljs";
+import {pwd, cp, mv} from "shelljs";
 import {join} from "path";
 import {save, saveDev} from "../utils/install";
 import buildPath from "../utils/build-path";
@@ -25,15 +25,13 @@ var generateReact = (options) => {
     'gulp',
     'pruno-js',
     'pruno-stylus',
-    'pruno-http',
-    'pruno-publish'
+    'pruno-http'
+    // 'pruno-publish'
     ])
     .then(() => log('Installed build tools for React.'))
     .catch(err => log(err));
 
-  cp(
-    '-R',
-    join(__dirname, '..', 'statics', 'react', '*'),
-    pwd()
-  );
+  cp('-R', join(__dirname, '..', 'statics', 'react', '*'), pwd());
+  mv('-f', join(pwd(), 'app'), options.src);
+  mv('-f', join(pwd(), 'config', options.config));
 }
