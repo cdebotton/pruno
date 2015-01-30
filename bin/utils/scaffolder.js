@@ -12,14 +12,28 @@ export default function (scaffold, options) {
 }
 
 var generateReact = (options) => {
-  save(['react', 'react-router', 'fluxd'])
-    .then(() => log('Installed React and ReactRouter'))
+  save([
+    'react',
+    'react-router',
+    'fluxd'
+    ])
+    .then(() => log('Installed front-end assets for React.'))
     .catch(err => log(err));
 
-  buildPath(options.src);
+  saveDev([
+    'pruno',
+    'gulp',
+    'pruno-js',
+    'pruno-stylus',
+    'pruno-http',
+    'pruno-publish'
+    ])
+    .then(() => log('Installed build tools for React.'))
+    .catch(err => log(err));
+
   cp(
     '-R',
     join(__dirname, '..', 'statics', 'react', '*'),
-    join(pwd(), options.src)
+    pwd()
   );
 }

@@ -1,0 +1,9 @@
+js:
+  source-maps: false
+  uglify: true
+  dist: ::dist/bundle.min.js
+
+stylus:
+  source-maps: false
+  minify: true
+  dist: ::dist/stylesheets/app.min.css
