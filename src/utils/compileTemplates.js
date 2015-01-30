@@ -10,7 +10,7 @@ export default function(args) {
   var {params, opts, gulp, compiler} = args;
   var topLevel = pruno.get('topLevel');
   var filters = [`!src/templates/_layout.html`, '*'];
-  var IGNORE_SEARCH = new RegExp(`^${params.ignorePrefix}`);
+  var IGNORE_SEARCH = new RegExp('^'+ params.ignorePrefix);
 
   gulp.src(params.entry)
     .on('error', function(err) {
@@ -29,11 +29,11 @@ export default function(args) {
         path.basename(file.path).replace(/\.html$/, '')
       );
 
-      if (fs.existsSync(`${dataFile}.js`)) {
-        data = require(`${dataFile}.js`);
+      if (fs.existsSync(dataFile + '.js')) {
+        data = require(dataFile + '.js');
       }
-      else if (fs.existsSync(`${dataFile}.json`)) {
-        data = require(`${dataFile}.json`);
+      else if (fs.existsSync(dataFile + '.json')) {
+        data = require(dataFile + '.json');
       }
 
       if (typeof data === 'function') {

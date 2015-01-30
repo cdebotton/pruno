@@ -24,6 +24,7 @@ var LintTask = (function () {
         };
       },
       writable: true,
+      enumerable: true,
       configurable: true
     }
   }, {
@@ -34,6 +35,7 @@ var LintTask = (function () {
         gulp.src(params.search).pipe(plugins.plumber()).pipe(plugins.eslint(opts)).pipe(plugins.eslint.format()).pipe(plugins.eslint.failOnError());
       },
       writable: true,
+      enumerable: true,
       configurable: true
     },
     generateWatcher: {
@@ -41,6 +43,7 @@ var LintTask = (function () {
         return true;
       },
       writable: true,
+      enumerable: true,
       configurable: true
     }
   });

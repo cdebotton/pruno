@@ -23,18 +23,19 @@
     "url": "https://github.com/cdebotton/pruno/issues"
   },
   "homepage": "https://github.com/cdebotton/pruno",
-  "devDependencies": {},
+  "devDependencies": {
+    "6to5": "^3.1.1",
+    "del": "^1.1.1",
+    "gulp": "^3.8.10",
+    "gulp-6to5": "^3.0.0"
+  },
   "dependencies": {
     "6to5": "^3.1.1",
     "callsite": "^1.0.0",
     "colors": "^1.0.3",
     "commander": "^2.6.0",
     "deepmerge": "^0.2.7",
-    "del": "^1.1.1",
-    "gulp": "^3.8.10",
-    "gulp-6to5": "^3.0.0",
     "gulp-notify": "^2.2.0",
-    "gulp-plumber": "^0.6.6",
     "handlebars": "^2.0.0",
     "npm": "^2.3.0",
     "object-assign": "^2.0.0",

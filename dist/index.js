@@ -120,6 +120,7 @@ var Pruno = (function () {
         return Pruno;
       },
       writable: true,
+      enumerable: true,
       configurable: true
     },
     extend: {
@@ -151,6 +152,7 @@ var Pruno = (function () {
         };
       },
       writable: true,
+      enumerable: true,
       configurable: true
     },
     use: {
@@ -158,6 +160,7 @@ var Pruno = (function () {
         throw new Error("pruno.use(...) has been deprecated. The parent modules gulp instance " + "is now automatically inferred.");
       },
       writable: true,
+      enumerable: true,
       configurable: true
     },
     setDefaults: {
@@ -166,6 +169,7 @@ var Pruno = (function () {
         settings = merge(settings, opts);
       },
       writable: true,
+      enumerable: true,
       configurable: true
     },
     notify: {
@@ -185,6 +189,7 @@ var Pruno = (function () {
         new Notification().message(parts.join(" "));
       },
       writable: true,
+      enumerable: true,
       configurable: true
     },
     error: {
@@ -204,6 +209,7 @@ var Pruno = (function () {
         new Notification().error(parts.join(" "));
       },
       writable: true,
+      enumerable: true,
       configurable: true
     },
     get: {
@@ -215,6 +221,7 @@ var Pruno = (function () {
         return settings[property];
       },
       writable: true,
+      enumerable: true,
       configurable: true
     }
   });
