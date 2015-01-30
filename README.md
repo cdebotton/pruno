@@ -3,7 +3,7 @@ Pruno is a build tool manager that is configured by environment-based yaml files
 
 Pruno is modular, so you only need to install what you need. This package includes scaffolding tools as well as an abstraction on top of gulp for making writing your gulpfiles dead simple.
 
-### Build tool
+## Build tool
 To use pruno to build assets, install pruno and gulp as devDependencies with `npm install -D pruno gulp`. Then create a `gulpfile.js` in the root of your project. Instead of interacting directly with gulp, you will use pruno to generate your gulp tasks.
 
 ```js
@@ -18,7 +18,7 @@ pruno(function(mix) {
 
 Pruno does not come with mixes (task groups), to add functionality, you need to install one or more of the different mixes on npm as `"dependencies"` or `"devDependencies"`.
 
-#### Mixes
+## Mixes
 - `npm install -s pruno-js` [[npm]](http://npmjs.com/package/pruno-js)
   - Provides the `.js(...)` mix, which will use browserify to build your javascript assets with browserify providing sourcemaps, uglification, ES6 transforms, React transforms, and env transforms.
 - `npm install -s pruno-stylus` [[npm]](http://npmjs.com/package/pruno-stylus)
@@ -68,7 +68,7 @@ With this, running `gulp` will run all non-lasting tasks (`js`, `stylus`, `mocha
 With `gulp watch`, it will continually run the one-off tasks when the files they watch change, it will run the tasks that continue to run. In this case, it will spin up a simple static server accessible at `http://localhost:3000`.
 
 
-### Configuration
+## Configuration
 Pruno comes with a configure mix, it is used to point to the configuration file for the project. Pruno.configure(...) will read cascaded yaml files based on environment. To use the configure mix, in your gulpfile, use the following command:
 
 ```js
