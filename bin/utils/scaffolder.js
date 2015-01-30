@@ -8,7 +8,13 @@ export default function (scaffold, options) {
     case 'react':
       generateReact(options);
       break;
+    default:
+      generateDefaults(options);
+      break;
   }
+
+  mv('-f', join(pwd(), 'app'), options.src);
+  mv('-f', join(pwd(), 'config', options.config));
 }
 
 var generateReact = (options) => {
@@ -32,6 +38,14 @@ var generateReact = (options) => {
     .catch(err => log(err));
 
   cp('-R', join(__dirname, '..', 'statics', 'react', '*'), pwd());
-  mv('-f', join(pwd(), 'app'), options.src);
-  mv('-f', join(pwd(), 'config', options.config));
 }
+
+var generateDefaults = (options) => {
+  saveDev([
+    'pruno',
+    'gulp'
+    ])
+    .then(() => log('Installed build tools'));
+
+  cp('-R', join(__dirname, '..', 'statics', 'defaults', '*'), pwd());
+};

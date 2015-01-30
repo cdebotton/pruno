@@ -11,7 +11,7 @@ let init = (program) => program.command('init <name> [scaffold]')
   .option('-s, --src <src>', 'Where would you like to store the pre-compiled source files?', './src')
   .option('-d, --dist <dist>', 'Where would you like to store the compiled project files?', './dist')
   .option('-c, --config <config>', 'Where is the pruno config located?', './config')
-  .action((name, scaffold, options) => {
+  .action((name, scaffold = false, options = {}) => {
     // Load NPM
     npm.load(npm.config, (err, npm) => {
       log('Initializing pruno.');
@@ -19,15 +19,11 @@ let init = (program) => program.command('init <name> [scaffold]')
 
       // Create package.json file
       npm.commands.init(pwd(), (err, data) => {
-        // Generate gulpfile.js
-        Generator.gulpfile(options);
-        saveDev(['pruno', 'gulp']);
-
         // Generate config file
         Generator.config(options);
 
         // Scaffold React project
-        if (scaffold) scaffolder(scaffold, options);
+        scaffolder(scaffold, options);
       });
     });
   });
