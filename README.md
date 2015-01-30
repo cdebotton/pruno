@@ -1,5 +1,5 @@
 # pruno
-Pruno is a globally installed build tool manager and project scaffolding tool that is configured by environment-based yaml files. It currently has several modules for compiling project resources, running servers, minifying images, and more. Pruno will also scaffold out projects with various generators. Currently, React is the primary focus.
+Pruno is a build tool manager that is configured by environment-based yaml files. It currently has several modules for compiling project resources, running servers, minifying images, and more.
 
 Pruno is modular, so you only need to install what you need. This package includes scaffolding tools as well as an abstraction on top of gulp for making writing your gulpfiles dead simple.
 
@@ -128,62 +128,3 @@ pruno(function(mix) {
 ```
 
 If gulp is run in the production environment, stylus will be run with default values extended by the environment specific configuration. One important thing to note is the user of `::dist` and `::src`, they reference the vars defined in your pruno.yaml file. You can define any variables you want, and variables can differ from environment to environment.
-
-## CLI tool (global)
-
-### Commands
-By running `npm install -g pruno`, you will be given access to the pruno terminal command.
-Executing `pruno --help` will list the available commands.
-
-```
-  Usage: pruno [options] [command]
-
-
-  Commands:
-
-    init [options] <name> [scaffold]  Initialize Pruno for this project.
-    [...commands] [options]           undefined
-
-  Options:
-
-    -h, --help     output usage information
-    -V, --version  output the version number
-```
-
-### Client tools
-
-To initialize a React/Flux project, run `pruno init react`. This will setup the proper folder structure and create your boilerplate files. It will also require the following dependencies:
-
-#### Libraries
-- react
-- react-router
-- fluxd
-
-#### Build
-- gulp
-- pruno
-- pruno-js
-- pruno-stylus
-- pruno-http
-- pruno-publish
-- pruno-images
-
-### Server tools
-
-To initialize a koa/sql server, use `pruno init koa`. This will setup a koa backend with routes, models, and a sequelize database scaffold. It will install the following dependencies:
-
-#### Http
-- koa
-- koa-bodyparser
-- koa-compress
-- koa-json
-- koa-static
-- koa-mount
-- koa-router
-- koa-isomorphic
-
-#### Database
-- sequelize
-- sequelize-cli
-- pg
-- pg-hstore
