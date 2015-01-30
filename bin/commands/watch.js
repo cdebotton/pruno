@@ -11,3 +11,5 @@ let watch = (program) => program.command('[...commands]')
       log("Pruno watch stopped.");
     });
   });
+
+export default watch;

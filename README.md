@@ -1,340 +1,178 @@
 # pruno
-A gulp task manager with cascading configuration. Pruno was inspired by Laravel Elixer and adds several features like a simplified task syntax and cascading configuration.
+Pruno is a globally installed build tool manager and project scaffolding tool that is configured by environment-based yaml files. It currently has several modules for compiling project resources, running servers, minifying images, and more. Pruno will also scaffold out projects with various generators. Currently, React is the primary focus.
 
-## Installation
-Simply run `npm install -D pruno gulp` in your terminal.
+Pruno is modular, so you only need to install what you need. This package includes scaffolding tools as well as an abstraction on top of gulp for making writing your gulpfiles dead simple.
 
-## Use
-
-### Supported commands
-With pruno, you can run `gulp`, `gulp watch`, `gulp --production` or
-`NODE_ENV={yourEnv} gulp (watch?)`. Gulp will run using the configuration
-that matches your environment.
-
-### Module support
-- es6 (as a param in the js module)
-  - Compile ES6 to ES5, support for classes, import/export, generators, etc.
-  - Full list of supported features at [6to5.org](https://6to5.org/docs/tour/).
-- imagemin
-  - Compress jpeg, pngs, and svgs.
-- jade (with gulp-data support)
-  - Minimal html templating language.
-  - Data passed in (by default) to `./src/templates/data/{templateName}.(json|js)`.
-- koa
-  - Runs your applications koa server with livereload.
-- less
-  - LESS Style transpiling.
-- livereload
-  - Automatically reloads the page when you edit files.
-- mocha (with coffee and should support as params)
-  - Mocha BDD Test Framework.
-- react (as a param in the js module)
-  - Compiled JSX syntax through 6to5. Currently supports React 0.12.* syntax.
-- sass/scss
-  - SASS/SCSS style transpiling.
-- stylus
-  - Stylus style transpiling.
-- swig (with gulp data support)
-  - Swig HTML templates.
-- dev http server
-  - A simple express serve for serving your dist folder when you are work on static files.
-
-### Simple Configuration
-Using pruno is as simple as telling it which tasks to run. It assumes a set of
-default configuration options to let you get started quickly.
-```js
-'use strict';
-
-/**
- * You must pass an instance of the projects local gulp so that the gulp cli
- * will take advantage of the pruno defined tasks.
- */
-
-var pruno = require('pruno')
-       .use(require('gulp'));
-
-pruno(function(mix) {
-  mix
-    .assets()
-    .publish()
-    .stylus()
-    .browserify()
-    .koa()
-    .livereload();
-});
-```
-
-### Yaml Configuration
-
-If you want to change the global defaults used by Pruno, you can point
-it to a directory that holds the environment-based yaml configuration.
-Pruno leverages [yaml-env-config](https://www.npmjs.com/package/yaml-env-config),
-so any configuration must be stored in a pruno.yaml file.
-
-```yaml
-# config/pruno.yaml
-
-browserify:
-  es6: true
-  runtime: true
-  entry: ./src/javascripts/entry.js
-  dist: ./dist/application.js
-stylus:
-  entry: ./src/styles/index.styl
-  dist: ./dist/app.css
-  normalize: true
-  font-awesome: true
-```
-
-```yaml
-# config/production/pruno.yaml
-
-browserify:
-  uglify: true
-  source-maps: false
-  dist: ./dist/application.min.js
-stylus:
-  source-maps: false
-  minify: true
-  dist: ./dist/app.min.css
-```
-
-To use these commands, in our pruno run block, we would start the calls off
-with the following:
+### Build tool
+To use pruno to build assets, install pruno and gulp as devDependencies with `npm install -D pruno gulp`. Then create a `gulpfile.js` in the root of your project. Instead of interacting directly with gulp, you will use pruno to generate your gulp tasks.
 
 ```js
-pruno(function(mix) {
-    mix.configure('./config')
-      .assets()
-      // ...
-});
-```
+"use strict";
 
-By running any of the `gulp` commands, gulp will compile your code based on
-the parameters set in those config files.
-
-### Inline Configuration
-Lastly you can use inline configuration in your  Gulpfile to override your
-env-configuration as well as the Pruno defaults. In our Gulpfile, let's do this:
-
-```js
-var pruno = require('pruno')
-       .use(require('gulp'));
-
-pruno(function(mix) {
-  mix.configure('./config')
-  .stylus({
-    entry: './app/styles/client.styl',
-    dist: './public/stylesheets/client.css'
-  })
-  .stylus({
-    entry: './app/styles/admin.styl',
-    dist: './pubic/stylesheets/admin.css'
-  })
-  .browserify()
-  .publish({
-    sources: [
-      './node_modules/font-awesome/fonts/**/*'
-    ],
-    dist: './public/fonts/'
-  });
-});
-```
-
-### Writing custom modules
-Writing custom modules is easy, just follow the boilerplate:
-```js
-// ES6
-import pruno from 'puno';
-
-class MyCustomTask {
-  // Declare the default parameters for the module.
-  static getDefaults() {
-    return {moduleA: true, moduleB: false, search: ['./app/**/*.coffee']};
-  }
-
-  // Do initialization in the constructor.
-  constructor(params = {}) {
-    this.params = {};
-  }
-
-  // Action taken when running task a single time.
-  // gulp is the reference to the project's gulp instance,
-  // and params are the compiled cascaded configuration.
-  enqueue(gulp, params = {}) {
-    return gulp.src(params.entry)
-      .pipe(someGulpPlugin())
-      .pipe(gulp.dist(params.dist));
-  }
-
-  generateWatcher(gulp, params) {
-    return () => {
-      // Watch action
-    }
-  }
-}
-
-export default pruno.extend(MyCustomTask);
-```
-
-```js
 var pruno = require('pruno');
 
-// ES5
-function MyCustomTask(params) {
-  this.params = params;
-}
-
-MyCustomTask.getDefaults = function() {
-  return {moduleA: true, moduleB: false, search: ['./app/**/*.coffee']};
-};
-
-MyCustomTask.prototype.enqueue = function(gulp, params) {
-  return gulp.src(params.entry)
-    .pipe(someGulpPlugin())
-    .pipe(gulp.dist(params.dist));
-};
-
-MyCustomTask.prototype.generateWatcher = function(gulp, params) {
-  return function() {
-    // Do watching action.
-  };
-}
-
-module.exports = pruno.extend(MyCustomTask);
+pruno(function(mix) {
+  return mix;
+});
 ```
 
-A note on watchers, if you want to simply run a simple gulp.watch on the
-files described in params.search, all you need to do is return true from
-generateWatcher(...).
+Pruno does not come with mixes (task groups), to add functionality, you need to install one or more of the different mixes on npm as `"dependencies"` or `"devDependencies"`.
+
+#### Mixes
+- `npm install -s pruno-js` [http://npmsjs.com/package/pruno-js]([npm]) provides the `.js(...)` mix, which will use browserify to build your javascript assets with browserify providing sourcemaps, uglification, ES6 transforms, React transforms, and env transforms.
+- `npm install -s pruno-stylus` [http://npmsjs.com/package/pruno-stylus]([npm]) provides the `.stylus(...)` mix, which compiles stylus files with normalize.css, font-awesome, nib, jeet, and rupture.
+- `npm install -s pruno-less` [http://npmsjs.com/package/pruno-less]([npm]) provides the `.less(...)` mix, which compiles LESS files with normalize.css, and font-awesome.
+- `npm install -s pruno-sass` [http://npmsjs.com/package/pruno-sass]([npm]) provides the `.sass(...)` mix, which compiles SASS files with normalize.css, and font-awesome.
+- `npm install -s pruno-http` [http://npmsjs.com/package/pruno-http]([npm]) provides the `.http(...)` mix, which provides a static server for prototyping, or allows you to run your own server with node `--harmony` flags.
+- `npm install -s pruno-publish` [http://npmsjs.com/package/pruno-publish]([npm]) provides the `.publish(...)` mix, which publishes assets to your public directory.
+- `npm install -s pruno-jade` [http://npmsjs.com/package/pruno-jade]([npm]) provides the `.jade(...)` mix, which compiles jade templates.
+- `npm install -s pruno-swig` [http://npmsjs.com/package/pruno-swig]([npm]) provides the `.swig(...)` mix, which compiles swig templates.
+- `npm install -s pruno-livereload` [http://npmsjs.com/package/pruno-livereload]([npm]) provides the `.livereload(...)` mix, which provides livereload to non-node server environments.
+- `npm install -s pruno-lint` [http://npmsjs.com/package/pruno-lint]([npm]) provides the `.lint(...)` mix, which runs ESLint.
+- `npm install -s pruno-mocha` [http://npmsjs.com/package/pruno-mocha]([npm]) provides the `.mocha(...)` mix, which runs mocha tests.
+
+To install and use some mixes, try this:
+
+In your terminal, after installing gulp and pruno, install the following mixes: `npm install -D pruno-js`, `npm install -D pruno-stylus`, `npm install pruno-mocha`, `npm install -D pruno-http`. Then in your gulpfile.js, use the following code.
 
 ```js
-class MyTask {
-  // ...
+"use strict";
 
-  generateWatcher() {
-    return true;
-  }
+var pruno = require('pruno');
 
-  // ...
-}
+// Load all pruno-mixes that are installed as dependencies or devDependencies.
+pruno.plugins();
+
+pruno(function(mix) {
+    return mix
+      .js({ es6: true })
+      .stylus({normalize: true, 'font-awesome': true})
+      .mocha()
+      .http();
+});
 ```
 
-### Default configuration
-#### Development Environment
+With this, running `gulp` will run all non-lasting tasks (`js`, `stylus`, `mocha`). These are the scripts that only need to be run once. It will compile Javascript with es6 and react transforms, compile stylus, prepending font-awesome and normalize.css, and run mocha tests.
+
+With `gulp watch`, it will continually run the one-off tasks when the files they watch change, it will run the tasks that continue to run. In this case, it will spin up a simple static server accessible at `http://localhost:3000`.
+
+
+### Configuration
+Pruno comes with a configure mix, it is used to point to the configuration file for the project. Pruno.configure(...) will read cascaded yaml files based on environment. To use the configure mix, in your gulpfile, use the following command:
+
+```js
+// ...
+
+pruno(function(mix) {
+    mix
+      .configure({dir: __dirname + '/config'});
+});
+
+// ...
+```
+
+This will tell pruno to look at your `./config` directory and read yaml files organized by environment. Files found in the root of the folder are set as defaults, and overridden by the contents of the yaml files in nested environment folders. These files should be organized in this structure:
 
 ```yaml
-assets:
-  sources:
-    - '!./app/assets/images/**/*',
-    - ./app/assets/**/*
-  dist: ./public/
+# ./config/pruno.yaml
+vars:
+  dist: ./public
+  src: ./app
 
-browserify:
-  entry: ./app/index.js
-  dist: ./public/bundle.js
-  uglify: false
-  source-maps: true
-  es6: false
-  runtime: false
-
-del:
-  - ./public/
-
-http:
-  listen: 3000
-  env: development
-  dist: ::dist
-
-images:
-  src: ./app/assets/img/**/*
-  dist: ./public/img/
-  use:
-    - imagemin-pngcrush
-
-jade:
-  data: ::src/templates/data
-  entry: ::src/templates/**/*.jade
-  dist: ::dist
-  search:
-    - ::src/templates/**/*.jade
-
-koa:
-  env: development
-  server: ./server.js
-
-less:
-  entry: ./app/less/index.less
-  dist: ./public/stylesheets/app.css
-  search: ./app/**/*.less
-  minify: false
-  source-maps:true
-  font-awesome: false
-  normalize: false
-
-mocha:
-  search:
-    - ./src/**/*.js
-    - ./tests/**/*.js
-    - ./tests/**/*.coffee
-  coffee: false
-  use:
-    - should
-  runner: spec
-
-publish:
-  src: null
-  dist: null
-
-sass:
-  entry: ./app/sass/index.sass
-  dist: ./public/stylesheets/app.css
-  search:
-    - ./app/**/*.sass
-    - ./app/**/*.scss
-  minify: false
-  source-maps:true
-  font-awesome: false
-  normalize: false
+js:
+  es6: true
+  dist: '::dist/bundle.js'
 
 stylus:
-  entry: ./app/stylus/index.styl
-  dist: ./public/stylesheets/app.css
-  search: ./app/**/*.styl
-  minify: false
-  source-maps:true
-  font-awesome: false
-  normalize: false
-  use:
-    - nib
-    - jeet
-    - rupture
-
-swig:
-  data: ::src/templates/data
-  entry: ::src/templates/**/*.html
-  dist: ::dist
-  search:
-    - ::src/templates/**/*.html
+  font-awesome: true
+  normalize: true
+  dist: '::dist/stylesheets/app.css'
 ```
-
-#### Config variables
-Pruno supports configuration variable using the '::var' syntax. To declare
-a variable, it must be declared in yaml at the top level of the pruno
-configuration object.
-
-By default, two global config vars are set. `src: ./app` and `output: ./public`.
-
-To use a variable, simply reference its variable name with a preceding '::'.
-For example:
 
 ```yaml
-# config/pruno
+# ./config/production/yaml
 
-src: ./src
-output: ./dist
+js:
+  uglify: true
+  source-maps: false
+  dist: '::dist/bundle.min.js'
 
 stylus:
-  entry: ::src/stylesheets/index.styl
-  dist: ::output/scripts/bundle.js
+  minify: true
+  source-maps: false
+  dist: '::dist/stylesheets/app.min.css'
 ```
+
+These yaml files will compile down to configuration objects for pruno-js and pruno-stylus mixes in development and production environments. To run pruno in a specific environment, set the NODE_ENV while running gulp. Eg, `NODE_ENV=production gulp`. Given the following gulpfile.js:
+
+```js
+// ...
+pruno(function(mix) {
+  return mix
+    .configure({dir: __dirname + '/config'})
+    .stylus()
+    .js();
+});
+// ...
+```
+
+If gulp is run in the production environment, stylus will be run with default values extended by the environment specific configuration. One important thing to note is the user of `::dist` and `::src`, they reference the vars defined in your pruno.yaml file. You can define any variables you want, and variables can differ from environment to environment.
+
+## CLI tool (global)
+
+### Commands
+By running `npm install -g pruno`, you will be given access to the pruno terminal command.
+Executing `pruno --help` will list the available commands.
+
+```
+  Usage: pruno [options] [command]
+
+
+  Commands:
+
+    init [options] <name> [scaffold]  Initialize Pruno for this project.
+    [...commands] [options]           undefined
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+```
+
+### Client tools
+
+To initialize a React/Flux project, run `pruno init react`. This will setup the proper folder structure and create your boilerplate files. It will also require the following dependencies:
+
+#### Libraries
+- react
+- react-router
+- fluxd
+
+#### Build
+- gulp
+- pruno
+- pruno-js
+- pruno-stylus
+- pruno-http
+- pruno-publish
+- pruno-images
+
+### Server tools
+
+To initialize a koa/sql server, use `pruno init koa`. This will setup a koa backend with routes, models, and a sequelize database scaffold. It will install the following dependencies:
+
+#### Http
+- koa
+- koa-bodyparser
+- koa-compress
+- koa-json
+- koa-static
+- koa-mount
+- koa-router
+- koa-isomorphic
+
+#### Database
+- sequelize
+- sequelize-cli
+- pg
+- pg-hstore

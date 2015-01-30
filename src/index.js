@@ -65,8 +65,11 @@ export default class Pruno {
           gulpWatchers.push({search, watchName});
         }
       }
-      runSequence = runSequence.use(gulp);
+    });
 
+    runSequence = runSequence.use(gulp);
+
+    gulp.task('default', function() {
       var tasks = defaults.map(task => task.underline.yellow).join(', ');
       Pruno.notify('Starting', tasks);
 

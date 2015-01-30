@@ -28,7 +28,6 @@ var JadeTask = (function () {
         };
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   }, {
@@ -41,7 +40,6 @@ var JadeTask = (function () {
         return compileTemplates({ gulp: gulp, compiler: compiler, params: params, opts: opts });
       },
       writable: true,
-      enumerable: true,
       configurable: true
     },
     generateWatcher: {
@@ -49,7 +47,6 @@ var JadeTask = (function () {
         return true;
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   });

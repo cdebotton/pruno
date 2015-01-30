@@ -21,7 +21,6 @@ var Notification = (function () {
         });
       },
       writable: true,
-      enumerable: true,
       configurable: true
     },
     error: {
@@ -33,7 +32,6 @@ var Notification = (function () {
         })(e);
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   });

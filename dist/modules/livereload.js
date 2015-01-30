@@ -24,7 +24,6 @@ var LiveReloadTask = (function () {
         };
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   }, {
@@ -39,7 +38,6 @@ var LiveReloadTask = (function () {
         };
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   });

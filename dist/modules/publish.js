@@ -30,7 +30,6 @@ var PublishTask = (function () {
         };
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   }, {
@@ -51,7 +50,6 @@ var PublishTask = (function () {
         }))).pipe(gulp.dest(params.dist));
       },
       writable: true,
-      enumerable: true,
       configurable: true
     },
     generateWatcher: {
@@ -60,7 +58,6 @@ var PublishTask = (function () {
         return true;
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   });

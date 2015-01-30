@@ -13,13 +13,15 @@ export default function(args) {
   var IGNORE_SEARCH = new RegExp(`^${params.ignorePrefix}`);
 
   gulp.src(params.entry)
-    .on('error', (err) => plugins.util.log(err))
-    .pipe(through.obj((file, enc, cb) => {
+    .on('error', function(err) {
+      return plugins.util.log(err);
+    })
+    .pipe(through.obj(function(file, enc, cb) {
       var fileName = path.basename(file.path);
       var isSys = IGNORE_SEARCH.test(fileName);
       cb(null, isSys ? null : file);
     }))
-    .pipe(plugins.data((file, cb) => {
+    .pipe(plugins.data(function(file, cb) {
       var data;
       var dataFile = path.join(
         topLevel,

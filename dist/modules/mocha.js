@@ -34,7 +34,6 @@ var MochaTask = (function () {
         };
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   }, {
@@ -59,7 +58,6 @@ var MochaTask = (function () {
         return gulp.src(params.search, { read: false }).pipe(plugins.plumber()).pipe(plugins.mocha(opts)).pipe(new Notification().message("Mocha run!"));
       },
       writable: true,
-      enumerable: true,
       configurable: true
     },
     generateWatcher: {
@@ -67,7 +65,6 @@ var MochaTask = (function () {
         return true;
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   });

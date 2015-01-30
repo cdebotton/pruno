@@ -28,7 +28,6 @@ var SwigTask = (function () {
         };
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   }, {
@@ -49,7 +48,6 @@ var SwigTask = (function () {
         return compileTemplates({ gulp: gulp, compiler: compiler, params: params, opts: opts });
       },
       writable: true,
-      enumerable: true,
       configurable: true
     },
     generateWatcher: {
@@ -57,7 +55,6 @@ var SwigTask = (function () {
         return true;
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   });

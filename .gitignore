@@ -1,4 +1,4 @@
 .DS_Store
 ._*
-Thumb.db
 node_modules
+npm-debug.log
