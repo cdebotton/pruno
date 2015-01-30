@@ -19,27 +19,27 @@ pruno(function(mix) {
 Pruno does not come with mixes (task groups), to add functionality, you need to install one or more of the different mixes on npm as `"dependencies"` or `"devDependencies"`.
 
 #### Mixes
-- `npm install -s pruno-js` [[npm]](http://npmsjs.com/package/pruno-js)
+- `npm install -s pruno-js` [[npm]](http://npmjs.com/package/pruno-js)
   - Provides the `.js(...)` mix, which will use browserify to build your javascript assets with browserify providing sourcemaps, uglification, ES6 transforms, React transforms, and env transforms.
-- `npm install -s pruno-stylus` [[npm]](http://npmsjs.com/package/pruno-stylus)
+- `npm install -s pruno-stylus` [[npm]](http://npmjs.com/package/pruno-stylus)
   - Provides the `.stylus(...)` mix, which compiles stylus files with normalize.css, font-awesome, nib, jeet, and rupture.
-- `npm install -s pruno-less` [[npm]](http://npmsjs.com/package/pruno-less)
+- `npm install -s pruno-less` [[npm]](http://npmjs.com/package/pruno-less)
   - Provides the `.less(...)` mix, which compiles LESS files with normalize.css, and font-awesome.
-- `npm install -s pruno-sass` [[npm]](http://npmsjs.com/package/pruno-sass)
+- `npm install -s pruno-sass` [[npm]](http://npmjs.com/package/pruno-sass)
   - Provides the `.sass(...)` mix, which compiles SASS files with normalize.css, and font-awesome.
-- `npm install -s pruno-http` [[npm]](http://npmsjs.com/package/pruno-http)
+- `npm install -s pruno-http` [[npm]](http://npmjs.com/package/pruno-http)
   - Provides the `.http(...)` mix, which provides a static server for prototyping, or allows you to run your own server with node `--harmony` flags.
-- `npm install -s pruno-publish` [[npm]](http://npmsjs.com/package/pruno-publish)
+- `npm install -s pruno-publish` [[npm]](http://npmjs.com/package/pruno-publish)
   - Provides the `.publish(...)` mix, which publishes assets to your public directory.
-- `npm install -s pruno-jade` [[npm]](http://npmsjs.com/package/pruno-jade)
+- `npm install -s pruno-jade` [[npm]](http://npmjs.com/package/pruno-jade)
   - Provides the `.jade(...)` mix, which compiles jade templates.
-- `npm install -s pruno-swig` [[npm]](http://npmsjs.com/package/pruno-swig)
+- `npm install -s pruno-swig` [[npm]](http://npmjs.com/package/pruno-swig)
   - Provides the `.swig(...)` mix, which compiles swig templates.
-- `npm install -s pruno-livereload` [[npm]](http://npmsjs.com/package/pruno-livereload)
+- `npm install -s pruno-livereload` [[npm]](http://npmjs.com/package/pruno-livereload)
   - Provides the `.livereload(...)` mix, which provides livereload to non-node server environments.
-- `npm install -s pruno-lint` [[npm]](http://npmsjs.com/package/pruno-lint)
+- `npm install -s pruno-lint` [[npm]](http://npmjs.com/package/pruno-lint)
   - Provides the `.lint(...)` mix, which runs ESLint.
-- `npm install -s pruno-mocha` [[npm]](http://npmsjs.com/package/pruno-mocha)
+- `npm install -s pruno-mocha` [[npm]](http://npmjs.com/package/pruno-mocha)
   - Provides the `.mocha(...)` mix, which runs mocha tests.
 
 To install and use some mixes, try this:
