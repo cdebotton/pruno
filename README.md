@@ -19,17 +19,17 @@ pruno(function(mix) {
 Pruno does not come with mixes (task groups), to add functionality, you need to install one or more of the different mixes on npm as `"dependencies"` or `"devDependencies"`.
 
 #### Mixes
-- `npm install -s pruno-js` (http://npmsjs.com/package/pruno-js)[[npm]] provides the `.js(...)` mix, which will use browserify to build your javascript assets with browserify providing sourcemaps, uglification, ES6 transforms, React transforms, and env transforms.
-- `npm install -s pruno-stylus` (http://npmsjs.com/package/pruno-stylus)[[npm]] provides the `.stylus(...)` mix, which compiles stylus files with normalize.css, font-awesome, nib, jeet, and rupture.
-- `npm install -s pruno-less` (http://npmsjs.com/package/pruno-less)[[npm]] provides the `.less(...)` mix, which compiles LESS files with normalize.css, and font-awesome.
-- `npm install -s pruno-sass` (http://npmsjs.com/package/pruno-sass)[[npm]] provides the `.sass(...)` mix, which compiles SASS files with normalize.css, and font-awesome.
-- `npm install -s pruno-http` (http://npmsjs.com/package/pruno-http)[[npm]] provides the `.http(...)` mix, which provides a static server for prototyping, or allows you to run your own server with node `--harmony` flags.
-- `npm install -s pruno-publish` (http://npmsjs.com/package/pruno-publish)[[npm]] provides the `.publish(...)` mix, which publishes assets to your public directory.
-- `npm install -s pruno-jade` (http://npmsjs.com/package/pruno-jade)[[npm]] provides the `.jade(...)` mix, which compiles jade templates.
-- `npm install -s pruno-swig` (http://npmsjs.com/package/pruno-swig)[[npm]] provides the `.swig(...)` mix, which compiles swig templates.
-- `npm install -s pruno-livereload` (http://npmsjs.com/package/pruno-livereload)[[npm]] provides the `.livereload(...)` mix, which provides livereload to non-node server environments.
-- `npm install -s pruno-lint` (http://npmsjs.com/package/pruno-lint)[[npm]] provides the `.lint(...)` mix, which runs ESLint.
-- `npm install -s pruno-mocha` (http://npmsjs.com/package/pruno-mocha)[[npm]] provides the `.mocha(...)` mix, which runs mocha tests.
+- `npm install -s pruno-js` [http://npmsjs.com/package/pruno-js](npm) provides the `.js(...)` mix, which will use browserify to build your javascript assets with browserify providing sourcemaps, uglification, ES6 transforms, React transforms, and env transforms.
+- `npm install -s pruno-stylus` [http://npmsjs.com/package/pruno-stylus](npm) provides the `.stylus(...)` mix, which compiles stylus files with normalize.css, font-awesome, nib, jeet, and rupture.
+- `npm install -s pruno-less` [http://npmsjs.com/package/pruno-less](npm) provides the `.less(...)` mix, which compiles LESS files with normalize.css, and font-awesome.
+- `npm install -s pruno-sass` [http://npmsjs.com/package/pruno-sass](npm) provides the `.sass(...)` mix, which compiles SASS files with normalize.css, and font-awesome.
+- `npm install -s pruno-http` [http://npmsjs.com/package/pruno-http](npm) provides the `.http(...)` mix, which provides a static server for prototyping, or allows you to run your own server with node `--harmony` flags.
+- `npm install -s pruno-publish` [http://npmsjs.com/package/pruno-publish](npm) provides the `.publish(...)` mix, which publishes assets to your public directory.
+- `npm install -s pruno-jade` [http://npmsjs.com/package/pruno-jade](npm) provides the `.jade(...)` mix, which compiles jade templates.
+- `npm install -s pruno-swig` [http://npmsjs.com/package/pruno-swig](npm) provides the `.swig(...)` mix, which compiles swig templates.
+- `npm install -s pruno-livereload` [http://npmsjs.com/package/pruno-livereload](npm) provides the `.livereload(...)` mix, which provides livereload to non-node server environments.
+- `npm install -s pruno-lint` [http://npmsjs.com/package/pruno-lint](npm) provides the `.lint(...)` mix, which runs ESLint.
+- `npm install -s pruno-mocha` [http://npmsjs.com/package/pruno-mocha](npm) provides the `.mocha(...)` mix, which runs mocha tests.
 
 To install and use some mixes, try this:
 
