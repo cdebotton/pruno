@@ -33,6 +33,7 @@ var settings = { vars: { src: "./src", dist: "./dist" } };
 
 var Pruno = (function () {
   function Pruno(cb) {
+    // Create reference to parent gulp.
     try {
       var parent = module.parent;
       var gulp = parent.require("gulp");
@@ -40,21 +41,43 @@ var Pruno = (function () {
       throw new Error("Gulp is not currently installed. Please run `npm install -D gulp`.");
     }
 
+    // Load installed plugins automagically.
+    var _module$parent$require = module.parent.require(path.join(pwd(), "package.json"));
+
+    var dependencies = _module$parent$require.dependencies;
+    var devDependencies = _module$parent$require.devDependencies;
+
+
+    var modules = Object.keys(assign({}, dependencies || {}, devDependencies || {})).filter(function (mod) {
+      return /^pruno\-(.+)/.exec(mod);
+    }).forEach(function (mod) {
+      return Pruno.extend(module.parent.require(mod));
+    });
+
+    // Create reference to topLevel of application.
     var stack = callsite();
     settings.topLevel = path.dirname(stack[1].getFileName());
 
+    // Fail to proceed if gulp doesn't exist.
     if (!gulp) {
       throw new ReferenceError("Please define the instance of gulp for pruno to use by executing " + "pruno.use(gulp) before executing pruno's constructor");
     }
 
+    // Require the configure mix.
     require("./modules/configure");
 
     var defaults = [];
     var gulpWatchers = [];
     var watchers = [];
 
+    // Run the callback for pruno, assigning mix tasks to our dynamic
+    // gulpfile.
     cb(tasks);
 
+    // Assign instance of gulp to run-sequence.
+    runSequence = runSequence.use(gulp);
+
+    // Parse the results of the callback for tasks to run.
     Object.keys(queue).forEach(function (taskName) {
       var task = queue[taskName].instance;
       if (typeof task.enqueue === "function" && defaults.indexOf(taskName) === -1) {
@@ -77,8 +100,7 @@ var Pruno = (function () {
       }
     });
 
-    runSequence = runSequence.use(gulp);
-
+    // Create a default task.
     gulp.task("default", function () {
       var tasks = defaults.map(function (task) {
         return task.underline.yellow;
@@ -88,6 +110,7 @@ var Pruno = (function () {
       runSequence(defaults);
     });
 
+    // Parse the callback for watchers.
     if (watchers.length + gulpWatchers.length > 0) {
       gulp.task("watch", function () {
         if (watchers.length > 0) {
@@ -103,26 +126,6 @@ var Pruno = (function () {
   }
 
   _prototypeProperties(Pruno, {
-    plugins: {
-      value: function plugins(cb) {
-        var _module$parent$require = module.parent.require(path.join(pwd(), "package.json"));
-
-        var dependencies = _module$parent$require.dependencies;
-        var devDependencies = _module$parent$require.devDependencies;
-
-
-        var modules = Object.keys(assign({}, dependencies || {}, devDependencies || {})).filter(function (mod) {
-          return /^pruno\-(.+)/.exec(mod);
-        }).forEach(function (mod) {
-          var mix = module.parent.require(mod);
-        });
-
-        return Pruno;
-      },
-      writable: true,
-      enumerable: true,
-      configurable: true
-    },
     extend: {
       value: function extend(task) {
         var displayName = (task.displayName || task.name).toLowerCase().replace(/Task$/i, "");
@@ -152,15 +155,6 @@ var Pruno = (function () {
         };
       },
       writable: true,
-      enumerable: true,
-      configurable: true
-    },
-    use: {
-      value: function use(gulp) {
-        throw new Error("pruno.use(...) has been deprecated. The parent modules gulp instance " + "is now automatically inferred.");
-      },
-      writable: true,
-      enumerable: true,
       configurable: true
     },
     setDefaults: {
@@ -169,7 +163,6 @@ var Pruno = (function () {
         settings = merge(settings, opts);
       },
       writable: true,
-      enumerable: true,
       configurable: true
     },
     notify: {
@@ -189,7 +182,6 @@ var Pruno = (function () {
         new Notification().message(parts.join(" "));
       },
       writable: true,
-      enumerable: true,
       configurable: true
     },
     error: {
@@ -209,7 +201,6 @@ var Pruno = (function () {
         new Notification().error(parts.join(" "));
       },
       writable: true,
-      enumerable: true,
       configurable: true
     },
     get: {
@@ -221,7 +212,6 @@ var Pruno = (function () {
         return settings[property];
       },
       writable: true,
-      enumerable: true,
       configurable: true
     }
   });

@@ -16,6 +16,7 @@ var settings = {vars: {src: './src', dist: './dist'}};
 
 export default class Pruno {
   constructor(cb) {
+    // Create reference to parent gulp.
     try {
       var parent = module.parent;
       var gulp = parent.require('gulp');
@@ -24,9 +25,22 @@ export default class Pruno {
       throw new Error('Gulp is not currently installed. Please run `npm install -D gulp`.');
     }
 
+    // Load installed plugins automagically.
+    var {dependencies, devDependencies} = module.parent.require(
+      path.join(pwd(), 'package.json')
+    );
+
+    var modules = Object.keys(
+        assign({}, (dependencies || {}), (devDependencies || {})
+      ))
+      .filter(mod => /^pruno\-(.+)/.exec(mod))
+      .forEach(mod => Pruno.extend(module.parent.require(mod)));
+
+    // Create reference to topLevel of application.
     var stack = callsite();
     settings.topLevel = path.dirname(stack[1].getFileName());
 
+    // Fail to proceed if gulp doesn't exist.
     if (! gulp) {
       throw new ReferenceError(
         'Please define the instance of gulp for pruno to use by executing ' +
@@ -34,14 +48,21 @@ export default class Pruno {
       );
     }
 
+    // Require the configure mix.
     require('./modules/configure');
 
     var defaults = [];
     var gulpWatchers = [];
     var watchers = [];
 
+    // Run the callback for pruno, assigning mix tasks to our dynamic
+    // gulpfile.
     cb(tasks);
 
+    // Assign instance of gulp to run-sequence.
+    runSequence = runSequence.use(gulp);
+
+    // Parse the results of the callback for tasks to run.
     Object.keys(queue).forEach((taskName) => {
       var task = queue[taskName].instance;
       if (typeof task.enqueue === 'function' && defaults.indexOf(taskName) === -1) {
@@ -67,8 +88,7 @@ export default class Pruno {
       }
     });
 
-    runSequence = runSequence.use(gulp);
-
+    // Create a default task.
     gulp.task('default', function() {
       var tasks = defaults.map(task => task.underline.yellow).join(', ');
       Pruno.notify('Starting', tasks);
@@ -76,6 +96,7 @@ export default class Pruno {
       runSequence(defaults);
     });
 
+    // Parse the callback for watchers.
     if (watchers.length + gulpWatchers.length > 0) {
       gulp.task('watch', function() {
         if (watchers.length > 0) {
@@ -88,22 +109,6 @@ export default class Pruno {
         });
       });
     }
-  }
-
-  static plugins(cb) {
-    var {dependencies, devDependencies} = module.parent.require(
-      path.join(pwd(), 'package.json')
-    );
-
-    var modules = Object.keys(assign(
-      {},
-      (dependencies || {}),
-      (devDependencies || {}))
-    ).filter(mod => /^pruno\-(.+)/.exec(mod)).forEach(mod => {
-      var mix = module.parent.require(mod);
-    });
-
-    return Pruno;
   }
 
   static extend(task) {
@@ -133,13 +138,6 @@ export default class Pruno {
 
       return tasks;
     }
-  }
-
-  static use(gulp) {
-    throw new Error(
-      'pruno.use(...) has been deprecated. The parent modules gulp instance ' +
-      'is now automatically inferred.'
-    );
   }
 
   static setDefaults(opts = {}) {

@@ -33,10 +33,10 @@ module.exports = function (args) {
     var data;
     var dataFile = path.join(topLevel, params.data, path.basename(file.path).replace(/\.html$/, ""));
 
-    if (fs.existsSync("" + dataFile + ".js")) {
-      data = require("" + dataFile + ".js");
-    } else if (fs.existsSync("" + dataFile + ".json")) {
-      data = require("" + dataFile + ".json");
+    if (fs.existsSync(dataFile + ".js")) {
+      data = require(dataFile + ".js");
+    } else if (fs.existsSync(dataFile + ".json")) {
+      data = require(dataFile + ".json");
     }
 
     if (typeof data === "function") {
