@@ -21,10 +21,10 @@
   },
   "homepage": "https://github.com/cdebotton/pruno",
   "devDependencies": {
-    "6to5": "^3.1.1",
     "del": "^1.1.1",
     "gulp": "^3.8.10",
-    "gulp-6to5": "^3.0.0"
+    "gulp-babel": "^4.0.0",
+    "gulp-plumber": "^0.6.6"
   },
   "dependencies": {
     "callsite": "^1.0.0",
@@ -36,5 +36,8 @@
     "run-sequence": "^1.0.2",
     "shelljs": "^0.3.0",
     "yaml-env-config": "^1.1.0"
+  },
+  "peerDependencies": {
+    "gulp": "^3.8.10"
   }
 }

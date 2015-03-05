@@ -1,6 +1,5 @@
 import path from "path";
 import runSequence from "run-sequence";
-import path from "path";
 import fs from "fs";
 import compileParams from "./utils/compileParams";
 import merge from "deepmerge";
@@ -49,7 +48,7 @@ export default class Pruno {
     }
 
     // Require the configure mix.
-    require('./modules/configure');
+    require('./utils/configure');
 
     var defaults = [];
     var gulpWatchers = [];

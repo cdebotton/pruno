@@ -4,10 +4,14 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 
 var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
 
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
 var notify = _interopRequire(require("gulp-notify"));
 
 var Notification = (function () {
   function Notification() {
+    _classCallCheck(this, Notification);
+
     this.title = "Pruno";
   }
 

@@ -19,6 +19,7 @@ module.exports = function (args) {
   var opts = args.opts;
   var gulp = args.gulp;
   var compiler = args.compiler;
+
   var topLevel = pruno.get("topLevel");
   var filters = ["!src/templates/_layout.html", "*"];
   var IGNORE_SEARCH = new RegExp("^" + params.ignorePrefix);

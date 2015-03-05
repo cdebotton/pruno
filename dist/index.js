@@ -4,13 +4,11 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 
 var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
 
-var _path = require("path");
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
-var path = _interopRequire(_path);
+var path = _interopRequire(require("path"));
 
 var runSequence = _interopRequire(require("run-sequence"));
-
-var path = _interopRequire(_path);
 
 var fs = _interopRequire(require("fs"));
 
@@ -25,6 +23,7 @@ var colors = _interopRequire(require("colors"));
 var Notification = _interopRequire(require("./utils/notification"));
 
 var pwd = require("shelljs").pwd;
+
 var assign = _interopRequire(require("object-assign"));
 
 var tasks = {};
@@ -33,6 +32,8 @@ var settings = { vars: { src: "./src", dist: "./dist" } };
 
 var Pruno = (function () {
   function Pruno(cb) {
+    _classCallCheck(this, Pruno);
+
     // Create reference to parent gulp.
     try {
       var parent = module.parent;
@@ -42,11 +43,11 @@ var Pruno = (function () {
     }
 
     // Load installed plugins automagically.
+
     var _module$parent$require = module.parent.require(path.join(pwd(), "package.json"));
 
     var dependencies = _module$parent$require.dependencies;
     var devDependencies = _module$parent$require.devDependencies;
-
 
     var modules = Object.keys(assign({}, dependencies || {}, devDependencies || {})).filter(function (mod) {
       return /^pruno\-(.+)/.exec(mod);
@@ -64,7 +65,7 @@ var Pruno = (function () {
     }
 
     // Require the configure mix.
-    require("./modules/configure");
+    require("./utils/configure");
 
     var defaults = [];
     var gulpWatchers = [];
@@ -94,6 +95,7 @@ var Pruno = (function () {
           watchers.push(watchName);
         } else if (watcher === true) {
           var search = task.params.search;
+
           gulp.task(watchName, task.enqueue.bind(null, gulp, task.params));
           gulpWatchers.push({ search: search, watchName: watchName });
         }
@@ -134,6 +136,7 @@ var Pruno = (function () {
         tasks[displayName] = function () {
           var name = arguments[0] === undefined ? null : arguments[0];
           var params = arguments[1] === undefined ? {} : arguments[1];
+
           if (typeof name === "object") {
             params = name;
             taskName = displayName;
@@ -160,6 +163,7 @@ var Pruno = (function () {
     setDefaults: {
       value: function setDefaults() {
         var opts = arguments[0] === undefined ? {} : arguments[0];
+
         settings = merge(settings, opts);
       },
       writable: true,
