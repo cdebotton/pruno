@@ -31,6 +31,7 @@
     "colors": "^1.0.3",
     "deepmerge": "^0.2.7",
     "gulp-notify": "^2.2.0",
+    "gulp-watch": "^4.1.1",
     "object-assign": "^2.0.0",
     "require-dir": "^0.1.0",
     "run-sequence": "^1.0.2",

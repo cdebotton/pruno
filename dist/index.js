@@ -2,25 +2,27 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var path = _interopRequire(require("path"));
-
-var runSequence = _interopRequire(require("run-sequence"));
-
 var fs = _interopRequire(require("fs"));
 
-var compileParams = _interopRequire(require("./utils/compileParams"));
-
-var merge = _interopRequire(require("deepmerge"));
-
-var callsite = _interopRequire(require("callsite"));
-
-var colors = _interopRequire(require("colors"));
-
-var Notification = _interopRequire(require("./utils/notification"));
+var path = _interopRequire(require("path"));
 
 var pwd = require("shelljs").pwd;
 
+var colors = _interopRequire(require("colors"));
+
+var merge = _interopRequire(require("deepmerge"));
+
+var watch = _interopRequire(require("gulp-watch"));
+
+var callsite = _interopRequire(require("callsite"));
+
 var assign = _interopRequire(require("object-assign"));
+
+var runSequence = _interopRequire(require("run-sequence"));
+
+var compileParams = _interopRequire(require("./utils/compileParams"));
+
+var Notification = _interopRequire(require("./utils/notification"));
 
 var tasks = {};
 var queue = {};
@@ -113,8 +115,14 @@ var Pruno = function (cb) {
       }
 
       gulpWatchers.forEach(function (watcher) {
+        var verbose = true;
+        var events = ["add", "change", "unlink", "unlinkDir", "raw"];
+
         runSequence(watcher.watchName);
-        gulp.watch(watcher.search, [watcher.watchName]);
+
+        watch(watcher.search, { verbose: verbose, events: events }, function (files) {
+          runSequence(watcher.watchName);
+        });
       });
     });
   }

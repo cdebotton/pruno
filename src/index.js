@@ -1,13 +1,14 @@
-import path from "path";
-import runSequence from "run-sequence";
 import fs from "fs";
-import compileParams from "./utils/compileParams";
-import merge from "deepmerge";
-import callsite from "callsite";
-import colors from "colors";
-import Notification from "./utils/notification";
+import path from "path";
 import {pwd} from "shelljs";
+import colors from "colors";
+import merge from "deepmerge";
+import watch from "gulp-watch";
+import callsite from "callsite";
 import assign from "object-assign";
+import runSequence from "run-sequence";
+import compileParams from "./utils/compileParams";
+import Notification from "./utils/notification";
 
 var tasks = {};
 var queue = {};
@@ -102,8 +103,14 @@ let Pruno = (cb) => {
       }
 
       gulpWatchers.forEach(watcher => {
+        const verbose = true;
+        const events = ["add", "change", "unlink", "unlinkDir", "raw"];
+
         runSequence(watcher.watchName);
-        gulp.watch(watcher.search, [watcher.watchName]);
+
+        watch(watcher.search, { verbose, events }, function(files) {
+          runSequence(watcher.watchName);
+        });
       });
     });
   }
