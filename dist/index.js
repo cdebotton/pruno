@@ -2,10 +2,6 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
-
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
-
 var path = _interopRequire(require("path"));
 
 var runSequence = _interopRequire(require("run-sequence"));
@@ -30,197 +26,173 @@ var tasks = {};
 var queue = {};
 var settings = { vars: { src: "./src", dist: "./dist" } };
 
-var Pruno = (function () {
-  function Pruno(cb) {
-    _classCallCheck(this, Pruno);
-
-    // Create reference to parent gulp.
-    try {
-      var parent = module.parent;
-      var gulp = parent.require("gulp");
-    } catch (err) {
-      throw new Error("Gulp is not currently installed. Please run `npm install -D gulp`.");
-    }
-
-    // Load installed plugins automagically.
-
-    var _module$parent$require = module.parent.require(path.join(pwd(), "package.json"));
-
-    var dependencies = _module$parent$require.dependencies;
-    var devDependencies = _module$parent$require.devDependencies;
-
-    var modules = Object.keys(assign({}, dependencies || {}, devDependencies || {})).filter(function (mod) {
-      return /^pruno\-(.+)/.exec(mod);
-    }).forEach(function (mod) {
-      return Pruno.extend(module.parent.require(mod));
-    });
-
-    // Create reference to topLevel of application.
-    var stack = callsite();
-    settings.topLevel = path.dirname(stack[1].getFileName());
-
-    // Fail to proceed if gulp doesn't exist.
-    if (!gulp) {
-      throw new ReferenceError("Please define the instance of gulp for pruno to use by executing " + "pruno.use(gulp) before executing pruno's constructor");
-    }
-
-    // Require the configure mix.
-    require("./utils/configure");
-
-    var defaults = [];
-    var gulpWatchers = [];
-    var watchers = [];
-
-    // Run the callback for pruno, assigning mix tasks to our dynamic
-    // gulpfile.
-    cb(tasks);
-
-    // Assign instance of gulp to run-sequence.
-    runSequence = runSequence.use(gulp);
-
-    // Parse the results of the callback for tasks to run.
-    Object.keys(queue).forEach(function (taskName) {
-      var task = queue[taskName].instance;
-      if (typeof task.enqueue === "function" && defaults.indexOf(taskName) === -1) {
-        gulp.task(taskName, task.enqueue.bind(null, gulp, task.params));
-        defaults.push(taskName);
-      }
-
-      var watchName = "" + taskName + ":watch";
-      var watcher = task.generateWatcher ? task.generateWatcher(gulp, task.params) : false;
-
-      if (watchers.indexOf(watchName) === -1) {
-        if (typeof watcher === "function") {
-          gulp.task(watchName, watcher);
-          watchers.push(watchName);
-        } else if (watcher === true) {
-          var search = task.params.search;
-
-          gulp.task(watchName, task.enqueue.bind(null, gulp, task.params));
-          gulpWatchers.push({ search: search, watchName: watchName });
-        }
-      }
-    });
-
-    // Create a default task.
-    gulp.task("default", function () {
-      var tasks = defaults.map(function (task) {
-        return task.underline.yellow;
-      }).join(", ");
-      Pruno.notify("Starting", tasks);
-
-      runSequence(defaults);
-    });
-
-    // Parse the callback for watchers.
-    if (watchers.length + gulpWatchers.length > 0) {
-      gulp.task("watch", function () {
-        if (watchers.length > 0) {
-          runSequence(watchers);
-        }
-
-        gulpWatchers.forEach(function (watcher) {
-          runSequence(watcher.watchName);
-          gulp.watch(watcher.search, [watcher.watchName]);
-        });
-      });
-    }
+var Pruno = function (cb) {
+  // Create reference to parent gulp.
+  try {
+    var parent = module.parent;
+    var gulp = parent.require("gulp");
+  } catch (err) {
+    throw new Error("Gulp is not currently installed. Please run `npm install -D gulp`.");
   }
 
-  _prototypeProperties(Pruno, {
-    extend: {
-      value: function extend(task) {
-        var displayName = (task.displayName || task.name).toLowerCase().replace(/Task$/i, "");
+  // Load installed plugins automagically.
 
-        var taskName, instance;
-        tasks[displayName] = function () {
-          var name = arguments[0] === undefined ? null : arguments[0];
-          var params = arguments[1] === undefined ? {} : arguments[1];
+  var _module$parent$require = module.parent.require(path.join(pwd(), "package.json"));
 
-          if (typeof name === "object") {
-            params = name;
-            taskName = displayName;
-          } else {
-            taskName = "" + displayName + "-" + name;
-          }
+  var dependencies = _module$parent$require.dependencies;
+  var devDependencies = _module$parent$require.devDependencies;
 
-          var defaults = typeof task.getDefaults === "function" ? task.getDefaults() : {};
+  var modules = Object.keys(assign({}, dependencies || {}, devDependencies || {})).filter(function (mod) {
+    return /^pruno\-(.+)/.exec(mod);
+  }).forEach(function (mod) {
+    return Pruno.extend(module.parent.require(mod));
+  });
 
-          var baseSettings = settings[displayName] || {};
+  // Create reference to topLevel of application.
+  var stack = callsite();
+  settings.topLevel = path.dirname(stack[1].getFileName());
 
-          var opts = compileParams(taskName, defaults, baseSettings, params, settings);
-          opts.taskName = taskName;
+  // Fail to proceed if gulp doesn"t exist.
+  if (!gulp) {
+    throw new ReferenceError("Please define the instance of gulp for pruno to use by executing " + "pruno.use(gulp) before executing pruno\"s constructor");
+  }
 
-          instance = new task(opts);
-          queue[taskName] = { instance: instance, opts: opts };
+  // Require the configure mix.
+  require("./utils/configure");
 
-          return tasks;
-        };
-      },
-      writable: true,
-      configurable: true
-    },
-    setDefaults: {
-      value: function setDefaults() {
-        var opts = arguments[0] === undefined ? {} : arguments[0];
+  var defaults = [];
+  var gulpWatchers = [];
+  var watchers = [];
 
-        settings = merge(settings, opts);
-      },
-      writable: true,
-      configurable: true
-    },
-    notify: {
-      value: function notify(plugin) {
-        for (var _len = arguments.length, parts = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-          parts[_key - 1] = arguments[_key];
-        }
+  // Run the callback for pruno, assigning mix tasks to our dynamic
+  // gulpfile.
+  cb(tasks);
 
-        var timestamp = new Date();
-        var stamp = "[pruno - " + timestamp + "]";
-        var pluginLabel = "[" + plugin + "]";
+  // Assign instance of gulp to run-sequence.
+  runSequence = runSequence.use(gulp);
 
-        parts = Array.isArray(parts) ? parts : [parts];
+  // Parse the results of the callback for tasks to run.
+  Object.keys(queue).forEach(function (taskName) {
+    var task = queue[taskName].instance;
+    if (typeof task.enqueue === "function" && defaults.indexOf(taskName) === -1) {
+      gulp.task(taskName, task.enqueue.bind(null, gulp, task.params));
+      defaults.push(taskName);
+    }
 
-        console.log.apply(console, [stamp.bold.green, pluginLabel.bold.magenta].concat(parts));
+    var watchName = "" + taskName + ":watch";
+    var watcher = task.generateWatcher ? task.generateWatcher(gulp, task.params) : false;
 
-        new Notification().message(parts.join(" "));
-      },
-      writable: true,
-      configurable: true
-    },
-    error: {
-      value: function error(plugin) {
-        for (var _len = arguments.length, parts = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-          parts[_key - 1] = arguments[_key];
-        }
+    if (watchers.indexOf(watchName) === -1) {
+      if (typeof watcher === "function") {
+        gulp.task(watchName, watcher);
+        watchers.push(watchName);
+      } else if (watcher === true) {
+        var search = task.params.search;
 
-        var timestamp = new Date();
-        var stamp = "[pruno - " + timestamp + "]";
-        var pluginLabel = "[" + plugin + "]";
-
-        parts = Array.isArray(parts) ? parts : [parts];
-
-        console.error.apply(console, [stamp.bold.red, pluginLabel.bold.magenta].concat(parts));
-
-        new Notification().error(parts.join(" "));
-      },
-      writable: true,
-      configurable: true
-    },
-    get: {
-      value: function get(property) {
-        if (!property) {
-          throw new TypeError("You must define a property go get.");
-        }
-
-        return settings[property];
-      },
-      writable: true,
-      configurable: true
+        gulp.task(watchName, task.enqueue.bind(null, gulp, task.params));
+        gulpWatchers.push({ search: search, watchName: watchName });
+      }
     }
   });
 
-  return Pruno;
-})();
+  // Create a default task.
+  gulp.task("default", function () {
+    var tasks = defaults.map(function (task) {
+      return task.underline.yellow;
+    }).join(", ");
+    Pruno.notify("Starting", tasks);
+
+    runSequence(defaults);
+  });
+
+  // Parse the callback for watchers.
+  if (watchers.length + gulpWatchers.length > 0) {
+    gulp.task("watch", function () {
+      if (watchers.length > 0) {
+        runSequence(watchers);
+      }
+
+      gulpWatchers.forEach(function (watcher) {
+        runSequence(watcher.watchName);
+        gulp.watch(watcher.search, [watcher.watchName]);
+      });
+    });
+  }
+};
+
+Pruno.extend = function (task) {
+  var displayName = (task.displayName || task.name).toLowerCase().replace(/Task$/i, "");
+
+  var taskName, instance;
+  tasks[displayName] = function () {
+    var name = arguments[0] === undefined ? null : arguments[0];
+    var params = arguments[1] === undefined ? {} : arguments[1];
+
+    if (typeof name === "object") {
+      params = name;
+      taskName = displayName;
+    } else {
+      taskName = "" + displayName + "-" + name;
+    }
+
+    var defaults = typeof task.getDefaults === "function" ? task.getDefaults() : {};
+
+    var baseSettings = settings[displayName] || {};
+
+    var opts = compileParams(taskName, defaults, baseSettings, params, settings);
+    opts.taskName = taskName;
+
+    instance = new task(opts);
+    queue[taskName] = { instance: instance, opts: opts };
+
+    return tasks;
+  };
+};
+
+Pruno.setDefaults = function () {
+  var opts = arguments[0] === undefined ? {} : arguments[0];
+
+  settings = merge(settings, opts);
+};
+
+Pruno.notify = function (plugin) {
+  for (var _len = arguments.length, parts = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    parts[_key - 1] = arguments[_key];
+  }
+
+  var timestamp = new Date();
+  var stamp = "[pruno - " + timestamp + "]";
+  var pluginLabel = "[" + plugin + "]";
+
+  parts = Array.isArray(parts) ? parts : [parts];
+
+  console.log.apply(console, [stamp.bold.green, pluginLabel.bold.magenta].concat(parts));
+
+  new Notification().message(parts.join(" "));
+};
+
+Pruno.error = function (plugin) {
+  for (var _len = arguments.length, parts = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    parts[_key - 1] = arguments[_key];
+  }
+
+  var timestamp = new Date();
+  var stamp = "[pruno - " + timestamp + "]";
+  var pluginLabel = "[" + plugin + "]";
+
+  parts = Array.isArray(parts) ? parts : [parts];
+
+  console.error.apply(console, [stamp.bold.red, pluginLabel.bold.magenta].concat(parts));
+
+  new Notification().error(parts.join(" "));
+};
+
+Pruno.get = function (property) {
+  if (!property) {
+    throw new TypeError("You must define a property go get.");
+  }
+
+  return settings[property];
+};
 
 module.exports = Pruno;
