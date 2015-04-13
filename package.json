@@ -1,5 +1,8 @@
 {
   "name": "pruno",
+  "bin": {
+    "pruno": "./bin/index.js"
+  },
   "version": "2.2.0",
   "description": "A gulp task manager with cascading configuration.",
   "main": "./dist/index.js",
@@ -20,25 +23,7 @@
     "url": "https://github.com/cdebotton/pruno/issues"
   },
   "homepage": "https://github.com/cdebotton/pruno",
-  "devDependencies": {
-    "del": "^1.1.1",
-    "gulp": "^3.8.10",
-    "gulp-babel": "^4.0.0",
-    "gulp-plumber": "^0.6.6"
-  },
   "dependencies": {
-    "callsite": "^1.0.0",
-    "colors": "^1.0.3",
-    "deepmerge": "^0.2.7",
-    "gulp-notify": "^2.2.0",
-    "gulp-watch": "^4.1.1",
-    "object-assign": "^2.0.0",
-    "require-dir": "^0.1.0",
-    "run-sequence": "^1.0.2",
-    "shelljs": "^0.3.0",
-    "yaml-env-config": "^1.1.0"
-  },
-  "peerDependencies": {
-    "gulp": "^3.8.10"
+    "babel": "^5.1.5"
   }
 }
